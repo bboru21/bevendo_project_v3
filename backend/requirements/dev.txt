@@ -1,0 +1,4 @@
+# for local development work
+-r test.txt
+
+django-debug-toolbar==3.5.0

@@ -1,9 +1,86 @@
 import Link from 'next/link';
 import { useRouter } from 'next/router';
+import { useSelector, useDispatch } from 'react-redux';
+import { logout } from '../actions/auth';
 
 const Navbar = () => {
 
+    const dispatch = useDispatch();
     const router = useRouter();
+    const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
+
+    const logoutHandler = () => {
+        if (dispatch && dispatch !== null && dispatch !== undefined) {
+            dispatch(logout());
+        }
+    };
+
+    const guestLinks = (
+        <>
+            <li className='nav-item'>
+              <Link href='/register'>
+                <a
+                    className={
+                        router.pathname === '/register' ?
+                        'nav-link active' : 'nav-link'
+                    }
+                    aria-current={
+                        router.pathname === '/register' ?
+                        'page' : 'false'
+                    }
+                >
+                    Register
+                </a>
+              </Link>
+            </li>
+            <li className='nav-item'>
+              <Link href='/login'>
+                <a
+                    className={
+                        router.pathname === '/login' ?
+                        'nav-link active' : 'nav-link'
+                    }
+                    aria-current={
+                        router.pathname === '/login' ?
+                        'page' : 'false'
+                    }
+                >
+                    Login
+                </a>
+              </Link>
+            </li>
+        </>
+    );
+
+    const authLinks = (
+        <>
+            <li className='nav-item'>
+              <Link href='/dashboard'>
+                <a
+                    className={
+                        router.pathname === '/dashboard' ?
+                        'nav-link active' : 'nav-link'
+                    }
+                    aria-current={
+                        router.pathname === '/dashboard' ?
+                        'page' : 'false'
+                    }
+                >
+                    Dashboard
+                </a>
+              </Link>
+            </li>
+            <li className='nav-item'>
+                <a
+                    className='nav-link'
+                    href='#!'
+                    onClick={logoutHandler}
+                >
+                    Logout
+                </a>
+            </li>
+        </>
+    );
 
     return (
         <nav className='navbar navbar-expand-lg bg-light'>
@@ -40,33 +117,7 @@ const Navbar = () => {
                     </a>
                   </Link>
                 </li>
-                <li className='nav-item'>
-                  <Link href='/register'>
-                    <a
-                        className={
-                            router.pathname === '/register' ?
-                            'nav-link active' : 'nav-link'
-                        }
-                        aria-current={
-                            router.pathname === '/register' ?
-                            'page' : 'false'
-                        }
-                    >
-                        Register
-                    </a>
-                  </Link>
-                </li>
-                {/*<li className='nav-item dropdown'>
-                  <a className='nav-link dropdown-toggle' href='#' id='navbarDropdown' role='button' data-bs-toggle='dropdown' aria-expanded='false'>
-                    Dropdown
-                  </a>
-                  <ul className='dropdown-menu' aria-labelledby='navbarDropdown'>
-                    <li><a className='dropdown-item' href='#'>Action</a></li>
-                    <li><a className='dropdown-item' href='#'>Another action</a></li>
-                    <li><hr className='dropdown-divider' /></li>
-                    <li><a className='dropdown-item' href='#'>Something else here</a></li>
-                  </ul>
-                </li>*/}
+                { isAuthenticated ? authLinks : guestLinks }
               </ul>
               <form className='d-flex' role='search'>
                 <input className='form-control me-2' type='search' placeholder='Search' aria-label='Search' />

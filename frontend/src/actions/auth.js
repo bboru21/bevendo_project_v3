@@ -79,7 +79,7 @@ export const login = (username, password) => async dispatch => {
     });
 
     try {
-        const res = await fetch('api/account/login', {
+        const res = await fetch('/api/account/login', {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
@@ -110,7 +110,7 @@ export const login = (username, password) => async dispatch => {
 
 export const logout = () => async dispatch => {
     try {
-        const res = await fetch('api/account/logout', {
+        const res = await fetch('/api/account/logout', {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',

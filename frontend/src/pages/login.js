@@ -47,7 +47,7 @@ const LoginPage = () => {
     return (
         <Layout
             title='Bevendo | Register'
-            content='Register page for Bevendo app'>
+            content='Login page for Bevendo app'>
             <>
                 <h1 className='display-4 mt-5'>Login Page</h1>
                 <form

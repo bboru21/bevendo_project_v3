@@ -6,9 +6,13 @@ import {
     LOGIN_FAIL,
     LOGOUT_SUCCESS,
     LOGOUT_FAIL,
+    LOAD_USER_SUCCESS,
+    LOAD_USER_FAIL,
     SET_AUTH_LOADING,
     REMOVE_AUTH_LOADING,
 } from './types';
+
+export const load_user = () => {};
 
 export const register = (
     first_name,

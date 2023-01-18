@@ -27,6 +27,10 @@ Startup the Python/Django backend API:
 
 ## NextJS
 
+First time development setup:
+
+    frontend$ npm install
+
 Startup the React/NextJS frontend:
 
     frontend$ npm run dev

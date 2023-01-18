@@ -14,6 +14,12 @@ Instructions for starting up the dev scripts for development.
 
 ## Python
 
+First time development setup:
+
+    backend$ python3 -m venv venv
+    backend$ pip install --upgrade pip
+    backend$ pip install -r requirements/dev.txt
+
 Startup the Python/Django backend API:
 
     backend$ source venv/bin/activate

@@ -2,13 +2,17 @@ import { useEffect } from 'react';
 import Layout from '../hocs/Layout';
 
 const Dashboard = () => {
-    useEffect(async () => {
-        await fetch('/api/account/user', {
-            method: 'GET',
-            headers: {
-                'Accept': 'application/json',
-            },
-        });
+   
+    useEffect(() => {
+        /* TODO for debugging, remove me */
+        // async () => {
+            /* await */ fetch('/api/account/user', {
+                method: 'GET',
+                headers: {
+                    'Accept': 'application/json',
+                },
+            });
+        // }
     }, []);
     return (
         <Layout

@@ -28,12 +28,12 @@ const LoginPage = () => {
         }
     }, []);
 
-    const handleOnChange = event => setFormData({
+    const handleChange = event => setFormData({
         ...formData,
         [event.target.name]: event.target.value,
     });
 
-    const handleOnSubmit = event => {
+    const handleSubmit = event => {
         event.preventDefault();
 
         if (dispatch && dispatch !== null && dispatch !== undefined) {
@@ -46,13 +46,13 @@ const LoginPage = () => {
     }
     return (
         <Layout
-            title='Bevendo | Register'
+            title='Bevendo | Login'
             content='Login page for Bevendo app'>
             <>
                 <h1 className='display-4 mt-5'>Login Page</h1>
                 <form
                     className='bg-light p-5 mt-5 mb-5'
-                    onSubmit={handleOnSubmit}
+                    onSubmit={handleSubmit}
                 >
                     <h3>Log Into Your Account</h3>
 
@@ -65,7 +65,7 @@ const LoginPage = () => {
                             type='text'
                             name='username'
                             placeholder='Username*'
-                            onChange={handleOnChange}
+                            onChange={handleChange}
                             value={username}
                             required
                         />
@@ -79,7 +79,7 @@ const LoginPage = () => {
                             type='password'
                             name='password'
                             placeholder='Password*'
-                            onChange={handleOnChange}
+                            onChange={handleChange}
                             value={password}
                             minLength={8}
                             required

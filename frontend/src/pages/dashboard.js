@@ -1,27 +1,34 @@
-import { useEffect } from 'react';
+import { useRouter } from 'next/router';
+import { useSelector } from 'react-redux';
 import Layout from '../hocs/Layout';
 
 const Dashboard = () => {
    
-    useEffect(() => {
-        /* TODO for debugging, remove me */
-        // async () => {
-            /* await */ fetch('/api/account/user', {
-                method: 'GET',
-                headers: {
-                    'Accept': 'application/json',
-                },
-            });
-        // }
-    }, []);
+    const router = useRouter();
+
+    const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
+    const user = useSelector(state => state.auth.user);
+    const loading = useSelector(state => state.auth.loading);
+
+    if (typeof window !== 'undefined' && !loading && !isAuthenticated) {
+        router.push('/login');
+    }
+
     return (
         <Layout
             title='Bevendo | Dashboard'
             content='Dashboard for Bevendo, a companion app to Drinking with the Saints'
         >
-            <>
-                <h1>Dashboard</h1>
-            </>
+           <div className='p-5 bg-light rounded-3'>
+                <div className='container-fluid py-3'>
+                    <h1 className='display-5 fw-bold'>
+                        User Dashboard
+                    </h1>
+                    <p className='fs-4 mt-3'>
+                        Welcome to Bevendo{user === null ? '' : `, ${user.first_name}`}!
+                    </p>
+                </div>
+           </div>
         </Layout>
     );
 };

@@ -12,7 +12,33 @@ import {
     REMOVE_AUTH_LOADING,
 } from './types';
 
-export const load_user = () => {};
+export const load_user = () => async dispatch => {
+    try {
+        const res = await fetch('/api/account/user', {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json',
+            },
+        })
+
+        const data = await res.json();
+
+        if (res.status === 200) {
+            dispatch({
+                type: LOAD_USER_SUCCESS,
+                payload: data,
+            })
+        } else {
+            dispatch({
+                type: LOAD_USER_FAIL,
+            });
+        }
+    } catch(error) {
+        dispatch({
+            type: LOAD_USER_FAIL,
+        });
+    }
+};
 
 export const register = (
     first_name,
@@ -96,6 +122,7 @@ export const login = (username, password) => async dispatch => {
             dispatch({
                 type: LOGIN_SUCCESS,
             });
+            dispatch(load_user());
         } else {
             dispatch({
                 type: LOGIN_FAIL,

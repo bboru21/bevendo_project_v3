@@ -25,6 +25,10 @@ Startup the Python/Django backend API:
     backend$ source venv/bin/activate
     backend$ python manage.py runserver 0.0.0.0:9001 --settings bevendo.config.local
 
+As an alternative startup, you may also run the following from the root directory:
+
+    $ make api
+
 ## NextJS
 
 First time development setup:
@@ -34,6 +38,10 @@ First time development setup:
 Startup the React/NextJS frontend:
 
     frontend$ npm run dev
+
+As an alternative starup, you may also run the following from the root directory:
+
+    $ make serve
 
 If all was successful, the app should be accessible via the URL:
 

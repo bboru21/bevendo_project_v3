@@ -24,7 +24,7 @@ export default async (req, res) => {
 
             if (apiRes.status === 200) {
                 return res.status(200).json({
-                    user = data.user,
+                    user: data.user,
                 });
             } else {
                 return res.status(apiRes.status).json({

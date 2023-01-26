@@ -23,10 +23,10 @@ const LoginPage = () => {
     } = formData;
 
     useEffect(() => {
-        if (dispatch && dispatch !== null && dispatch !== undefined) {
+        if (dispatch && dispatch !== null && typeof dispatch !== 'undefined') {
             dispatch(reset_register_success());
         }
-    }, []);
+    }, [dispatch]);
 
     const handleChange = event => setFormData({
         ...formData,

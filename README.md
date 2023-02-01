@@ -1,6 +1,8 @@
-# Bevendo v3
+# Bevendo
 
-Version 3.0 of Bevendo, a companion app to Drinking with the Saints.
+A Django/React companion app to "[Drinking with the Saints]".
+
+Django layout is based off of the [Django Twoscoops Project].
 
 # Django
 
@@ -46,3 +48,9 @@ As an alternative starup, you may also run the following from the root directory
 If all was successful, the app should be accessible via the URL:
 
     http://0.0.0.0:3001/
+
+[django twoscoops project]: https://github.com/twoscoops/django-twoscoops-project/
+[drinking with the saints]: https://drinkingwiththesaints.com/
+[calapi inadiutorium api]: http://calapi.inadiutorium.cz/
+[python unittest testcase]: https://docs.python.org/3/library/unittest.html#unittest.TestCase
+[django testing]: https://developer.mozilla.org/en-US/docs/Learn/Server-side/Django/Testing

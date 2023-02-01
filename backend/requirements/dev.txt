@@ -2,3 +2,6 @@
 -r test.txt
 
 django-debug-toolbar==3.5.0
+flake8==4.0.1
+pre-commit==2.15.0
+Sphinx==4.2.0

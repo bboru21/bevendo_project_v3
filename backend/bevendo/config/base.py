@@ -29,9 +29,9 @@ DEBUG = False
 ALLOWED_HOSTS = []
 
 
+########## APP CONFIGURATION
 # Application definition
-
-INSTALLED_APPS = [
+DJANGO_APPS = (
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -41,7 +41,78 @@ INSTALLED_APPS = [
     'rest_framework',
     'corsheaders',
     'rest_framework_simplejwt.token_blacklist',
-]
+    'scrapy',
+)
+
+# Apps specific for this project go here.
+LOCAL_APPS = (
+    'api.apps.ApiConfig',
+    'ext_data.apps.ExtDataConfig',
+)
+
+# See: https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
+INSTALLED_APPS = DJANGO_APPS + LOCAL_APPS
+########## END APP CONFIGURATION
+
+
+########## LOGGING CONFIGURATION
+# See: https://docs.djangoproject.com/en/dev/ref/settings/#logging
+# A sample logging configuration. The only tangible logging
+# performed by this configuration is to send an email to
+# the site admins on every HTTP 500 error when DEBUG=False.
+# See http://docs.djangoproject.com/en/dev/topics/logging for
+# more details on how to customize your logging configuration.
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': True,
+    'formatters': {
+        'verbose': {
+            'format': '%(levelname)s [%(asctime)s] %(module)s %(message)s',
+        },
+        'simple': {
+            'format': '%(message)s',
+        }
+    },
+    'handlers': {
+        'null': {
+            'level': 'DEBUG',
+            'class': 'logging.NullHandler',
+        },
+        'mail_admins': {
+            'level': 'ERROR',
+            'class': 'django.utils.log.AdminEmailHandler',
+        },
+    },
+    'loggers': {
+        'django.security.DisallowedHost': {
+            'handlers': ['null'],
+            'propagate': False,
+        },
+        'django': {
+            'handlers': ['mail_admins'],
+            'propagate': True,
+            'level': 'ERROR',
+        },
+        'api': {
+            'handlers': ['mail_admins'],
+            'propagate': True,
+            'level': 'INFO',
+        },
+        'ext_data': {
+            'handlers': ['mail_admins'],
+            'propagate': True,
+            'level': 'INFO',
+        },
+        'module': {
+            'handlers': ['mail_admins'],
+            'propagate': True,
+            'level': 'ERROR',
+        },
+    },
+}
+
+########## END LOGGING CONFIGURATION
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

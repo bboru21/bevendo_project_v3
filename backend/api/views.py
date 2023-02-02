@@ -1,7 +1,6 @@
 import datetime
 
 from rest_framework import ( viewsets, permissions )
-from rest_framework.decorators import api_view
 
 from django.shortcuts import render
 from django.http import HttpResponse

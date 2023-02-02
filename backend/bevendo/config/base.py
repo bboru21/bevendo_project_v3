@@ -11,22 +11,61 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
 from pathlib import Path
+from sys import path
 from datetime import timedelta
+
+
+########## PATH CONFIGURATION
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+# Absolute filesystem path to the Django project directory:
+DJANGO_ROOT = BASE_DIR.parent  # bevendo_project/bevendo
 
+# Add our project to our pythonpath, this way we don't need to type our project
+# name in our dotted import paths:
+path.append(str(DJANGO_ROOT))
+########## END PATH CONFIGURATION
+
+
+########## MANAGER CONFIGURATION
+# See: https://docs.djangoproject.com/en/dev/ref/settings/#admins
+ADMINS = (
+    ('Bryan Hadro', 'bryan.e.hadro@gmail.com'),
+)
+
+# See: https://docs.djangoproject.com/en/dev/ref/settings/#managers
+MANAGERS = ADMINS
+########## END MANAGER CONFIGURATION
+
+
+########## SECRET CONFIGURATION
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = ''
+########## END SECRET CONFIGURATION
 
+
+########## DEBUG CONFIGURATION
+# See: https://docs.djangoproject.com/en/dev/ref/settings/#debug
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
+########## END DEBUG CONFIGURATION
+
+
+########## SITE CONFIGURATION
+# Hosts/domain names that are valid for this site
+# See https://docs.djangoproject.com/en/1.5/ref/settings/#allowed-hosts
+
 ALLOWED_HOSTS = []
+
+CORS_ALLOWED_ORIGINS = []
+
+########## END SITE CONFIGURATION
 
 
 ########## APP CONFIGURATION
@@ -114,6 +153,7 @@ LOGGING = {
 ########## END LOGGING CONFIGURATION
 
 
+########## MIDDLEWARE CONFIGURATION
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -125,8 +165,15 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'bevendo.urls'
+########## END MIDDLEWARE CONFIGURATION
 
+
+########## URL CONFIGURATION
+ROOT_URLCONF = 'bevendo.urls'
+########## END URL CONFIGURATION
+
+
+########## TEMPLATE CONFIGURATION
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -142,10 +189,16 @@ TEMPLATES = [
         },
     },
 ]
+########## END TEMPLATE CONFIGURATION
 
+
+########## WSGI CONFIGURATION
+# See: https://docs.djangoproject.com/en/dev/ref/settings/#wsgi-application
 WSGI_APPLICATION = 'bevendo.wsgi.application'
+########## END WSGI CONFIGURATION
 
 
+########## DATABASE CONFIGURATION
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
@@ -159,8 +212,14 @@ DATABASES = {
     }
 }
 
+# Default primary key field type
+# https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
-# Password validation
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+########## END DATABASE CONFIGURATION
+
+
+########## PASSWORD VALIDATION
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
@@ -178,6 +237,10 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+########## END PASSWORD VALIDATION
+
+
+########## GENERAL CONFIGURATION
 
 # Internationalization
 # https://docs.djangoproject.com/en/3.2/topics/i18n/
@@ -192,7 +255,10 @@ USE_L10N = True
 
 USE_TZ = True
 
+########## END GENERAL CONFIGURATION
 
+
+########## STATIC FILE CONFIGURATION
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
@@ -207,6 +273,10 @@ REST_FRAMEWORK = {
     ],
 }
 
+########## END STATIC FILE CONFIGURATION
+
+
+########## AUTHENTICATION TOKEN CONFIGURATION
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=30),
     'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
@@ -216,9 +286,4 @@ SIMPLE_JWT = {
     'AUTH_TOKEN_CLASSES': ('rest_framework_simplejwt.tokens.AccessToken',),
 }
 
-CORS_ALLOWED_ORIGINS = []
-
-# Default primary key field type
-# https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
-
-DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+########## END AUTHENTICATION TOKEN CONFIGURATION

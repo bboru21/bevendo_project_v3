@@ -49,6 +49,31 @@ If all was successful, the app should be accessible via the URL:
 
     http://0.0.0.0:3001/
 
+# Testing
+
+## Unit Tests
+
+Running unittests:
+
+    (venv) backend$ python manage.py test
+
+Running unitests with coverage:
+
+    (venv) backend$ coverage run --source='.' manage.py test
+    (venv) backend$ coverage run --source='.' manage.py test api
+    (venv) backend$ coverage report
+
+## Production Data Tests
+
+Test `get_email_feasts_products` utility method:
+
+    (venv) backend$ python manage.py test_get_email_feasts_products --settings bevendo.config.local
+
+## Testing Links
+
+- [Python Unittest TestCase]
+- [Django Testing]
+
 [django twoscoops project]: https://github.com/twoscoops/django-twoscoops-project/
 [drinking with the saints]: https://drinkingwiththesaints.com/
 [calapi inadiutorium api]: http://calapi.inadiutorium.cz/

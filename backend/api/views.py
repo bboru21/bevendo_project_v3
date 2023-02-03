@@ -1,20 +1,24 @@
 import datetime
 
-from rest_framework import ( viewsets, permissions )
-
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.utils.dateformat import DateFormat
+from django.contrib.auth.models import User
+
+from rest_framework import ( permissions, status, viewsets )
+from rest_framework.views import APIView
+from rest_framework.response import Response
+
 
 from .serializers import (
     CocktailSerializer,
     FeastSerializer,
 )
+from account.serializers import UserSerializer
+
 from .models import (
     Feast,
     Cocktail,
-    CocktailIngredient,
-    Ingredient,
 )
 
 from .utils import (
@@ -32,10 +36,6 @@ from api.constants import (
     PRICE_PER_LITER_SCORE_PERCENT,
     DEALS_MIN_PRICE_SCORE,
 )
-
-
-def index(request):
-    return HttpResponse("api")
 
 
 def email_preview(request, format='html'):
@@ -96,3 +96,37 @@ class FeastViewSet(viewsets.ReadOnlyModelViewSet):
      queryset = Feast.objects.all()
      serializer_class = FeastSerializer
      permission_classes = [permissions.IsAuthenticated]
+
+
+class AuthorizedPageView(APIView):
+    '''
+        Adds user data to page resposne.
+        This should be inherited, and not called directly.
+    '''
+    
+    def get(self, request, format=None):
+        
+        user = request.user
+        user = UserSerializer(user)
+
+        return Response({'user': user.data})
+
+
+class IndexPageView(AuthorizedPageView):
+    '''
+        Index/Homepage View
+    '''
+    def get(self, request, format=None):
+
+        try:
+            res = super().get(request, format)
+            res.data.update(
+                { 'foo': 'bar' },
+                status=status.HTTP_200_OK,
+            )
+            return res
+        except:
+            return Response(
+                { 'error': 'Something went wron when trying to load page data', },
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            )

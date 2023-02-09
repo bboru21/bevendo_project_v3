@@ -74,6 +74,10 @@ Test `get_email_feasts_products` utility method:
 - [Python Unittest TestCase]
 - [Django Testing]
 
+# Known Issues
+
+    * Login page flashes when Dashboard page refreshed 
+
 [django twoscoops project]: https://github.com/twoscoops/django-twoscoops-project/
 [drinking with the saints]: https://drinkingwiththesaints.com/
 [calapi inadiutorium api]: http://calapi.inadiutorium.cz/

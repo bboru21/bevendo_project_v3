@@ -49,12 +49,13 @@ const LoginPage = () => {
             title='Bevendo | Login'
             content='Login page for Bevendo app'>
             <>
-                <h1 className='display-4 mt-5'>Login Page</h1>
                 <form
                     className='bg-light p-5 mt-5 mb-5'
                     onSubmit={handleSubmit}
                 >
-                    <h3>Log Into Your Account</h3>
+                    <h1 className='display-5 fw-bold'>
+                        Log Into Your Account
+                    </h1>
 
                     <div className='form-group'>
                         <label className='form-label mt-5' htmlFor='username'>

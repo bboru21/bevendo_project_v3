@@ -45,6 +45,10 @@ export const load_user = () => async dispatch => {
 };
 
 export const check_auth_status = () => async dispatch => {
+    /*
+        Could dispatch SET_AUTH_LOADING/REMOVE_AUTH_LOADING here, but since 
+        this function is called only within request_refresh, we set it there.
+    */
     try {
         const res = await fetch('/api/account/verify', {
             method: 'GET',
@@ -71,6 +75,11 @@ export const check_auth_status = () => async dispatch => {
 };
 
 export const request_refresh = () => async dispatch => {
+
+    dispatch({
+        type: SET_AUTH_LOADING,
+    });
+
     try {
         const res = await fetch('/api/account/refresh', {
             method: 'GET',
@@ -94,6 +103,10 @@ export const request_refresh = () => async dispatch => {
             type: REFRESH_FAIL,
         });
     }
+
+    dispatch({
+        type: REMOVE_AUTH_LOADING,
+    });
 };
 
 export const register = (

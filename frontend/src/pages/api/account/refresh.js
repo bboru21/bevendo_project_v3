@@ -33,20 +33,20 @@ export default async (req, res) => {
         res.setHeader('Set-Cookie', [
           cookie.serialize(
             'access', data.access, {
-              httpOnly: true,
-              secure: process.env.NODE_ENV !== 'development',
-              maxAge: 60 * 30, // 30 minutes, must match ACCESS_TOKEN_LIFETIME
-              sameSite: 'strict',
-              path: '/api/'
+              'httpOnly': true,
+              'secure': process.env.NODE_ENV !== 'development',
+              'maxAge': 60 * 30, // 30 minutes, must match ACCESS_TOKEN_LIFETIME
+              'sameSite': 'strict',
+              'path': '/'
             }
           ),
           cookie.serialize(
             'refresh', data.refresh, {
-              httpOnly: true,
-              secure: process.env.NODE_ENV !== 'development',
-              maxAge: 60 * 60 * 24, // 1 day, must match REFRESH_TOKEN_LIFETIME 
-              sameSite: 'strict',
-              path: '/api/'
+              'httpOnly': true,
+              'secure': process.env.NODE_ENV !== 'development',
+              'maxAge': 60 * 60 * 24, // 1 day, must match REFRESH_TOKEN_LIFETIME 
+              'sameSite': 'strict',
+              'path': '/'
             }
           ),
         ]);

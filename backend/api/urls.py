@@ -8,21 +8,21 @@ from rest_framework import routers
 
 from .views import (
     email_preview,
-    CocktailViewSet,
-    FeastViewSet,
+    # CocktailViewSet,
+    # FeastViewSet,
     DashboardPageView,
 )
 
-router = routers.DefaultRouter()
-router.register('feasts', FeastViewSet)
-router.register('cocktails', CocktailViewSet)
+# router = routers.DefaultRouter()
+# router.register('feasts', FeastViewSet)
+# router.register('cocktails', CocktailViewSet)
 
 page_urls = [
     path('dashboard/', DashboardPageView.as_view()),
 ]
 
 urlpatterns = [
-    path('v1/', include(router.urls)),
+    # path('v1/', include(router.urls)),
     path('v1/pages/', include(page_urls)),
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     re_path('email-preview/(?P<format>(html|txt))?/?$', email_preview, name='email_preview'),

@@ -80,22 +80,22 @@ def email_preview(request, format='html'):
         return render(request, 'api/templates/email.html', context)
 
 
-class CocktailViewSet(viewsets.ReadOnlyModelViewSet):
-    '''
-        API Endpoint for Cocktails
-    '''
-    queryset = Cocktail.objects.all().order_by('name')
-    serializer_class = CocktailSerializer
-    permission_classes = [permissions.IsAuthenticated]
+# class CocktailViewSet(viewsets.ReadOnlyModelViewSet):
+#     '''
+#         API Endpoint for Cocktails
+#     '''
+#     queryset = Cocktail.objects.all().order_by('name')
+#     serializer_class = CocktailSerializer
+#     permission_classes = [permissions.IsAuthenticated]
 
 
-class FeastViewSet(viewsets.ReadOnlyModelViewSet):
-     '''
-        API Endpoint for Feasts
-     '''
-     queryset = Feast.objects.all()
-     serializer_class = FeastSerializer
-     permission_classes = [permissions.IsAuthenticated]
+# class FeastViewSet(viewsets.ReadOnlyModelViewSet):
+#      '''
+#         API Endpoint for Feasts
+#      '''
+#      queryset = Feast.objects.all()
+#      serializer_class = FeastSerializer
+#      permission_classes = [permissions.IsAuthenticated]
 
 
 class AuthorizedPageView(APIView):
@@ -118,10 +118,16 @@ class DashboardPageView(AuthorizedPageView):
     '''
     def get(self, request, format=None):
 
+        (start_date, end_date) = get_email_date_range()
+
         try:
             res = super().get(request, format)
+
+            qs = Feast.objects.filter(_date__range=(start_date, end_date))
+            feasts = FeastSerializer(qs, many=True).data
+
             res.data.update(
-                { 'foo': 'bar' },
+                { 'feasts': feasts },
                 status=status.HTTP_200_OK,
             )
             return res

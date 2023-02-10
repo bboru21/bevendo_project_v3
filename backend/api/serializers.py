@@ -37,4 +37,4 @@ class FeastSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = Feast
-        fields = ['pk', 'name', 'date', 'cocktails', ]
+        fields = ['pk', 'name', 'date', 'cocktails',]

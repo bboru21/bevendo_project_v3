@@ -117,9 +117,10 @@ LOGGING = {
             'level': 'DEBUG',
             'class': 'logging.NullHandler',
         },
-        'mail_admins': {
+        'console': {
             'level': 'ERROR',
-            'class': 'django.utils.log.AdminEmailHandler',
+            'class': 'logging.StreamHandler',
+            'formatter': 'simple',
         },
     },
     'loggers': {
@@ -128,22 +129,22 @@ LOGGING = {
             'propagate': False,
         },
         'django': {
-            'handlers': ['mail_admins'],
+            'handlers': ['console'],
             'propagate': True,
             'level': 'ERROR',
         },
         'api': {
-            'handlers': ['mail_admins'],
+            'handlers': ['console'],
             'propagate': True,
             'level': 'INFO',
         },
         'ext_data': {
-            'handlers': ['mail_admins'],
+            'handlers': ['console'],
             'propagate': True,
             'level': 'INFO',
         },
         'module': {
-            'handlers': ['mail_admins'],
+            'handlers': ['console'],
             'propagate': True,
             'level': 'ERROR',
         },

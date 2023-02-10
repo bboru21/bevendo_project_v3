@@ -264,6 +264,11 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+########## END STATIC FILE CONFIGURATION
+
+
+########## AUTHENTICATION CONFIGURATION
+
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.IsAuthenticated',
@@ -273,10 +278,6 @@ REST_FRAMEWORK = {
     ],
 }
 
-########## END STATIC FILE CONFIGURATION
-
-
-########## AUTHENTICATION TOKEN CONFIGURATION
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=30),
     'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
@@ -286,4 +287,4 @@ SIMPLE_JWT = {
     'AUTH_TOKEN_CLASSES': ('rest_framework_simplejwt.tokens.AccessToken',),
 }
 
-########## END AUTHENTICATION TOKEN CONFIGURATION
+########## END AUTHENTICATION CONFIGURATION

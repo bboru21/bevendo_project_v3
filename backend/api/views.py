@@ -112,9 +112,9 @@ class AuthorizedPageView(APIView):
         return Response({'user': user.data})
 
 
-class IndexPageView(AuthorizedPageView):
+class DashboardPageView(AuthorizedPageView):
     '''
-        Index/Homepage View
+        Dashboard View
     '''
     def get(self, request, format=None):
 

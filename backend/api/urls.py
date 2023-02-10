@@ -10,7 +10,7 @@ from .views import (
     email_preview,
     CocktailViewSet,
     FeastViewSet,
-    IndexPageView,
+    DashboardPageView,
 )
 
 router = routers.DefaultRouter()
@@ -18,7 +18,7 @@ router.register('feasts', FeastViewSet)
 router.register('cocktails', CocktailViewSet)
 
 page_urls = [
-    path('index/', IndexPageView.as_view()),
+    path('dashboard/', DashboardPageView.as_view()),
 ]
 
 urlpatterns = [

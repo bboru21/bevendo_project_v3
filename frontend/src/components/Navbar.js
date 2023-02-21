@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useSelector, useDispatch } from 'react-redux';
 import { logout } from '../actions/auth';
+import SearchBar from './SearchBar';
 
 const Navbar = () => {
 
@@ -119,10 +120,7 @@ const Navbar = () => {
                 </li>
                 { isAuthenticated ? authLinks : guestLinks }
               </ul>
-              <form className='d-flex' role='search'>
-                <input className='form-control me-2' type='search' placeholder='Search' aria-label='Search' />
-                <button className='btn btn-outline-success' type='submit'>Search</button>
-              </form>
+              <SearchBar />
             </div>
           </div>
         </nav>

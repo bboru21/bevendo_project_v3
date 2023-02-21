@@ -13,12 +13,14 @@ from rest_framework.response import Response
 from .serializers import (
     CocktailSerializer,
     FeastSerializer,
+    IngredientSerializer,
 )
 from account.serializers import UserSerializer
 
 from .models import (
     Feast,
     Cocktail,
+    Ingredient,
 )
 
 from .utils import (
@@ -136,3 +138,19 @@ class DashboardPageView(AuthorizedPageView):
                 { 'error': 'Something went wron when trying to load page data', },
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR,
             )
+
+class SearchView(APIView):
+
+    def get(self, request, format=None):
+
+        ingredients = []
+
+        q = request.GET.get('q')
+        if q:
+            qs = Ingredient.objects.filter(name__icontains=q).order_by('name')[:5]
+            ingredients = IngredientSerializer(qs, many=True).data
+        
+        return Response(
+            { 'ingredients': ingredients },
+            status=status.HTTP_200_OK,
+        )

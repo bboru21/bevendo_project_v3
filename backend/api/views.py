@@ -1,5 +1,6 @@
 import datetime
 
+from django.db.models import Case, IntegerField, Q, Value, When
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.utils.dateformat import DateFormat
@@ -13,14 +14,12 @@ from rest_framework.response import Response
 from .serializers import (
     CocktailSerializer,
     FeastSerializer,
-    IngredientSerializer,
 )
 from account.serializers import UserSerializer
 
 from .models import (
     Feast,
     Cocktail,
-    Ingredient,
 )
 
 from .utils import (
@@ -143,14 +142,38 @@ class SearchView(APIView):
 
     def get(self, request, format=None):
 
-        ingredients = []
+        cocktails = []
 
         q = request.GET.get('q')
         if q:
-            qs = Ingredient.objects.filter(name__icontains=q).order_by('name')[:5]
-            ingredients = IngredientSerializer(qs, many=True).data
-        
+            
+            q1 = Q(name=q)
+            q2 = Q(name__icontains=q)
+            q3 = Q(ingredients__ingredient__name=q)
+            q4 = Q(ingredients__ingredient__name__icontains=q)
+
+            cocktail_ids = Cocktail.objects \
+                .filter(q1 | q2 | q3 | q4) \
+                .annotate(
+                    search_type_ordering=Case(
+                        When(q1, then=Value(3)),
+                        When(q2, then=Value(2)),
+                        When(q3, then=Value(1)),
+                        When(q4, then=Value(0)),
+                        default=Value(-1),
+                        output_field=IntegerField()
+                    )
+                ) \
+                .order_by('-search_type_ordering') \
+                .values_list('id', flat=True) \
+                .distinct()
+
+            preserved_order = Case(*[When(pk=pk, then=pos) for pos, pk in enumerate(cocktail_ids)])
+            qs = Cocktail.objects.filter(id__in=cocktail_ids).order_by(preserved_order)
+            
+            cocktails = CocktailSerializer(qs, many=True).data
+
         return Response(
-            { 'ingredients': ingredients },
+            { 'cocktails': cocktails },
             status=status.HTTP_200_OK,
         )

@@ -206,7 +206,7 @@ WSGI_APPLICATION = 'bevendo.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'bevendo_v3',
+        'NAME': 'bevendo',
         'OPTIONS': {
             'read_default_file': '/etc/mysql/my.cnf',
         }

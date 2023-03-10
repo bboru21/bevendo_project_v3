@@ -1,4 +1,5 @@
 import datetime
+import logging
 
 from django.db.models import Case, IntegerField, Q, Value, When
 from django.shortcuts import render
@@ -9,6 +10,9 @@ from django.contrib.auth.models import User
 from rest_framework import ( permissions, status, viewsets )
 from rest_framework.views import APIView
 from rest_framework.response import Response
+
+
+logger = logging.getLogger(__name__)
 
 
 from .serializers import (
@@ -132,9 +136,10 @@ class DashboardPageView(AuthorizedPageView):
                 status=status.HTTP_200_OK,
             )
             return res
-        except:
+        except BaseException as error:
+            logger.error(error)
             return Response(
-                { 'error': 'Something went wron when trying to load page data', },
+                { 'error': 'Something went wrong when trying to load page data', },
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR,
             )
 

@@ -18,10 +18,10 @@ from datetime import timedelta
 ########## PATH CONFIGURATION
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent
+BASE_DIR = Path(__file__).resolve().parent.parent # bevendo_project/backend/bevendo
 
 # Absolute filesystem path to the Django project directory:
-DJANGO_ROOT = BASE_DIR.parent  # bevendo_project/bevendo
+DJANGO_ROOT = BASE_DIR.parent  # bevendo_project/backend
 
 # Add our project to our pythonpath, this way we don't need to type our project
 # name in our dotted import paths:
@@ -207,9 +207,9 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'bevendo',
-        'OPTIONS': {
-            'read_default_file': '/etc/mysql/my.cnf',
-        }
+        'HOST': '127.0.0.1',
+        'PORT': '3306',
+        'OPTIONS': {},
     }
 }
 

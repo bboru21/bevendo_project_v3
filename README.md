@@ -69,6 +69,10 @@ Test `get_email_feasts_products` utility method:
 
     (venv) backend$ python manage.py test_get_email_feasts_products --settings bevendo.config.local
 
+Test `send_weekly_email` management command (sends an e-mail to 'Weekly E-Mail Test' group):
+
+    (venv) backend$ python manage.py test_send_weekly_email --settings bevendo.config.local
+
 ## Testing Links
 
 - [Python Unittest TestCase]

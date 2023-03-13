@@ -1,0 +1,185 @@
+{% load api_extras %}
+<html lang="en">
+    <head>
+        <title>Bevendo E-Mail Notification</title>
+        <style>
+            body {
+                font-family: sans-serif;
+                font-size: 1rem;
+            }
+            .is-controlled {
+                color: rgb(200,0,0);
+            }
+            .is-in-stock, .is-on-sale {
+                color: rgb(0,200,0);
+            }
+            .product-list-item {
+                margin-bottom: 0.5rem;
+            }
+            .price-list-item {
+                list-style: none;
+            }
+            .price-list-item, .price-list-item li {
+                margin: 3px 0;
+            }
+            .price-list-item > a {
+                display: inline-block;
+                text-decoration: none;
+                padding: 7px;
+                border-radius: 5px;
+                color: #FFF;
+                border-width: 2px;
+                border-style: solid;
+                transition: all 0.25s ease;
+            }
+            .price-list-item > a:hover {
+                opacity: 0.85;
+            }
+            .price-score-key {
+                width: 100%;
+                height: 1rem;
+                background: linear-gradient(to left, rgb(200,0,0), rgb(0,200,0));
+                border: 1px solid #999;
+                margin: 3px;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>Bevendo!</h1>
+        <p>Your weekly dose of Drinking with the Saints from {{start_date}} to {{end_date}}. Ingredients that appear in <span class="is-controlled">red</span> are controlled.</p>
+        {% for feast in feasts %}
+        <section>
+            <h2>
+                {% if feast.url %}
+                <a href="{{feast.url}}" target="_blank">
+                    {{feast.name}}
+                    {% if feast.date %} - {{feast.date}}{% endif %}
+                </a>
+                {% else %}
+                    {{feast.name}}
+                    {% if feast.date %} - {{feast.date}}{% endif %}
+                {% endif %}
+            </h2>
+            {% for cocktail in feast.cocktails %}
+            <div>
+                <h3>{{cocktail.name}}</h3>
+
+                <h4>Ingredients:</h4>
+                <ul>
+                    {% for ingredient in cocktail.ingredients %}
+                    <li>
+                        <div class="{% if ingredient.is_controlled %}is-controlled{% endif %}">
+                            {% if ingredient.amount %}{{ingredient.amount}} {% endif %}
+                            {% if ingredient.measurement %}{{ingredient.measurement}} {% endif %}
+                            {{ingredient.name}}
+                            {% if ingredient.preparation %}, {{ingredient.preparation}} {% endif %}
+                        </div>
+                    </li>
+                    {% endfor %}
+                </ul>
+
+                <h4>Instructions:</h4>
+                <p>{{cocktail.instructions}}</p>
+            </div>
+            {% endfor %}
+        </section>
+        {% endfor %}
+
+        {% if products %}
+        <section>
+            <h2>ABC Products</h2>
+            <p>Below is a list of ABC Store Products and their pricing data - sorted by <a href="#best-price-score">Best Price Score*</a> - to help complete the cocktails above. Price information is current as of {{latest_pull_date}}. Prices that appear <span style="font-weight: 700; color: rgb(0,200,0);">more green</span> are better deals, <span style="font-weight: 700; color: rgb(200,0,0);">more red</span> are worse.</p>
+
+            <div class="price-score-key"></div>
+
+            <ul>
+                {% for product in products %}
+                <li class="product-list-item">
+                    {{ product.name }}
+
+                    {% if product.prices %}
+                        <ul>
+                        {% for price in product.prices %}
+                        <li class="price-list-item">
+                            <a
+                                href="{{price.url}}"
+                                target="_blank"
+                                style="
+                                    background-color: {{price.price_score|get_price_score_color}};
+                                    border-color: {{price.price_score|get_price_score_border_color}};
+                                "
+                            >
+                                {{price.size}} -
+                                ${{price.current_price}}
+                            </a>
+
+                            <ul>
+                                <li>${{price.price_per_liter}}/liter</li>
+                                {% if price.price_below_average_per_size > 0 %}<li>${{price.price_below_average_per_size}} below average price/size</li>{% endif %}
+                                {% if price.price_below_average_per_liter > 0 %}<li>${{price.price_below_average_per_liter}} below average price/liter</li>{% endif %}
+                                <li>
+                                {% if price.amount_above_best_price > 0 %}
+                                    ${{price.amount_above_best_price}} above best historical price for {{price.size}}
+                                {% else %}
+                                    Best historical price for {{price.size}}
+                                {% endif %}
+                                </li>
+                                {% if price.is_on_sale %}<li><span class="is-on-sale">ON SALE</span></li>{% endif %}
+                            </ul>
+
+                        </li>
+                        {% endfor %}
+                        </ul>
+                    {% endif %}
+                </li>
+                {% endfor %}
+            </ul>
+        </section>
+        {% endif %}
+
+        {% if deals %}
+        <section>
+            <h2>Best Weekly ABC Deals</h2>
+            <p>Below are this weeks deals for a small number of selected products. Deals are idenfitied by having a <a href="#best-price-score">Best Price Score*</a> of {{deals_min_price_score}} or better according to their size and price per liter, and are sorted by their discount from the average price per bottle size. Price information is current as of {{latest_pull_date}} and is compared with data from as early as April 2020.</p>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Product:</th>
+                        <th>Price (Below Avg/Size):</th>
+                        <th>On-Sale:</th>
+                        <th>Best Price:</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for deal in deals %}
+                    <tr>
+                        <td>
+                            <a href="{{deal.url}}?productSize={{deal.product_size}}" target="_blank">
+                                {{deal.name}} ({{deal.size}})
+                            </a>
+                        </td>
+                        <td>
+                            ${{deal.current_price}} (${{deal.price_below_average_per_size}})
+                        </td>
+                        <td class="on-sale-column">
+                            {% if deal.is_on_sale %}
+                                <span class="is-on-sale">YES</span>
+                            {% else %}
+                                NO
+                            {% endif %}</td>
+                        <td class="best-price-column">{% if deal.is_best_price %}YES{% else %}NO{% endif %}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </section>
+        {% endif %}
+
+        <section>
+            <h2 id="best-price-score">* Best Price Score</h2>
+            <p>"Best Price Score" is a calculation which is {{price_per_liter_score_percent}}% based on price being below average price per liter, and {{price_per_size_score_percent}}% based on being below the average price for the bottle size.</p>
+            <p>Have feedback or a favorite beverage you don't see here? Shoot me an <a href="mailto:bryan.e.hadro@gmail.com">e-mail</a>!</p>
+        </section>
+    </body>
+</html>

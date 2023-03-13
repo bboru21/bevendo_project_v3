@@ -62,6 +62,12 @@ class Command(BaseCommand):
             type=_validate_isodate,
             help='end_date string in isoformat, for debugging',
         )
+        parser.add_argument(
+            '--group_name',
+            type=str,
+            help='name of the group to send the e-mail to',
+            default='Weekly E-Mail',
+        )
 
     def handle(self, *args, **options):
 
@@ -87,7 +93,7 @@ class Command(BaseCommand):
             logger.warn('get_email_feasts_products returned no feasts, no e-mail will be sent')
         else:
 
-            users = User.objects.filter(groups__name='Weekly E-Mail').filter(is_active=True)
+            users = User.objects.filter(groups__name=options['group_name']).filter(is_active=True)
             recipient_list = list(users.values_list('email', flat=True))
 
             deals = get_email_deals(latest_pull_date)

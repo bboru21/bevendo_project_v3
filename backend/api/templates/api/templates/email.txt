@@ -1,0 +1,55 @@
+Bevendo!
+
+Your weekly dose of Drinking with the Saints from {{start_date}} to {{end_date}}.
+
+{% for feast in feasts %}
+{{feast.name}} - {{feast.date}}
+{{feast.url}}
+
+    {% for cocktail in feast.cocktails %}
+    {{cocktail.name}}
+
+    Ingredients:
+
+    {% for ingredient in cocktail.ingredients %}
+        * {% if ingredient.amount %}{{ingredient.amount}} {% endif %}{% if ingredient.measurement %}{{ingredient.measurement}} {% endif %}{{ingredient.name}}{% if ingredient.preparation %}, {{ingredient.preparation}}{% endif %}
+    {% endfor %}
+
+    Instructions:
+    {{cocktail.instructions}}
+    {% endfor %}
+
+{% endfor %}
+
+{% if products %}
+ABC Products
+
+Below is a list of ABC Store Products and their pricing data to help complete the cocktails above:
+
+    {% for product in products %}
+    * {{ product.name }}
+    {% if product.prices %}
+        {% for price in product.prices %}
+        - {{price.size}} - ${{price.current_price}} (${{price.price_per_liter}}/liter) {{price.url}}
+        {% endfor %}
+    {% endif %}
+    {% endfor %}
+{% endif %}
+
+{% if deals %}
+Best Weekly ABC Deals
+
+Below are this weeks deals for a small number of selected products. Deals are idenfitied by having a Best Price Score* of {{deals_min_price_score}} or better according to their size and price per liter, and are sorted by their discount from the average price per bottle size. Price information is current as of {{latest_pull_date}} and is compared with data from as early as April 2020.
+
+
+{% for deal in deals %}
+    {{deal.name}} ({{deal.size}}) - ${{deal.current_price}} (${{deal.price_below_average_per_size}}){% if deal.is_on_sale %} ON-SALE{% endif %}
+    {{deal.url}}?productSize={{deal.product_size}}
+{% endfor %}
+
+{% endif %}
+
+* Best Price Score
+"Best Price Score" is a calculation which is {{price_per_liter_score_percent}}% based on price being below average price per liter, and {{price_per_size_score_percent}}% based on being below the average price for the bottle size.
+
+Have feedback or a favorite beverage you don't see here? Shoot me an e-mail: bryan.e.hadro@gmail.com!

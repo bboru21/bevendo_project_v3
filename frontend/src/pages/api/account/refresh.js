@@ -1,7 +1,7 @@
 import { API_URL } from '../../../config/index';
 import cookie from 'cookie';
 
-export default async (req, res) => {
+const refresh = async (req, res) => {
   if (req.method === 'GET') {
 
     const cookies = cookie.parse(req.headers.cookie ?? '');
@@ -71,4 +71,6 @@ export default async (req, res) => {
       error: `Method ${res.status} not allowed`,
     });
   }
-}
+};
+
+export default refresh;

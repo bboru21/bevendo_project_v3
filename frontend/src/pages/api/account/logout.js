@@ -1,6 +1,6 @@
 import cookie from 'cookie';
 
-export default async (req, res) => {
+const logout = async (req, res) => {
     if (req.method === 'POST') {
         res.setHeader('Set-Cookie', [
             cookie.serialize(
@@ -33,3 +33,5 @@ export default async (req, res) => {
         });
     }
 };
+
+export default logout;

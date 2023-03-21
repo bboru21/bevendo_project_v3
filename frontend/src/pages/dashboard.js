@@ -42,12 +42,12 @@ const Dashboard = ({ error, feasts }) => {
                         </h2>
                         <ul>
                             {feasts.map(feast => (
-                                <li>
+                                <li key={`feast-${feast.pk}`}>
                                     <p className="mb-0">{feast.name} - {feast.date}</p>
                                     {feast.cocktails && (
                                         <ul>
                                             {feast.cocktails.map(cocktail => (
-                                                <li>{cocktail.name}</li>
+                                                <li key={`cocktail-${cocktail.pk}`}>{cocktail.name}</li>
                                             ))}
                                         </ul>
                                     )}

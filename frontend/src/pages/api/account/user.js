@@ -1,7 +1,7 @@
 import cookie from 'cookie';
 import { API_URL } from '../../../config/index';
 
-export default async (req, res) => {
+const user = async (req, res) => {
     if (req.method === 'GET') {
         const cookies = cookie.parse(req.headers.cookie ?? '');
         const access = cookies.access ?? false;
@@ -44,3 +44,5 @@ export default async (req, res) => {
         });
     }
 };
+
+export default user;

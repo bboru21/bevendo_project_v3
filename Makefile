@@ -28,7 +28,7 @@ update:
 	)
 
 api:
-	$(PYTHON) $(BACKEND)/manage.py runserver 0.0.0.0:9001 --settings bevendo.config.local
+	$(PYTHON) $(BACKEND)/manage.py runserver 0.0.0.0:8001 --settings bevendo.config.local
 
 serve:
 	cd $(FRONTEND) && npm run dev

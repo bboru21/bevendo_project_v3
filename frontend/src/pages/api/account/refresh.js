@@ -34,7 +34,7 @@ const refresh = async (req, res) => {
           cookie.serialize(
             'access', data.access, {
               'httpOnly': true,
-              'secure': process.env.NODE_ENV !== 'development',
+              'secure': false, // process.env.NODE_ENV !== 'development',
               'maxAge': 60 * 30, // 30 minutes, must match ACCESS_TOKEN_LIFETIME
               'sameSite': 'strict',
               'path': '/'
@@ -43,7 +43,7 @@ const refresh = async (req, res) => {
           cookie.serialize(
             'refresh', data.refresh, {
               'httpOnly': true,
-              'secure': process.env.NODE_ENV !== 'development',
+              'secure': false, // process.env.NODE_ENV !== 'development',
               'maxAge': 60 * 60 * 24, // 1 day, must match REFRESH_TOKEN_LIFETIME 
               'sameSite': 'strict',
               'path': '/'

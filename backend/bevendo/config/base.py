@@ -133,6 +133,11 @@ LOGGING = {
             'propagate': True,
             'level': 'ERROR',
         },
+        'account': {
+            'handlers': ['console'],
+            'propagate': True,
+            'level': 'INFO',
+        },
         'api': {
             'handlers': ['console'],
             'propagate': True,

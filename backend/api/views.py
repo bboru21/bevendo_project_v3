@@ -137,7 +137,7 @@ class DashboardPageView(AuthorizedPageView):
             )
             return res
         except BaseException as error:
-            logger.error(error)
+            logger.error(f'Something went wrong when trying to load page data: {error}')
             return Response(
                 { 'error': 'Something went wrong when trying to load page data', },
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR,

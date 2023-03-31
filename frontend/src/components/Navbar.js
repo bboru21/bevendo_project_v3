@@ -18,24 +18,27 @@ const Navbar = () => {
 
     const guestLinks = (
         <>
+            {/* temporarily disable until we are ready for new members to register */}
+            {process.env.NODE_ENV !== 'production' && (
+                <li className='nav-item'>
+                    <Link href='/register'>
+                    <a
+                        className={
+                            router.pathname === '/register' ?
+                            'nav-link active' : 'nav-link'
+                        }
+                        aria-current={
+                            router.pathname === '/register' ?
+                            'page' : 'false'
+                        }
+                    >
+                        Register
+                    </a>
+                    </Link>
+                </li>
+            )}
             <li className='nav-item'>
-              <Link href='/register'>
-                <a
-                    className={
-                        router.pathname === '/register' ?
-                        'nav-link active' : 'nav-link'
-                    }
-                    aria-current={
-                        router.pathname === '/register' ?
-                        'page' : 'false'
-                    }
-                >
-                    Register
-                </a>
-              </Link>
-            </li>
-            <li className='nav-item'>
-              <Link href='/login'>
+                <Link href='/login'>
                 <a
                     className={
                         router.pathname === '/login' ?
@@ -48,7 +51,7 @@ const Navbar = () => {
                 >
                     Login
                 </a>
-              </Link>
+                </Link>
             </li>
         </>
     );

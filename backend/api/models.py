@@ -2,6 +2,7 @@ import datetime
 
 from django.db import models
 from django.contrib.humanize.templatetags.humanize import ordinal
+from django.utils.text import slugify
 
 from ext_data.calapi_inadiutorium_models import SEASON_CHOICES
 
@@ -72,7 +73,13 @@ PREPARATION_CHOICES = (
 
 class Ingredient(models.Model):
     name = models.CharField(max_length=250)
+    slug = models.SlugField(null=True, blank=True, unique=True)
     is_controlled = models.BooleanField(default=True)
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = f'{slugify(self.name)}'
+        super().save(*args, **kwargs)
 
     class Meta:
         ordering = ['name']
@@ -85,8 +92,14 @@ class Ingredient(models.Model):
 
 class ControlledBeverage(models.Model):
     name = models.CharField(max_length=250)
+    slug = models.SlugField(null=True, blank=True, unique=True)
     ingredients = models.ManyToManyField(Ingredient, default=None, blank=True)
     is_in_stock = models.BooleanField(default=False, null=True)
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = f'{slugify(self.name)}'
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return f'{self.name} ({self.id})'
@@ -146,8 +159,14 @@ class CocktailIngredient(models.Model):
 
 class Cocktail(models.Model):
     name = models.CharField(max_length=250)
+    slug = models.SlugField(null=True, blank=True, unique=True)
     ingredients = models.ManyToManyField(CocktailIngredient)
     instructions = models.TextField(null=True, blank=None, default=None)
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = f'{slugify(self.name)}'
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return f'{self.name} ({self.id})'
@@ -165,6 +184,7 @@ class Feast(models.Model):
         db_column='date',
     )
     name = models.CharField(max_length=250)
+    slug = models.SlugField(null=True, blank=True, unique=True)
     cocktails = models.ManyToManyField(Cocktail, default=None, blank=True)
     ext_calapi_inadiutorium_season = models.CharField(max_length=9, choices=SEASON_CHOICES, null=True, blank=True)
     ext_calapi_inadiutorium_celebration = models.OneToOneField(
@@ -174,6 +194,11 @@ class Feast(models.Model):
         null=True,
         blank=True,
     )
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = f'{slugify(self.name)}'
+        super().save(*args, **kwargs)
 
     def __str__(self):
         _str = f"{self.name} ({self.id})"

@@ -17,7 +17,7 @@ class CocktailAdmin(admin.ModelAdmin):
     autocomplete_fields = (
         'ingredients',
     )
-    fields = ('name', 'ingredients', 'instructions')
+    fields = ('name', 'slug', 'ingredients', 'instructions')
 
 
 @admin.register(CocktailIngredient)
@@ -30,12 +30,12 @@ class CocktailIngredientAdmin(admin.ModelAdmin):
 
 @admin.register(Ingredient)
 class IngredientAdmin(admin.ModelAdmin):
-    # form = IngredientForm
+    # form = IngredientAdminForm
     search_fields = (
         'name',
         'is_controlled',
     )
-    fields = ('name', 'is_controlled',)
+    fields = ('name', 'slug', 'is_controlled',)
 
 @admin.register(Feast)
 class FeastAdmin(admin.ModelAdmin):
@@ -45,7 +45,7 @@ class FeastAdmin(admin.ModelAdmin):
     )
     list_filter = ('_date',)
     ordering = ('_date',)
-    fields = ('_date', 'name', 'cocktails', 'ext_calapi_inadiutorium_season', 'ext_calapi_inadiutorium_celebration',)
+    fields = ('_date', 'name', 'slug', 'cocktails', 'ext_calapi_inadiutorium_season', 'ext_calapi_inadiutorium_celebration',)
     autocomplete_fields = ('cocktails', 'ext_calapi_inadiutorium_celebration',)
 
 
@@ -55,5 +55,5 @@ class ControlledBeverageAdmin(admin.ModelAdmin):
     search_fields = (
         'name',
     )
-    fields = ('name', 'ingredients', 'is_in_stock',)
+    fields = ('name', 'slug', 'ingredients', 'is_in_stock')
     autocomplete_fields = ('ingredients',)

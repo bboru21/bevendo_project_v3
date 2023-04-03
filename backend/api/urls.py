@@ -8,18 +8,16 @@ from rest_framework import routers
 
 from .views import (
     email_preview,
-    # CocktailViewSet,
-    # FeastViewSet,
     DashboardPageView,
+    FeastPageView,
+    CocktailPageView,
     SearchView,
 )
 
-# router = routers.DefaultRouter()
-# router.register('feasts', FeastViewSet)
-# router.register('cocktails', CocktailViewSet)
-
 page_urls = [
     path('dashboard/', DashboardPageView.as_view()),
+    path('feasts/<slug:slug>/', FeastPageView.as_view()),
+    path('cocktails/<slug:slug>/', CocktailPageView.as_view()),
 ]
 
 urlpatterns = [

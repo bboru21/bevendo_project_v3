@@ -6,6 +6,7 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from django.utils.dateformat import DateFormat
 from django.contrib.auth.models import User
+from django.core.exceptions import ObjectDoesNotExist
 
 from rest_framework import ( permissions, status, viewsets )
 from rest_framework.views import APIView
@@ -85,24 +86,6 @@ def email_preview(request, format='html'):
         return render(request, 'api/templates/email.html', context)
 
 
-# class CocktailViewSet(viewsets.ReadOnlyModelViewSet):
-#     '''
-#         API Endpoint for Cocktails
-#     '''
-#     queryset = Cocktail.objects.all().order_by('name')
-#     serializer_class = CocktailSerializer
-#     permission_classes = [permissions.IsAuthenticated]
-
-
-# class FeastViewSet(viewsets.ReadOnlyModelViewSet):
-#      '''
-#         API Endpoint for Feasts
-#      '''
-#      queryset = Feast.objects.all()
-#      serializer_class = FeastSerializer
-#      permission_classes = [permissions.IsAuthenticated]
-
-
 class AuthorizedPageView(APIView):
     '''
         Adds user data to page resposne.
@@ -142,6 +125,49 @@ class DashboardPageView(AuthorizedPageView):
                 { 'error': 'Something went wrong when trying to load page data', },
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR,
             )
+
+
+class FeastPageView(AuthorizedPageView):
+    def get(self, request, slug, format=None):
+        res = super().get(request, format)
+
+        try:
+            qs = Feast.objects.get(slug=slug)
+            feast = FeastSerializer(qs, many=False).data
+            res.data.update({
+                'feast': feast,
+            }, status=status.HTTP_200_OK)
+            return res
+        except ObjectDoesNotExist:
+            return Response({'error': 'Feast not found'}, status=status.HTTP_404_NOT_FOUND)
+        except BaseException as error:
+            logger.error(f'Something went wrong when trying to load page data: {error}')
+            return Response(
+                { 'error': 'Something went wrong when trying to load page data', },
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            )
+
+
+class CocktailPageView(AuthorizedPageView):
+    def get(self, request, slug, format=None):
+        res = super().get(request, format)
+
+        try:
+            qs = Cocktail.objects.get(slug=slug)
+            cocktail = CocktailSerializer(qs, many=False).data
+            res.data.update({
+                'cocktail': cocktail,
+            }, status=status.HTTP_200_OK)
+            return res
+        except ObjectDoesNotExist:
+            return Response({'error': 'Cocktail not found'}, status=status.HTTP_404_NOT_FOUND)
+        except BaseException as error:
+            logger.error(f'Something went wrong when trying to load page data: {error}')
+            return Response(
+                { 'error': 'Something went wrong when trying to load page data', },
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            )
+
 
 class SearchView(APIView):
 

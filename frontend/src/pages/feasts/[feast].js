@@ -1,11 +1,11 @@
 import { useRouter } from 'next/router';
 import { useSelector } from 'react-redux';
-import Layout from '../hocs/Layout';
+import Layout from '../../hocs/Layout';
 import cookie from 'cookie';
-import { API_URL } from '../config/index';
+import { API_URL } from '../../config/index';
 import Link from 'next/link';
 
-const Dashboard = ({ error, feasts }) => {
+const Feast = ({ error, feast }) => {
    
     const router = useRouter();
 
@@ -19,54 +19,36 @@ const Dashboard = ({ error, feasts }) => {
 
     return (
         <Layout
-            title='Bevendo | Dashboard'
-            content='Dashboard for Bevendo, a companion app to Drinking with the Saints'
+            title='Bevendo | Feast'
+            content='Feast day profile page.'
         >
            <div className='p-5 bg-light rounded-3'>
                 <div className='container-fluid py-3'>
                     <h1 className='display-5 fw-bold'>
-                        User Dashboard
+                        {feast.name}
                     </h1>
-                    <p className='fs-4 mt-3'>
-                        Welcome to Bevendo{user === null ? '' : `, ${user.first_name}`}!
-                    </p>
-                    {error && (
+                    {error ? (
                         <p className='fs-4 mt-3'>
                             {error}
                         </p>
+                    ) : (
+                      <>
+                        <h2>Cocktails</h2>
+                        {feast.cocktails.map( cocktail => (
+                          <div>
+                            <Link href={`/cocktails/${cocktail.slug}/`}>{cocktail.name}</Link>
+                          </div>
+                        ))}
+                      </>
                     )}
                 </div>
-                {feasts && (
-                    <div className='container-fluid py-3'>
-                        <h2 className='display-7 fw-bold'>
-                            This Weeks Feasts &amp; Cocktails
-                        </h2>
-                        <ul>
-                            {feasts.map(feast => (
-                                <li key={`feast-${feast.pk}`}>
-                                    <p className="mb-0">
-                                        <Link href={`/feasts/${feast.slug}/`}>{feast.name}</Link> - {feast.date}</p>
-                                    {feast.cocktails && (
-                                        <ul>
-                                            {feast.cocktails.map(cocktail => (
-                                                <li key={`cocktail-${cocktail.pk}`}>
-                                                    {cocktail.name}
-                                                </li>
-                                            ))}
-                                        </ul>
-                                    )}
-                                </li>
-                            ))}
-                        </ul>
-                    </div>
-                )}
            </div>
         </Layout>
     );
 };
 
 
-export async function getServerSideProps({ req }) {
+export async function getServerSideProps({ params, req }) {
 
     const cookies = cookie.parse(req.headers.cookie ?? '');
     const access = cookies.access ?? false;
@@ -81,7 +63,9 @@ export async function getServerSideProps({ req }) {
     }
 
     try {
-        const res = await fetch(`${API_URL}/api/v1/pages/dashboard`, {
+        const { feast } = params;
+
+        const res = await fetch(`${API_URL}/api/v1/pages/feasts/${feast}`, {
             method: 'GET',
             headers: {
                 'Accept': 'application/json',
@@ -94,7 +78,7 @@ export async function getServerSideProps({ req }) {
 
             return {
                 props: {
-                    feasts: data.feasts,
+                    feast: data.feast,
                 }
             };
 
@@ -116,4 +100,4 @@ export async function getServerSideProps({ req }) {
     }
 }
 
-export default Dashboard;
+export default Feast;

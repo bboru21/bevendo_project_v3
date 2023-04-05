@@ -23,9 +23,9 @@ class CocktailAdmin(admin.ModelAdmin):
 @admin.register(CocktailIngredient)
 class CocktailIngredientAdmin(admin.ModelAdmin):
     ordering = ('ingredient__name',)
-    fields = ('ingredient', 'amount', 'measurement', 'preparation',)
+    fields = ('ingredient', '_amount', '_measurement', 'preparation',)
     autocomplete_fields = ('ingredient',)
-    search_fields = ('ingredient__name', 'amount', 'measurement', 'preparation',)
+    search_fields = ('ingredient__name', '_amount', '_measurement', 'preparation',)
 
 
 @admin.register(Ingredient)

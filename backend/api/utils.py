@@ -12,7 +12,6 @@ from django.utils.dateformat import DateFormat
 from .models import (
     Feast,
     ControlledBeverage,
-    MEASUREMENT_PLURAL_DICT,
 )
 from ext_data.models import (
     ABCPrice,
@@ -25,31 +24,6 @@ from .constants import DEALS_MIN_PRICE_SCORE
 
 logger = logging.getLogger(__name__)
 
-
-def _format_amount(amount):
-    '''
-        Formats decimal amount as integer whole with remainder fraction.
-        For example:
-            0.75 >> 3/4
-            01.25 >> 1 1/4
-            1.00 >> 1
-    '''
-
-    try:
-        frac, whole = math.modf(amount)
-        frac = str(Fraction(frac)) if frac else ''
-        whole = '' if not whole else f'{int(whole)} '
-         #logger.debug(f'{whole}{frac}, {amount}')
-        return f'{whole}{frac}'
-    except BaseException:
-        pass
-
-    return amount
-
-def _format_measurement(measurement, amount):
-    if amount and amount > 1:
-        return MEASUREMENT_PLURAL_DICT.get(measurement)
-    return measurement
 
 def get_email_date_range(start_date=None):
 
@@ -124,8 +98,8 @@ def get_email_feasts_products(start_date, end_date, latest_pull_date):
                     _ingredient = {
                         'name': ingredient.name,
                         'is_controlled': True,
-                        'amount': _format_amount(cocktail_ingredient.amount),
-                        'measurement': _format_measurement(cocktail_ingredient.measurement, cocktail_ingredient.amount),
+                        'amount': cocktail_ingredient.amount,
+                        'measurement': cocktail_ingredient.measurement,
                         'preparation': cocktail_ingredient.preparation,
                     }
                     # print(ingredient, products)
@@ -188,8 +162,8 @@ def get_email_feasts_products(start_date, end_date, latest_pull_date):
                     _ingredients.append({
                         'name': ingredient.name,
                         'is_controlled': False,
-                        'amount': _format_amount(cocktail_ingredient.amount),
-                        'measurement': _format_measurement(cocktail_ingredient.measurement, cocktail_ingredient.amount),
+                        'amount': cocktail_ingredient.amount,
+                        'measurement': cocktail_ingredient.measurement,
                         'preparation': cocktail_ingredient.preparation,
                     })
 

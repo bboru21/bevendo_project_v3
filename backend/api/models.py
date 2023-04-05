@@ -1,4 +1,6 @@
 import datetime
+import math
+from fractions import Fraction
 
 from django.db import models
 from django.contrib.humanize.templatetags.humanize import ordinal
@@ -111,22 +113,44 @@ class ControlledBeverage(models.Model):
         app_label = 'api'
         db_table = 'api_controlledbeverage'
 
+'''
+def _format_amount(amount):
+    
+    #    Formats decimal amount as integer whole with remainder fraction.
+    #    For example:
+    #        0.75 >> 3/4
+    #        01.25 >> 1 1/4
+    #        1.00 >> 1
 
+    try:
+        frac, whole = math.modf(amount)
+        frac = str(Fraction(frac)) if frac else ''
+        whole = '' if not whole else f'{int(whole)} '
+         #logger.debug(f'{whole}{frac}, {amount}')
+        return f'{whole}{frac}'
+    except BaseException:
+        pass
+
+    return amount
+
+'''
 class CocktailIngredient(models.Model):
     ingredient = models.ForeignKey(Ingredient, on_delete=models.CASCADE)
-    amount = models.DecimalField(
+    _amount = models.DecimalField(
         max_digits=10,
         decimal_places=4,
         null=True,
         blank=True,
-        default=None
+        default=None,
+        db_column='amount',
     )
-    measurement = models.CharField(
+    _measurement = models.CharField(
         max_length=20,
         choices=MEASUREMENTS_CHOICES,
         null=True,
         blank=True,
         default=None,
+        db_column='measurement',
     )
     preparation = models.CharField(
         max_length=255,
@@ -135,6 +159,43 @@ class CocktailIngredient(models.Model):
         blank=True,
         default=None,
     )
+
+    @property
+    def measurement(self):
+        measurement = self._measurement
+        amount = self._amount
+        if amount and amount > 1:
+            return MEASUREMENT_PLURAL_DICT.get(measurement)
+        return measurement
+
+    @measurement.setter
+    def measurement(self, value):
+        self._measurement = value
+    
+    @property
+    def amount(self):
+        #    Formats decimal amount as integer whole with remainder fraction.
+        #    For example:
+        #        0.75 >> 3/4
+        #        01.25 >> 1 1/4
+        #        1.00 >> 1
+
+        amount = self._amount
+
+        try:
+            frac, whole = math.modf(amount)
+            frac = str(Fraction(frac)) if frac else ''
+            whole = '' if not whole else f'{int(whole)} '
+            #logger.debug(f'{whole}{frac}, {amount}')
+            return f'{whole}{frac}'
+        except BaseException:
+            pass
+
+        return amount
+
+    @amount.setter
+    def amount(self, value):
+        self._amount = value
 
     def __str__(self):
         parts = []
@@ -150,7 +211,7 @@ class CocktailIngredient(models.Model):
         return ' '.join(parts)
 
     class Meta:
-        ordering = ('ingredient__name', 'amount', 'measurement',)
+        ordering = ('ingredient__name', '_amount', '_measurement',)
         verbose_name = 'Cocktail Ingredient'
         verbose_name_plural = 'Cocktail Ingredients'
         app_label = 'api'

@@ -174,7 +174,7 @@ class SearchView(APIView):
 
     def get(self, request, format=None):
 
-        cocktails = []
+        results = []
 
         q = request.GET.get('q')
         if q:
@@ -201,13 +201,17 @@ class SearchView(APIView):
                 .distinct()
 
             preserved_order = Case(*[When(pk=pk, then=pos) for pos, pk in enumerate(cocktail_ids)])
-            qs = Cocktail.objects.filter(id__in=cocktail_ids).order_by(preserved_order)
+            cocktails = Cocktail.objects \
+                .filter(id__in=cocktail_ids) \
+                .order_by(preserved_order)
             
-            cocktails = CocktailSerializer(qs, many=True).data
+            for cocktail in cocktails:
+                results.append({ 'label': cocktail.name, 'value': cocktail.urlname })
+            
 
             # TODO feasts
 
         return Response(
-            { 'cocktails': cocktails },
+            { 'results': results },
             status=status.HTTP_200_OK,
         )

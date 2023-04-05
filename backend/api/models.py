@@ -113,27 +113,7 @@ class ControlledBeverage(models.Model):
         app_label = 'api'
         db_table = 'api_controlledbeverage'
 
-'''
-def _format_amount(amount):
-    
-    #    Formats decimal amount as integer whole with remainder fraction.
-    #    For example:
-    #        0.75 >> 3/4
-    #        01.25 >> 1 1/4
-    #        1.00 >> 1
 
-    try:
-        frac, whole = math.modf(amount)
-        frac = str(Fraction(frac)) if frac else ''
-        whole = '' if not whole else f'{int(whole)} '
-         #logger.debug(f'{whole}{frac}, {amount}')
-        return f'{whole}{frac}'
-    except BaseException:
-        pass
-
-    return amount
-
-'''
 class CocktailIngredient(models.Model):
     ingredient = models.ForeignKey(Ingredient, on_delete=models.CASCADE)
     _amount = models.DecimalField(
@@ -224,6 +204,10 @@ class Cocktail(models.Model):
     ingredients = models.ManyToManyField(CocktailIngredient)
     instructions = models.TextField(null=True, blank=None, default=None)
 
+    @property
+    def urlname(self):
+        return f'/cocktails/{self.slug}'
+
     def save(self, *args, **kwargs):
         if not self.slug:
             self.slug = f'{slugify(self.name)}'
@@ -255,6 +239,10 @@ class Feast(models.Model):
         null=True,
         blank=True,
     )
+
+    @property
+    def urlname(self):
+        return f'/feasts/{self.slug}'
 
     def save(self, *args, **kwargs):
         if not self.slug:

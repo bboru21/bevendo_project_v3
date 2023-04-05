@@ -28,6 +28,7 @@ from .models import (
 )
 
 from .utils import (
+    get_feasts_by_date_range,
     get_email_date_range,
     get_email_feasts_products,
     get_email_deals,
@@ -111,7 +112,7 @@ class DashboardPageView(AuthorizedPageView):
         try:
             res = super().get(request, format)
 
-            qs = Feast.objects.filter(_date__range=(start_date, end_date))
+            qs = get_feasts_by_date_range(start_date, end_date)
             feasts = FeastSerializer(qs, many=True).data
 
             res.data.update(

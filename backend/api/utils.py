@@ -25,15 +25,7 @@ from .constants import DEALS_MIN_PRICE_SCORE
 logger = logging.getLogger(__name__)
 
 
-def get_email_date_range(start_date=None):
-
-    if not start_date:
-        start_date = date.today() + timedelta(days=1)
-    end_date = start_date + timedelta(days=7)
-    return (start_date, end_date)
-
-def get_email_feasts_products(start_date, end_date, latest_pull_date):
-
+def get_feasts_by_date_range(start_date, end_date):
     feast_ids = []
 
     # new feast logic to incorporate seasons and floating feast days
@@ -58,6 +50,20 @@ def get_email_feasts_products(start_date, end_date, latest_pull_date):
         Feast.objects.filter(pk__in=feast_ids),
         key=lambda f: f.date if f.date else datetime.strptime('1900-01-01', '%Y-%m-%d').date(),
     )
+
+    return feasts
+
+
+def get_email_date_range(start_date=None):
+
+    if not start_date:
+        start_date = date.today() + timedelta(days=1)
+    end_date = start_date + timedelta(days=7)
+    return (start_date, end_date)
+
+def get_email_feasts_products(start_date, end_date, latest_pull_date):
+
+    feasts = get_feasts_by_date_range(start_date, end_date)
 
     _feasts = []
     _products = []

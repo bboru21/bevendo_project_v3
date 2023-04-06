@@ -52,9 +52,9 @@ const SearchBar = () => {
         {/* <button className='btn btn-outline-success' type='submit'>Search</button> */}
       </form>
       {showSearchResults && searchResults.length > 0 && (
-        <ul style={{ position: 'absolute', 'listStyle': 'none' }}>
+        <ul className="search-result-list">
           {searchResults.map( result => (
-            <li key={result.value}>
+            <li key={result.value} className="search-result-item px-2 py-1">
               <Link href={result.value}>{result.label}</Link>
             </li>
           ))}

@@ -3,8 +3,11 @@ import Head from 'next/head';
 import { Provider } from 'react-redux';
 import { useStore } from '../store';
 
-// // Bootstrap CSS
+// Bootstrap CSS
 import "bootstrap/dist/css/bootstrap.min.css";
+
+// custom styles
+import "../styles/styles.css";
 
 const App = ({ Component, pageProps }) => {
   const store = useStore(pageProps.initialReduxState);

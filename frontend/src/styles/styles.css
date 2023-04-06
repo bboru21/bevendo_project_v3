@@ -1,0 +1,14 @@
+/* begin search styles */
+.search-result-list {
+  position: absolute; 
+  list-style: none;
+  padding-left: 0;
+  background-color: white;
+  margin-bottom: 0;
+  box-shadow: 0 1px 2px gray;
+  width: 100%;
+}
+.search-result-item {
+  text-decoration: none;
+}
+/* end search styles */

@@ -172,6 +172,8 @@ class CocktailPageView(AuthorizedPageView):
 
 class SearchView(APIView):
 
+    COCKTAIL_LIMIT = 10
+
     def get(self, request, format=None):
 
         results = []
@@ -203,7 +205,7 @@ class SearchView(APIView):
             preserved_order = Case(*[When(pk=pk, then=pos) for pos, pk in enumerate(cocktail_ids)])
             cocktails = Cocktail.objects \
                 .filter(id__in=cocktail_ids) \
-                .order_by(preserved_order)
+                .order_by(preserved_order)[:self.COCKTAIL_LIMIT]
             
             for cocktail in cocktails:
                 results.append({ 'label': cocktail.name, 'value': cocktail.urlname })

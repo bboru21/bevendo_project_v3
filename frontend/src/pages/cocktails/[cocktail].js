@@ -35,7 +35,7 @@ const Cocktail = ({ error, cocktail }) => {
                         </h1>
                         <ul>
                           {cocktail.ingredients.map(i => (
-                           <li>{i.amount} {i.measurement} {i.ingredient.name}</li>
+                           <li key={cocktail.pk}>{i.amount} {i.measurement} {i.ingredient.name}</li>
                           ))}
                         </ul>
                         <p>{cocktail.instructions}</p>

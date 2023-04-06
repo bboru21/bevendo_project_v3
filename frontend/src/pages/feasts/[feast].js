@@ -35,7 +35,7 @@ const Feast = ({ error, feast }) => {
                       <>
                         <h2>Cocktails</h2>
                         {feast.cocktails.map( cocktail => (
-                          <div>
+                          <div key={cocktail.pk}>
                             <Link href={`/cocktails/${cocktail.slug}/`}>{cocktail.name}</Link>
                           </div>
                         ))}

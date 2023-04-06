@@ -173,6 +173,7 @@ class CocktailPageView(AuthorizedPageView):
 class SearchView(APIView):
 
     COCKTAIL_LIMIT = 10
+    FEAST_LIMIT = 5
 
     def get(self, request, format=None):
 
@@ -181,6 +182,7 @@ class SearchView(APIView):
         q = request.GET.get('q')
         if q:
             
+            # begin cocktails
             q1 = Q(name=q)
             q2 = Q(name__icontains=q)
             q3 = Q(ingredients__ingredient__name=q)
@@ -210,11 +212,31 @@ class SearchView(APIView):
             for cocktail in cocktails:
                 results.append({ 'label': cocktail.name, 'value': cocktail.urlname })
             
+            # begin feasts  
+            q1 = Q(name=q)
+            q2 = Q(name__icontains=q)
 
-            # TODO feasts
+            feast_ids = Feast.objects \
+                .filter(q1 | q2) \
+                .annotate(
+                    search_type_ordering=Case(
+                        When(q1, then=Value(1)),
+                        When(q2, then=Value(0)),
+                        default=Value(-1),
+                        output_field=IntegerField()
+                    )
+                ) \
+                .order_by('-search_type_ordering') \
+                .values_list('id', flat=True) \
+                .distinct()
 
-            # if len(results) == 0:
-            #     results.append({ 'label': 'No results found', 'value': None })
+            preserved_order = Case(*[When(pk=pk, then=pos) for pos, pk in enumerate(feast_ids)])
+            feasts = Feast.objects \
+                .filter(id__in=feast_ids) \
+                .order_by(preserved_order)[:self.FEAST_LIMIT]
+            
+            for feast in feasts:
+                results.append({ 'label': feast.name, 'value': feast.urlname })
 
         return Response(
             { 'results': results },

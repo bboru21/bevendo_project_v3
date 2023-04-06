@@ -7,6 +7,7 @@ const SearchBar = () => {
 
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResults, setSearchResults] = useState([]);
+  const [showSearchResults, setShowSearchResults] = useState(false);
 
   useEffect(() =>{
 
@@ -31,6 +32,14 @@ const SearchBar = () => {
 
   }, [searchQuery]);
 
+  useEffect(() =>{
+    if (searchQuery === '') {
+      setShowSearchResults(false);
+    } else {
+      setShowSearchResults(true);
+    }
+  }, [searchQuery]);
+
   const handleChange = (event) => {
     const value = event.target.value;
     setSearchQuery(value);
@@ -42,7 +51,7 @@ const SearchBar = () => {
         <input className='form-control me-2' type='search' placeholder='Search' aria-label='Search' onChange={handleChange} />
         {/* <button className='btn btn-outline-success' type='submit'>Search</button> */}
       </form>
-      {searchResults && searchResults.length > 0 && (
+      {showSearchResults && searchResults.length > 0 && (
         <ul style={{ position: 'absolute', 'listStyle': 'none' }}>
           {searchResults.map( result => (
             <li key={result.value}>

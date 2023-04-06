@@ -13,23 +13,16 @@ const SearchBar = () => {
     const getData = setTimeout( async () => {
       if (searchQuery) {
         
-        // const cookies = cookie.parse(req.headers.cookie ?? '');
-        // const access = cookies.access ?? false;
-        const access = 'TODO';
-
-        if (access) {
-          const res = await fetch(`${API_URL}/api/v1/search?q=${searchQuery}`, {
-            method: 'GET',
-            headers: {
-              'Accept': 'application/json',
-              'Authorization': `Bearer ${access}`,
-            }
-          });
-
-          if (res.status === 200) {
-            const data = await res.json();
-            setSearchResults(data.results);
+        const res = await fetch(`/api/search?q=${searchQuery}`, {
+          method: 'GET',
+          headers: {
+            'Accept': 'application/json',
           }
+        });
+
+        if (res.status === 200) {
+          const data = await res.json();
+          setSearchResults(data.results);
         }
       }
     }, 300);
@@ -50,7 +43,7 @@ const SearchBar = () => {
         {/* <button className='btn btn-outline-success' type='submit'>Search</button> */}
       </form>
       {searchResults && searchResults.length > 0 && (
-        <ul style={{ position: 'absolute' }}>
+        <ul style={{ position: 'absolute', 'listStyle': 'none' }}>
           {searchResults.map( result => (
             <li key={result.value}>
               <Link href={result.value}>{result.label}</Link>

@@ -211,6 +211,9 @@ class SearchView(APIView):
 
             # TODO feasts
 
+            # if len(results) == 0:
+            #     results.append({ 'label': 'No results found', 'value': None })
+
         return Response(
             { 'results': results },
             status=status.HTTP_200_OK,

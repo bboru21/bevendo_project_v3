@@ -9,6 +9,8 @@
   width: 100%;
 }
 .search-result-item {
-  text-decoration: none;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 /* end search styles */

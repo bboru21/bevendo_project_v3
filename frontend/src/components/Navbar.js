@@ -123,7 +123,7 @@ const Navbar = () => {
                 </li>
                 { isAuthenticated ? authLinks : guestLinks }
               </ul>
-              <SearchBar />
+              { isAuthenticated && <SearchBar />}
             </div>
           </div>
         </nav>

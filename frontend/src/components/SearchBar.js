@@ -63,8 +63,9 @@ const SearchBar = () => {
       On component container blur, close search if newly focused element is
       not a child of the container.
     */
+   
     const node = event.relatedTarget;
-    if (!containerRef.current?.contains(node)) {
+    if (node && !containerRef.current?.contains(node)) {
       setShowSearchResults(false);
     }
   }

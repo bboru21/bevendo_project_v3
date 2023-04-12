@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 import Layout from '../hocs/Layout';
 import cookie from 'cookie';
 import { API_URL } from '../config/index';
-import Link from 'next/link';
+import FeastSwiper from '../components/FeastSwiper';
 
 const Dashboard = ({ error, feasts }) => {
    
@@ -38,26 +38,10 @@ const Dashboard = ({ error, feasts }) => {
                 </div>
                 {feasts && (
                     <div className='container-fluid py-3'>
-                        <h2 className='display-7 fw-bold'>
-                            This Weeks Feasts &amp; Cocktails
+                        <h2 className='display-7 fw-bold mb-3'>
+                            Upcoming Feasts and Cocktails
                         </h2>
-                        <ul>
-                            {feasts.map(feast => (
-                                <li key={`feast-${feast.pk}`}>
-                                    <p className="mb-0">
-                                        <Link href={`/feasts/${feast.slug}/`}>{feast.name}</Link> - {feast.date}</p>
-                                    {feast.cocktails && (
-                                        <ul>
-                                            {feast.cocktails.map(cocktail => (
-                                                <li key={`cocktail-${cocktail.pk}`}>
-                                                    {cocktail.name}
-                                                </li>
-                                            ))}
-                                        </ul>
-                                    )}
-                                </li>
-                            ))}
-                        </ul>
+                        <FeastSwiper feasts={feasts} />
                     </div>
                 )}
            </div>

@@ -24,15 +24,15 @@ const Cocktail = ({ error, cocktail }) => {
         >
            <div className='p-5 bg-light rounded-3'>
                 <div className='container-fluid py-3'>
-                    <h1 className='display-5 fw-bold'>
-                        {cocktail.name}
-                    </h1>
                     {error ? (
                         <p className='fs-4 mt-3'>
                             {error}
                         </p>
                     ) : (
                       <>
+                        <h1 className='display-5 fw-bold'>
+                            {cocktail.name}
+                        </h1>
                         <ul>
                           {cocktail.ingredients.map(i => (
                            <li>{i.amount} {i.measurement} {i.ingredient.name}</li>

@@ -114,12 +114,11 @@ const SearchBar = () => {
   const router = useRouter();
   const handleClick = (event) => {
     event.preventDefault();
-    
+    router.push(event.target.href);
+
     setSearchQuery('');
     setShowSearchResults(false);
     clearInputValue();
-
-    router.push(event.target.href);
   };
 
   return (

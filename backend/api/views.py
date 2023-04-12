@@ -172,8 +172,8 @@ class CocktailPageView(AuthorizedPageView):
 
 class SearchView(APIView):
 
-    COCKTAIL_LIMIT = 10
-    FEAST_LIMIT = 5
+    COCKTAIL_LIMIT = 25
+    FEAST_LIMIT = 25
 
     def get(self, request, format=None):
 

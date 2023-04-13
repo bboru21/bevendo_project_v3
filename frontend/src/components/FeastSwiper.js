@@ -20,7 +20,7 @@ const FeastSwiper = ({ feasts }) => {
           slidesPerView: 2,
           spaceBetween: 30,
         },
-        768: {
+        992: {
           slidesPerView: 3,
           spaceBetween: 50,
         }
@@ -40,7 +40,7 @@ const FeastSwiper = ({ feasts }) => {
               </h3>
               <p className="mb-1 text-secondary text-center">{weekday}, {month} {day}{nthNumber(day)}</p>
               {feast.cocktails && (
-                  <div className="swiper-slide-cocktails p-2">
+                  <div className="swiper-slide-cocktails p-2 bg-light">
                     <ul>
                         {feast.cocktails.map(cocktail => (
                             <li key={`cocktail-${cocktail.pk}`}>

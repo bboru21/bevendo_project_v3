@@ -1,6 +1,7 @@
 // Import Swiper React components
 import { Swiper, SwiperSlide } from 'swiper/react';
 import Link from 'next/link';
+import { nthNumber } from '../utils/utils';
 
 // Import Swiper styles
 import 'swiper/css';
@@ -10,10 +11,20 @@ const FeastSwiper = ({ feasts }) => {
     <></>
   ) : (
     <Swiper
-      spaceBetween={50}
-      slidesPerView={3}
-      onSlideChange={() => console.log('slide change')}
-      onSwiper={(swiper) => console.log(swiper)}
+      onSlideChange={() => { /*...*/ }}
+      onSwiper={(swiper) => { /*...*/ }}
+      slidesPerView={1}
+      spaceBetween={20}
+      breakpoints={{
+        576: {
+          slidesPerView: 2,
+          spaceBetween: 30,
+        },
+        768: {
+          slidesPerView: 3,
+          spaceBetween: 50,
+        }
+      }}
     >
       {feasts.map(feast => {
         const date = new Date(feast.date);
@@ -23,19 +34,23 @@ const FeastSwiper = ({ feasts }) => {
 
         return (
           <SwiperSlide key={`feast-${feast.pk}`}>
-  
-            <p className="mb-0">
-              <Link href={feast.urlname}>{feast.name}</Link> ({weekday}, {month} {day})
-            </p>
-            {feast.cocktails && (
-                <ul>
-                    {feast.cocktails.map(cocktail => (
-                        <li key={`cocktail-${cocktail.pk}`}>
-                            <Link href={cocktail.urlname}>{cocktail.name}</Link>
-                        </li>
-                    ))}
-                </ul>
-            )}
+            <div className="swiper-slide-content p-3">
+              <h3 className="fs-4 text-center">
+                <Link href={feast.urlname}>{feast.name}</Link> 
+              </h3>
+              <p className="mb-1 text-secondary text-center">{weekday}, {month} {day}{nthNumber(day)}</p>
+              {feast.cocktails && (
+                  <div className="swiper-slide-cocktails p-2">
+                    <ul>
+                        {feast.cocktails.map(cocktail => (
+                            <li key={`cocktail-${cocktail.pk}`}>
+                                <Link href={cocktail.urlname}>{cocktail.name}</Link>
+                            </li>
+                        ))}
+                    </ul>
+                  </div>
+              )}
+            </div>
           </SwiperSlide>
         );
       })}

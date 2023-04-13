@@ -1,3 +1,16 @@
+:root {
+  --border-color: lightgray;
+  --border-radius: 5px;
+
+  --shadow: 0 1px 2px lightgray;
+
+  /* begin z-indexes */
+  --zindex-swiper: 1;
+  --zindex-search: 10;
+  /* end z-indexes */
+}
+
+
 /* begin search styles */
 .search-bar {
   position: relative;
@@ -8,10 +21,11 @@
   padding-left: 0;
   background-color: white;
   margin-bottom: 0;
-  box-shadow: 0 1px 2px gray;
+  box-shadow: var(--shadow);
   width: 100%;
   max-height: 50vh;
   overflow-y: scroll;
+  z-index: var(--zindex-search);
 }
 .search-result-item {
   white-space: nowrap;
@@ -29,3 +43,29 @@
   background-color: rgba(var(--bs-light-rgb),var(--bs-bg-opacity))!important;
 }
 /* end search styles */
+
+
+/* begin swiper native style overrides */
+.swiper {
+  z-index: var(--zindex-swiper); /* already defined in swiper styles, defining here for clarity */
+}
+.swiper-wrapper {
+  padding: 0.5rem; /* allows dropshadows to appear */
+}
+/* end swiper native style overrides */
+
+
+/* begin swiper custom styles */
+.swiper-slide-content {
+  border-radius: var(--border-radius);
+  height: 200px;
+  background-color: white;
+  box-shadow: var(--shadow);
+}
+.swiper-slide-cocktails {
+  flex: 1 1 auto;
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius);
+  height: fit-content;
+}
+/* end swiper custom styles */

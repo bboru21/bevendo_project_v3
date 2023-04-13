@@ -59,14 +59,16 @@ const SearchBar = () => {
   }
 
   const handleBlur = (event) => {
-    /*
-      On component container blur, close search if newly focused element is
-      not a child of the container.
-    */
-    const node = event.relatedTarget;
-    if (!node || !containerRef.current?.contains(node)) {
-      setShowSearchResults(false);
-    }
+    /* TODO: figure out if we need this */
+    // /*
+    //   On component container blur, close search if newly focused element is
+    //   not a child of the container.
+    // */
+    // const node = event.relatedTarget;
+    // if (!node || !containerRef.current?.contains(node)) {
+    //  setSearchQuery('');
+    //  setShowSearchResults(false);
+    // }
   }
 
   const handleFocus = () => {

@@ -113,6 +113,7 @@ class DashboardPageView(AuthorizedPageView):
             res = super().get(request, format)
 
             qs = get_feasts_by_date_range(start_date, end_date)
+            # TODO add prefetch_related('cocktails')
             feasts = FeastSerializer(qs, many=True).data
 
             res.data.update(
@@ -133,6 +134,7 @@ class FeastPageView(AuthorizedPageView):
         res = super().get(request, format)
 
         try:
+            # TODO add prefetch_related('cocktails')
             qs = Feast.objects.get(slug=slug)
             feast = FeastSerializer(qs, many=False).data
             res.data.update({
@@ -154,6 +156,7 @@ class CocktailPageView(AuthorizedPageView):
         res = super().get(request, format)
 
         try:
+            # TODO add prefetch_related('feasts') and prefetch_related('ingredients')
             qs = Cocktail.objects.get(slug=slug)
             cocktail = CocktailSerializer(qs, many=False).data
             res.data.update({

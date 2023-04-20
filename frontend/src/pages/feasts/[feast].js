@@ -4,6 +4,7 @@ import Layout from '../../hocs/Layout';
 import cookie from 'cookie';
 import { API_URL } from '../../config/index';
 import Link from 'next/link';
+import LinkList from '../../components/LinkList';
 
 const Feast = ({ error, feast }) => {
    
@@ -32,14 +33,7 @@ const Feast = ({ error, feast }) => {
                             {error}
                         </p>
                     ) : (
-                      <>
-                        <h2>Cocktails</h2>
-                        {feast.cocktails.map( cocktail => (
-                          <div key={cocktail.pk}>
-                            <Link href={`/cocktails/${cocktail.slug}/`}>{cocktail.name}</Link>
-                          </div>
-                        ))}
-                      </>
+                        <LinkList title="Cocktails" links={feast.cocktails} />
                     )}
                 </div>
            </div>

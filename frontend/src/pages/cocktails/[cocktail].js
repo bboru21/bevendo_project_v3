@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 import Layout from '../../hocs/Layout';
 import cookie from 'cookie';
 import { API_URL } from '../../config/index';
-import Link from 'next/link';
+import LinkList from '../../components/LinkList';
 
 const Cocktail = ({ error, cocktail }) => {
    
@@ -42,17 +42,8 @@ const Cocktail = ({ error, cocktail }) => {
                       </>
                     )}
 
-                    {cocktail.feasts && (
-                        <div>
-                            <p className="fs-5 fw-bold">Feasts:</p>
-                            {cocktail.feasts.map((feast) => (
-                                <Link key={feast.urlname} href={feast.urlname} legacyBehavior>
-                                    <a className="btn btn-primary">{feast.name}</a>
-                                </Link>
-                            ))}
-                        </div>
-                    )}
-                    
+                    <LinkList title="Feasts" links={cocktail.feasts} />
+
                 </div>
            </div>
         </Layout>

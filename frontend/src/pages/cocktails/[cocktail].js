@@ -41,6 +41,18 @@ const Cocktail = ({ error, cocktail }) => {
                         <p>{cocktail.instructions}</p>
                       </>
                     )}
+
+                    {cocktail.feasts && (
+                        <div>
+                            <p className="fs-5 fw-bold">Feasts:</p>
+                            {cocktail.feasts.map((feast) => (
+                                <Link key={feast.urlname} href={feast.urlname} legacyBehavior>
+                                    <a className="btn btn-primary">{feast.name}</a>
+                                </Link>
+                            ))}
+                        </div>
+                    )}
+                    
                 </div>
            </div>
         </Layout>

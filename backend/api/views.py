@@ -159,6 +159,7 @@ class CocktailPageView(AuthorizedPageView):
             # TODO add prefetch_related('feasts') and prefetch_related('ingredients')
             qs = Cocktail.objects.get(slug=slug)
             cocktail = CocktailSerializer(qs, many=False).data
+
             res.data.update({
                 'cocktail': cocktail,
             }, status=status.HTTP_200_OK)

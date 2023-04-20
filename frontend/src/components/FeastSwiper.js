@@ -1,10 +1,15 @@
 // Import Swiper React components
+
+
+import { Pagination } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import Link from 'next/link';
 import { nthNumber } from '../utils/utils';
 
 // Import Swiper styles
 import 'swiper/css';
+import 'swiper/css/pagination';
+
 
 const FeastSwiper = ({ feasts }) => {
   return feasts.length === 0 ? (
@@ -25,6 +30,8 @@ const FeastSwiper = ({ feasts }) => {
           spaceBetween: 50,
         }
       }}
+      pagination={{ clickable: true }}
+      modules={[ Pagination ]}
     >
       {feasts.map(feast => {
         const date = new Date(feast.date);
@@ -59,24 +66,3 @@ const FeastSwiper = ({ feasts }) => {
 };
 
 export default FeastSwiper;
-
-
-{/* 
-  <ul>
-      {feasts.map(feast => (
-          <li key={`feast-${feast.pk}`}>
-              <p className="mb-0">
-                  <Link href={`/feasts/${feast.slug}/`}>{feast.name}</Link> - {feast.date}</p>
-              {feast.cocktails && (
-                  <ul>
-                      {feast.cocktails.map(cocktail => (
-                          <li key={`cocktail-${cocktail.pk}`}>
-                              {cocktail.name}
-                          </li>
-                      ))}
-                  </ul>
-              )}
-          </li>
-      ))}
-  </ul> 
-*/}

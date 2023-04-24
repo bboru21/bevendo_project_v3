@@ -74,7 +74,7 @@ PREPARATION_CHOICES = (
 
 
 class Ingredient(models.Model):
-    name = models.CharField(max_length=250)
+    name = models.CharField(max_length=250, unique=True)
     slug = models.SlugField(null=True, blank=True, unique=True)
     is_controlled = models.BooleanField(default=True)
 
@@ -93,7 +93,7 @@ class Ingredient(models.Model):
 
 
 class ControlledBeverage(models.Model):
-    name = models.CharField(max_length=250)
+    name = models.CharField(max_length=250, unique=True)
     slug = models.SlugField(null=True, blank=True, unique=True)
     ingredients = models.ManyToManyField(Ingredient, default=None, blank=True)
     is_in_stock = models.BooleanField(default=False, null=True)
@@ -151,7 +151,7 @@ class CocktailIngredient(models.Model):
     @measurement.setter
     def measurement(self, value):
         self._measurement = value
-    
+
     @property
     def amount(self):
         #    Formats decimal amount as integer whole with remainder fraction.
@@ -199,7 +199,7 @@ class CocktailIngredient(models.Model):
 
 
 class Cocktail(models.Model):
-    name = models.CharField(max_length=250)
+    name = models.CharField(max_length=250, unique=True)
     slug = models.SlugField(null=True, blank=True, unique=True)
     ingredients = models.ManyToManyField(CocktailIngredient)
     instructions = models.TextField(null=True, blank=None, default=None)
@@ -228,7 +228,7 @@ class Feast(models.Model):
         null=True,      # database
         db_column='date',
     )
-    name = models.CharField(max_length=250)
+    name = models.CharField(max_length=250, unique=True)
     slug = models.SlugField(null=True, blank=True, unique=True)
     cocktails = models.ManyToManyField(Cocktail, default=None, blank=True)
     ext_calapi_inadiutorium_season = models.CharField(max_length=9, choices=SEASON_CHOICES, null=True, blank=True)

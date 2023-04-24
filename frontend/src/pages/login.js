@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useRouter } from 'next/router';
 import { login, reset_register_success } from '../actions/auth';
@@ -28,17 +28,6 @@ const LoginPage = () => {
         }
     }, [dispatch]);
 
-    // set formData with browser's default value if any
-    const formRef = useRef(null);
-    useEffect(()=> {
-        if (formRef.current) {
-            setFormData({
-                'username': formRef.current.querySelector('input[name="username"]').value,
-                'password': formRef.current.querySelector('input[name="password"]').value,
-            });
-        }
-    }, []);
-
     const handleChange = event => setFormData({
         ...formData,
         [event.target.name]: event.target.value,
@@ -63,7 +52,6 @@ const LoginPage = () => {
                 <form
                     className='bg-light p-5 mt-5 mb-5'
                     onSubmit={handleSubmit}
-                    ref={formRef}
                 >
                     <h1 className='display-5 fw-bold'>
                         Log Into Your Account
@@ -79,7 +67,6 @@ const LoginPage = () => {
                             name='username'
                             placeholder='Username*'
                             onChange={handleChange}
-                            value={username}
                             required
                         />
                     </div>
@@ -93,7 +80,6 @@ const LoginPage = () => {
                             name='password'
                             placeholder='Password*'
                             onChange={handleChange}
-                            value={password}
                             minLength={8}
                             required
                         />

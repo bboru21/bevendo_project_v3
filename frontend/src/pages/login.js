@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useRouter } from 'next/router';
 import { login, reset_register_success } from '../actions/auth';
@@ -17,22 +17,16 @@ const LoginPage = () => {
         password: '',
     });
 
+    const {
+        username,
+        password,
+    } = formData;
+
     useEffect(() => {
         if (dispatch && dispatch !== null && typeof dispatch !== 'undefined') {
             dispatch(reset_register_success());
         }
     }, [dispatch]);
-
-    // set formData with browser's default value if any
-    const formRef = useRef(null);
-    useEffect(()=> {
-        if (formRef.current) {
-            setFormData({
-                'username': formRef.current.querySelector('input[name="username"]').value,
-                'password': formRef.current.querySelector('input[name="password"]').value,
-            });
-        }
-    }, []);
 
     const handleChange = event => setFormData({
         ...formData,
@@ -43,12 +37,6 @@ const LoginPage = () => {
         event.preventDefault();
 
         if (dispatch && dispatch !== null && dispatch !== undefined) {
-
-            const {
-                username,
-                password,
-            } = formData;
-
             dispatch(login(username, password));
         }
     };
@@ -64,7 +52,6 @@ const LoginPage = () => {
                 <form
                     className='bg-light p-5 mt-5 mb-5'
                     onSubmit={handleSubmit}
-                    ref={formRef}
                 >
                     <h1 className='display-5 fw-bold'>
                         Log Into Your Account
@@ -81,6 +68,7 @@ const LoginPage = () => {
                             placeholder='Username*'
                             onChange={handleChange}
                             required
+                            value={username}
                         />
                     </div>
                     <div className='form-group'>
@@ -95,6 +83,7 @@ const LoginPage = () => {
                             onChange={handleChange}
                             minLength={8}
                             required
+                            value={password}
                         />
                     </div>
                     {

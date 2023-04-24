@@ -1,19 +1,25 @@
+import { useRouter } from 'next/router';
+import { useSelector } from 'react-redux';
 import Layout from '../../hocs/Layout';
 import cookie from 'cookie';
 import { API_URL } from '../../config/index';
 import LinkList from '../../components/LinkList';
-import loginRedirect from '../../hooks/loginRedirect';
-import FavoriteButton from '../../components/FavoriteButton';
-import Link from 'next/link';
 
-const Cocktail = ({ error, cocktail }) => {
+const Ingredient = ({ error, ingredient }) => {
 
-    loginRedirect();
+    const router = useRouter();
+
+    const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
+    const loading = useSelector(state => state.auth.loading);
+
+    if (typeof window !== 'undefined' && !loading && !isAuthenticated) {
+        router.push('/login');
+    }
 
     return (
         <Layout
-            title='Bevendo | Cocktail'
-            content='Cocktail profile page.'
+            title='Bevendo | Ingredient'
+            content='Ingredient profile page.'
         >
            <div className='p-5 bg-light rounded-3'>
                 <div className='container-fluid py-3'>
@@ -24,30 +30,8 @@ const Cocktail = ({ error, cocktail }) => {
                     ) : (
                       <>
                         <h1 className='display-5 fw-bold'>
-                            {cocktail.name}
-
-                            <FavoriteButton className="ms-2" cocktailId={cocktail.pk} />
+                            {ingredient.name}
                         </h1>
-                        <ul>
-                          {cocktail.ingredients.map(i => (
-                           <li key={i.pk}>
-                            {i.ingredient.is_controlled ? (
-                                <Link href={i.ingredient.urlname}>
-                                    <a>
-                                    {i.amount} {i.measurement} {i.ingredient.name}
-                                    </a>
-                                </Link>
-                            ) : (
-                                <>
-                                {i.amount} {i.measurement} {i.ingredient.name}
-                                </>
-                            )}
-                           </li>
-                          ))}
-                        </ul>
-                        <p>{cocktail.instructions}</p>
-
-                        <LinkList title="Feasts" links={cocktail.feasts} />
                       </>
                     )}
                 </div>
@@ -72,9 +56,9 @@ export async function getServerSideProps({ params, req }) {
     }
 
     try {
-        const { cocktail } = params;
+        const { ingredient } = params;
 
-        const res = await fetch(`${API_URL}/api/v1/pages/cocktails/${cocktail}`, {
+        const res = await fetch(`${API_URL}/api/v1/pages/ingredients/${ingredient}`, {
             method: 'GET',
             headers: {
                 'Accept': 'application/json',
@@ -87,7 +71,7 @@ export async function getServerSideProps({ params, req }) {
 
             return {
                 props: {
-                    cocktail: data.cocktail,
+                  ingredient: data.ingredient,
                 }
             };
 
@@ -109,4 +93,4 @@ export async function getServerSideProps({ params, req }) {
     }
 }
 
-export default Cocktail;
+export default Ingredient;

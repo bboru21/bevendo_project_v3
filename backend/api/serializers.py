@@ -34,7 +34,7 @@ class IngredientSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Ingredient
-        fields = ['name',]
+        fields = ['name', 'is_controlled', 'urlname']
 
 
 class CocktailIngredientSerializer(serializers.ModelSerializer):

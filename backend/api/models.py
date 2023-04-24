@@ -79,6 +79,10 @@ class Ingredient(models.Model):
     slug = models.SlugField(null=True, blank=True, unique=True)
     is_controlled = models.BooleanField(default=True)
 
+    @property
+    def urlname(self):
+        return f'/ingredients/{self.slug}'
+
     def save(self, *args, **kwargs):
         if not self.slug:
             self.slug = f'{slugify(self.name)}'

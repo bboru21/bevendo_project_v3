@@ -2,12 +2,14 @@ import { useRouter } from 'next/router';
 import { useSelector } from 'react-redux';
 import Layout from '../../hocs/Layout';
 import cookie from 'cookie';
-import { API_URL } from '../../config/index';
-import Link from 'next/link';
+import { API_URL, CATHOLIC_CULTURE_URL } from '../../config/index';
+import ExternalLink from '../../components/ExternalLink';
 import LinkList from '../../components/LinkList';
+import { displayDate } from '../../utils/utils';
+
 
 const Feast = ({ error, feast }) => {
-   
+
     const router = useRouter();
 
     const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
@@ -27,7 +29,18 @@ const Feast = ({ error, feast }) => {
                 <div className='container-fluid py-3'>
                     <h1 className='display-5 fw-bold'>
                         {feast.name}
+                        <small className="text-muted fs-5 ms-2">{displayDate(feast.date)}</small>
                     </h1>
+
+                    <p className="fs-5 fw-bold">External Links:</p>
+                    <ul>
+                        <li>
+                            <ExternalLink href={`${CATHOLIC_CULTURE_URL}?date=${feast.date}`}>
+                                CatholicCulture.org
+                            </ExternalLink>
+                        </li>
+                    </ul>
+
                     {error ? (
                         <p className='fs-4 mt-3'>
                             {error}
@@ -66,7 +79,7 @@ export async function getServerSideProps({ params, req }) {
                 'Authorization': `Bearer ${access}`,
             },
         });
-    
+
         if (res.status === 200) {
             const data = await res.json();
 

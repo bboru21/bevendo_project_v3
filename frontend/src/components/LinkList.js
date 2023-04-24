@@ -6,7 +6,7 @@ const LinkList = ({ title, links }) => {
           <p className="fs-5 fw-bold">{title}:</p>
           {links.map((item) => (
               <Link key={item.urlname} href={item.urlname} legacyBehavior>
-                  <a className="btn btn-primary me-2">{item.name}</a>
+                  <a className="btn btn-primary me-2 mb-2">{item.name}</a>
               </Link>
           ))}
       </div>

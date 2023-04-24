@@ -12,3 +12,13 @@ export const nthNumber = (number) => {
       return "th";
   }
 };
+
+/* TODO probably remove this if we implement moment.js */
+export const displayDate = (date) => {
+  const d = new Date(date);
+  const weekday = d.toLocaleDateString('en-us', { weekday: 'long' });
+  const month = d.toLocaleDateString('en-us', { month: 'long' });
+  const day = d.toLocaleDateString('en-us', { day: 'numeric' });
+
+  return `${weekday}, ${month} ${day}${nthNumber(day)}`;
+}

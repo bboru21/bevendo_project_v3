@@ -4,7 +4,7 @@
 import { Pagination } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import Link from 'next/link';
-import { nthNumber } from '../utils/utils';
+import { displayDate } from '../utils/utils';
 
 // Import Swiper styles
 import 'swiper/css';
@@ -34,18 +34,14 @@ const FeastSwiper = ({ feasts }) => {
       modules={[ Pagination ]}
     >
       {feasts.map(feast => {
-        const date = new Date(feast.date);
-        const weekday = date.toLocaleDateString('en-us', { weekday: 'long' });
-        const month = date.toLocaleDateString('en-us', { month: 'long' });
-        const day = date.toLocaleDateString('en-us', { day: 'numeric' });
 
         return (
           <SwiperSlide key={`feast-${feast.pk}`}>
             <div className="swiper-slide-content p-3">
               <h3 className="fs-4 text-center">
-                <Link href={feast.urlname}>{feast.name}</Link> 
+                <Link href={feast.urlname}>{feast.name}</Link>
               </h3>
-              <p className="mb-1 text-secondary text-center">{weekday}, {month} {day}{nthNumber(day)}</p>
+              <p className="mb-1 text-secondary text-center">{displayDate(feast.date)}</p>
               {feast.cocktails && (
                   <div className="swiper-slide-cocktails p-2 bg-light">
                     <ul>

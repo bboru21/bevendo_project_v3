@@ -4,9 +4,10 @@ import Layout from '../../hocs/Layout';
 import cookie from 'cookie';
 import { API_URL } from '../../config/index';
 import LinkList from '../../components/LinkList';
+import FavoriteButton from '../../components/FavoriteButton';
 
 const Cocktail = ({ error, cocktail }) => {
-   
+
     const router = useRouter();
 
     const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
@@ -32,6 +33,8 @@ const Cocktail = ({ error, cocktail }) => {
                       <>
                         <h1 className='display-5 fw-bold'>
                             {cocktail.name}
+
+                            <FavoriteButton className="ms-2" cocktailId={cocktail.pk} />
                         </h1>
                         <ul>
                           {cocktail.ingredients.map(i => (
@@ -75,7 +78,7 @@ export async function getServerSideProps({ params, req }) {
                 'Authorization': `Bearer ${access}`,
             },
         });
-    
+
         if (res.status === 200) {
             const data = await res.json();
 

@@ -16,15 +16,12 @@ const FavoriteButton = ({
   return (
     <button
       className={classNames("btn", className, {
-        ['btn-outline-success']: !isFavorited,
-        ['btn-success']: isFavorited,
+        ['btn-outline-secondary']: !isFavorited,
+        ['btn-secondary']: isFavorited,
       })}
       onClick={handleClick}
     >
-
-      Favorite
-
-      <FontAwesomeIcon icon={faThumbsUp} className="ms-2" size="1x" />
+      <FontAwesomeIcon icon={faThumbsUp} size="1x" />
     </button>
   );
 };

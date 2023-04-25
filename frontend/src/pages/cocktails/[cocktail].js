@@ -3,6 +3,7 @@ import cookie from 'cookie';
 import { API_URL } from '../../config/index';
 import LinkList from '../../components/LinkList';
 import { loginRedirect } from '../../utils/auth.js';
+import FavoriteButton from '../../components/FavoriteButton';
 
 const Cocktail = ({ error, cocktail }) => {
 
@@ -23,6 +24,8 @@ const Cocktail = ({ error, cocktail }) => {
                       <>
                         <h1 className='display-5 fw-bold'>
                             {cocktail.name}
+
+                            <FavoriteButton className="ms-2" cocktailId={cocktail.pk} />
                         </h1>
                         <ul>
                           {cocktail.ingredients.map(i => (

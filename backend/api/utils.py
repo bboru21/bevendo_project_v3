@@ -57,8 +57,8 @@ def get_feasts_by_date_range(start_date, end_date):
 def get_email_date_range(start_date=None):
 
     if not start_date:
-        start_date = date.today() + timedelta(days=1)
-    end_date = start_date + timedelta(days=7)
+        start_date = date.today()
+    end_date = start_date + timedelta(days=8)
     return (start_date, end_date)
 
 def get_email_feasts_products(start_date, end_date, latest_pull_date):

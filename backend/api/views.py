@@ -257,13 +257,12 @@ class FavoriteView(APIView):
 
             TODO:
             * determine if insert/delete functionality should be seperated
-            * determine if we can get the user id from the auth request
         '''
 
         try:
             data = request.data
 
-            user = User.objects.get(pk=data['user_id'])
+            user = User.objects.get(pk=request.user.pk)
             cocktail = Cocktail.objects.get(pk=data['cocktail_id'])
             favorite = Favorite.objects.filter(cocktail=cocktail, user=user)
 

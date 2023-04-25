@@ -6,7 +6,7 @@ import { API_URL } from '../../config/index';
 import LinkList from '../../components/LinkList';
 
 const Cocktail = ({ error, cocktail }) => {
-   
+
     const router = useRouter();
 
     const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
@@ -75,7 +75,7 @@ export async function getServerSideProps({ params, req }) {
                 'Authorization': `Bearer ${access}`,
             },
         });
-    
+
         if (res.status === 200) {
             const data = await res.json();
 

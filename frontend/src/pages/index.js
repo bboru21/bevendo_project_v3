@@ -2,7 +2,7 @@ import { useSelector } from 'react-redux';
 import Layout from '../hocs/Layout';
 import Link from 'next/link';
 
-const homePage = () => {
+const HomePage = () => {
 
   const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
 
@@ -26,4 +26,4 @@ const homePage = () => {
   );
 };
 
-export default homePage;
+export default HomePage;

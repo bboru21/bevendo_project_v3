@@ -5,6 +5,7 @@ from fractions import Fraction
 from django.db import models
 from django.contrib.humanize.templatetags.humanize import ordinal
 from django.utils.text import slugify
+from django.contrib.auth.models import User
 
 from ext_data.calapi_inadiutorium_models import SEASON_CHOICES
 
@@ -275,3 +276,23 @@ class Feast(models.Model):
                 liturgical_day = celebration.liturgical_days.filter(date__year=current_year).first()
             return liturgical_day.date
         return None
+
+
+class Favorite(models.Model):
+
+    user = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        null=False,
+        related_name='favorites',
+    )
+    cocktail = models.ForeignKey(
+        Cocktail,
+        on_delete=models.CASCADE,
+        null=False,
+    )
+
+    class Meta:
+        app_label = 'api'
+        db_table = 'api_favorite'
+        unique_together = (('user', 'cocktail'))

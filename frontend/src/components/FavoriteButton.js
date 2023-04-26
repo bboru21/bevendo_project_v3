@@ -1,8 +1,9 @@
-import { useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { useSelector } from 'react-redux';
 import classNames from 'classnames';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faThumbsUp } from '@fortawesome/free-solid-svg-icons';
+import _ from 'underscore';
 
 const FavoriteButton = ({
   cocktailId,
@@ -11,13 +12,17 @@ const FavoriteButton = ({
 
   const user = useSelector(state => state.auth.user);
 
-  const defaultIsFavorited = user.favorites.indexOf(cocktailId) > -1;
-  const [isFavorited, setIsFavorited] = useState(defaultIsFavorited);
+  const favorites = useRef([]);
+  // useEffect(() => {
+  //   favorites.current = _.get(user, 'favorites', []).map(obj => obj['cocktail']);
+  // }, [user]);
 
   const handleClick = () => {
-    setIsFavorited(!isFavorited);
+    // setIsFavorited(!isFavorited);
   };
 
+  // const isFavorited = favorites.current.indexOf(cocktailId) > -1;
+  const isFavorited = false;
   return (
     <button
       className={classNames("btn btn-sm", className, {

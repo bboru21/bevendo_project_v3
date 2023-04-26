@@ -1,6 +1,4 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { useRouter } from 'next/router';
-import { API_URL } from '../config/index';
 import Link from 'next/link';
 
 const SearchBar = () => {
@@ -20,7 +18,7 @@ const SearchBar = () => {
 
     const getData = setTimeout( async () => {
       if (searchQuery) {
-        
+
         const res = await fetch(`/api/search?q=${searchQuery}`, {
           method: 'GET',
           headers: {
@@ -34,7 +32,7 @@ const SearchBar = () => {
         }
       }
     }, 300);
-    
+
     return () => clearTimeout(getData);
 
   }, [searchQuery]);
@@ -113,11 +111,7 @@ const SearchBar = () => {
     }
   }
 
-  const router = useRouter();
   const handleClick = (event) => {
-    event.preventDefault();
-    router.push(event.target.href);
-
     setSearchQuery('');
     setShowSearchResults(false);
     clearInputValue();
@@ -125,18 +119,18 @@ const SearchBar = () => {
 
   return (
     <div
-      onFocus={handleFocus} 
-      onKeyDown={handleKeyDown} 
-      onBlur={handleBlur} 
+      onFocus={handleFocus}
+      onKeyDown={handleKeyDown}
+      onBlur={handleBlur}
       ref={containerRef}
       className="search-bar"
     >
       <form className='d-flex' role='search'>
-        <input 
-          className='form-control me-2' 
-          type='search' 
-          placeholder='Search' 
-          aria-label='Search' 
+        <input
+          className='form-control me-2'
+          type='search'
+          placeholder='Search'
+          aria-label='Search'
           onChange={handleChange}
         />
         {/* <button className='btn btn-outline-success' type='submit'>Search</button> */}
@@ -145,7 +139,9 @@ const SearchBar = () => {
         <ul className="search-result-list">
           {searchResults.map( result => (
             <li key={result.value} className="search-result-item">
-                <a className="px-2 py-1 link-secondary" href={result.value} onClick={handleClick}>{result.label}</a>
+                <Link href={result.value} legacyBehavior>
+                  <a className="px-2 py-1 link-secondary" onClick={handleClick}>{result.label}</a>
+                </Link>
             </li>
           ))}
         </ul>

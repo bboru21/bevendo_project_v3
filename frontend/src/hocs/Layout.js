@@ -3,6 +3,7 @@ import { useDispatch } from 'react-redux';
 import { request_refresh } from '../actions/auth';
 import Head from 'next/head';
 import Navbar from '../components/Navbar';
+import LoadingOverlay from '../components/LoadingOverlay';
 
 const Layout = ({ title, content, children }) => {
 
@@ -27,7 +28,12 @@ const Layout = ({ title, content, children }) => {
                     </div>
                 )}
                 <Navbar />
-                <div className='container mt-5'>{children}</div>
+                <div className="position-relative">
+                    <LoadingOverlay />
+                    <div className='container mt-5'>
+                        {children}
+                    </div>
+                </div>
                 <footer className="bg-light p-3">
                     <a href="mailto:bryan.e.hadro@gmail.com">Contact</a>
                 </footer>

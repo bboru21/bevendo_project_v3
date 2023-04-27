@@ -7,6 +7,8 @@
   /* begin z-indexes */
   --zindex-swiper: 1;
   --zindex-search: 10;
+  --zindex-loading-overlay: 20;
+  --zindex-footer:  30;
   /* end z-indexes */
 }
 
@@ -20,6 +22,7 @@ footer {
   bottom: 0;
   left: 0;
   right: 0;
+  z-index: var(--zindex-footer);
 }
 /* end general layout styles */
 

@@ -23,6 +23,7 @@ from .serializers import (
 from account.serializers import UserSerializer
 
 from .models import (
+    Favorite,
     Feast,
     Cocktail,
 )
@@ -92,9 +93,9 @@ class AuthorizedPageView(APIView):
         Adds user data to page resposne.
         This should be inherited, and not called directly.
     '''
-    
+
     def get(self, request, format=None):
-        
+
         user = request.user
         user = UserSerializer(user)
 
@@ -185,7 +186,7 @@ class SearchView(APIView):
 
         q = request.GET.get('q')
         if q:
-            
+
             # begin cocktails
             q1 = Q(name=q)
             q2 = Q(name__icontains=q)
@@ -212,11 +213,11 @@ class SearchView(APIView):
             cocktails = Cocktail.objects \
                 .filter(id__in=cocktail_ids) \
                 .order_by(preserved_order)[:self.COCKTAIL_LIMIT]
-            
+
             for cocktail in cocktails:
                 results.append({ 'label': cocktail.name, 'value': cocktail.urlname })
-            
-            # begin feasts  
+
+            # begin feasts
             q1 = Q(name=q)
             q2 = Q(name__icontains=q)
 
@@ -238,7 +239,7 @@ class SearchView(APIView):
             feasts = Feast.objects \
                 .filter(id__in=feast_ids) \
                 .order_by(preserved_order)[:self.FEAST_LIMIT]
-            
+
             for feast in feasts:
                 results.append({ 'label': feast.name, 'value': feast.urlname })
 
@@ -246,3 +247,45 @@ class SearchView(APIView):
             { 'results': results },
             status=status.HTTP_200_OK,
         )
+
+
+class FavoriteView(APIView):
+
+    def post(self, request):
+        '''
+            Adds/removes a cocktail from a users favorites.
+
+            TODO:
+            * determine if insert/delete functionality should be seperated
+        '''
+
+        try:
+            data = request.data
+
+            user = User.objects.get(pk=request.user.pk)
+            cocktail = Cocktail.objects.get(pk=data['cocktail_id'])
+            favorite = Favorite.objects.filter(cocktail=cocktail, user=user)
+
+            if favorite.exists():
+                favorite.delete()
+                return Response(
+                    { 'success': 'Cocktail successfully removed from favorites' },
+                    status=status.HTTP_200_OK,
+                )
+            else:
+                favorite = Favorite(
+                    cocktail=cocktail,
+                    user=user,
+                )
+                favorite.save()
+                return Response(
+                    { 'success': 'Cocktail successfully added to favorites' },
+                    status=status.HTTP_201_CREATED,
+                )
+
+        except BaseException as error:
+            logger.error(f'error occured while adding a favorite: {error}')
+            return Response(
+                {'error': 'Something went wrong when trying to add a favorite'},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            )

@@ -253,10 +253,7 @@ class FavoriteView(APIView):
 
     def post(self, request):
         '''
-            Adds/removes a cocktail from a users favorites.
-
-            TODO:
-            * determine if insert/delete functionality should be seperated
+            Adds a cocktail to a user's favorites.
         '''
 
         try:
@@ -267,9 +264,8 @@ class FavoriteView(APIView):
             favorite = Favorite.objects.filter(cocktail=cocktail, user=user)
 
             if favorite.exists():
-                favorite.delete()
                 return Response(
-                    { 'success': 'Cocktail successfully removed from favorites' },
+                    { 'success': 'Cocktail already added to favorites' },
                     status=status.HTTP_200_OK,
                 )
             else:
@@ -287,5 +283,36 @@ class FavoriteView(APIView):
             logger.error(f'error occured while adding a favorite: {error}')
             return Response(
                 {'error': 'Something went wrong when trying to add a favorite'},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            )
+
+    def delete(self, request):
+        '''
+            Removes a cocktail from a user's favorites.
+        '''
+
+        try:
+            data = request.data
+
+            user = User.objects.get(pk=request.user.pk)
+            cocktail = Cocktail.objects.get(pk=data['cocktail_id'])
+            favorite = Favorite.objects.filter(cocktail=cocktail, user=user)
+
+            if favorite.exists():
+                favorite.delete()
+                return Response(
+                    { 'success': 'Cocktail successfully removed from favorites' },
+                    status=status.HTTP_200_OK,
+                )
+            else:
+                return Response(
+                    { 'success': 'Cocktail is not present within favorites' },
+                    status=status.HTTP_200_OK,
+                )
+
+        except BaseException as error:
+            logger.error(f'error occured while removing a favorite: {error}')
+            return Response(
+                {'error': 'Something went wrong when trying to remove a favorite'},
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR,
             )

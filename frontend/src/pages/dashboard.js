@@ -1,21 +1,15 @@
-import { useRouter } from 'next/router';
 import { useSelector } from 'react-redux';
 import Layout from '../hocs/Layout';
 import cookie from 'cookie';
 import { API_URL } from '../config/index';
 import FeastSwiper from '../components/FeastSwiper';
+import { loginRedirect } from '../utils/auth.js';
 
 const Dashboard = ({ error, feasts }) => {
-   
-    const router = useRouter();
 
-    const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
+    loginRedirect();
+
     const user = useSelector(state => state.auth.user);
-    const loading = useSelector(state => state.auth.loading);
-
-    if (typeof window !== 'undefined' && !loading && !isAuthenticated) {
-        router.push('/login');
-    }
 
     return (
         <Layout
@@ -72,7 +66,7 @@ export async function getServerSideProps({ req }) {
                 'Authorization': `Bearer ${access}`,
             },
         });
-    
+
         if (res.status === 200) {
             const data = await res.json();
 

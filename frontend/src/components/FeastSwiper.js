@@ -4,7 +4,7 @@
 import { Pagination } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import Link from 'next/link';
-import { displayDate } from '../utils/utils';
+import { displayDate } from '../utils/dates';
 
 // Import Swiper styles
 import 'swiper/css';

@@ -42,7 +42,11 @@ const LoginPage = () => {
     };
 
     if (typeof window !== 'undefined' && isAuthenticated) {
-        router.push('/dashboard');
+
+        const params = new URLSearchParams(window.location.search);
+        const redirect = params.get("redirect");
+
+        router.push(redirect ? redirect : '/dashboard');
     }
     return (
         <Layout

@@ -1,21 +1,12 @@
-import { useRouter } from 'next/router';
-import { useSelector } from 'react-redux';
 import Layout from '../../hocs/Layout';
 import cookie from 'cookie';
 import { API_URL } from '../../config/index';
 import LinkList from '../../components/LinkList';
+import { loginRedirect } from '../../utils/auth.js';
 
 const Cocktail = ({ error, cocktail }) => {
-   
-    const router = useRouter();
 
-    const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
-    const user = useSelector(state => state.auth.user);
-    const loading = useSelector(state => state.auth.loading);
-
-    if (typeof window !== 'undefined' && !loading && !isAuthenticated) {
-        router.push('/login');
-    }
+    loginRedirect();
 
     return (
         <Layout
@@ -39,11 +30,10 @@ const Cocktail = ({ error, cocktail }) => {
                           ))}
                         </ul>
                         <p>{cocktail.instructions}</p>
+
+                        <LinkList title="Feasts" links={cocktail.feasts} />
                       </>
                     )}
-
-                    <LinkList title="Feasts" links={cocktail.feasts} />
-
                 </div>
            </div>
         </Layout>
@@ -75,7 +65,7 @@ export async function getServerSideProps({ params, req }) {
                 'Authorization': `Bearer ${access}`,
             },
         });
-    
+
         if (res.status === 200) {
             const data = await res.json();
 

@@ -1,24 +1,15 @@
-import { useRouter } from 'next/router';
-import { useSelector } from 'react-redux';
 import Layout from '../../hocs/Layout';
 import cookie from 'cookie';
 import { API_URL, CATHOLIC_CULTURE_URL } from '../../config/index';
 import ExternalLink from '../../components/ExternalLink';
 import LinkList from '../../components/LinkList';
-import { displayDate } from '../../utils/utils';
+import { displayDate } from '../../utils/dates';
+import { loginRedirect } from '../../utils/auth.js';
 
 
 const Feast = ({ error, feast }) => {
 
-    const router = useRouter();
-
-    const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
-    const user = useSelector(state => state.auth.user);
-    const loading = useSelector(state => state.auth.loading);
-
-    if (typeof window !== 'undefined' && !loading && !isAuthenticated) {
-        router.push('/login');
-    }
+    loginRedirect();
 
     return (
         <Layout
@@ -27,26 +18,30 @@ const Feast = ({ error, feast }) => {
         >
            <div className='p-5 bg-light rounded-3'>
                 <div className='container-fluid py-3'>
-                    <h1 className='display-5 fw-bold'>
-                        {feast.name}
-                        <small className="text-muted fs-5 ms-2">{displayDate(feast.date)}</small>
-                    </h1>
-
-                    <p className="fs-5 fw-bold">External Links:</p>
-                    <ul>
-                        <li>
-                            <ExternalLink href={`${CATHOLIC_CULTURE_URL}?date=${feast.date}`}>
-                                CatholicCulture.org
-                            </ExternalLink>
-                        </li>
-                    </ul>
-
                     {error ? (
-                        <p className='fs-4 mt-3'>
-                            {error}
-                        </p>
+                        <>
+                            <p className='fs-4 mt-3'>
+                                {error}
+                            </p>
+                        </>
                     ) : (
-                        <LinkList title="Cocktails" links={feast.cocktails} />
+                        <>
+                            <h1 className='display-5 fw-bold'>
+                                {feast.name}
+                                <small className="text-muted fs-5 ms-2">{displayDate(feast.date)}</small>
+                            </h1>
+
+                            <p className="fs-5 fw-bold">External Links:</p>
+                            <ul>
+                                <li>
+                                    <ExternalLink href={`${CATHOLIC_CULTURE_URL}?date=${feast.date}`}>
+                                        CatholicCulture.org
+                                    </ExternalLink>
+                                </li>
+                            </ul>
+
+                            <LinkList title="Cocktails" links={feast.cocktails} />
+                        </>
                     )}
                 </div>
            </div>

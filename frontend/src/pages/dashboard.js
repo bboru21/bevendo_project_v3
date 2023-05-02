@@ -2,7 +2,8 @@ import { useSelector } from 'react-redux';
 import Layout from '../hocs/Layout';
 import cookie from 'cookie';
 import { API_URL } from '../config/index';
-import FeastSwiper from '../components/FeastSwiper';
+import FeastSwiper from '../components/swipers/FeastSwiper';
+import FavoriteSwiper from '../components/swipers/FavoriteSwiper';
 import { loginRedirect } from '../utils/auth.js';
 
 const Dashboard = ({ error, feasts }) => {
@@ -30,6 +31,7 @@ const Dashboard = ({ error, feasts }) => {
                         </p>
                     )}
                 </div>
+                {/* TODO move heading into component, use mapStateToProps */}
                 {feasts && (
                     <div className='container-fluid py-3'>
                         <h2 className='display-7 fw-bold mb-3'>
@@ -38,6 +40,8 @@ const Dashboard = ({ error, feasts }) => {
                         <FeastSwiper feasts={feasts} />
                     </div>
                 )}
+
+                <FavoriteSwiper />
            </div>
         </Layout>
     );

@@ -4,7 +4,8 @@
 import { Pagination } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import Link from 'next/link';
-import { displayDate } from '../utils/dates';
+import { displayDate } from '../../utils/dates';
+import { breakpoints } from './constants';
 
 // Import Swiper styles
 import 'swiper/css';
@@ -20,16 +21,7 @@ const FeastSwiper = ({ feasts }) => {
       onSwiper={(swiper) => { /*...*/ }}
       slidesPerView={1}
       spaceBetween={20}
-      breakpoints={{
-        576: {
-          slidesPerView: 2,
-          spaceBetween: 30,
-        },
-        992: {
-          slidesPerView: 3,
-          spaceBetween: 50,
-        }
-      }}
+      breakpoints={breakpoints}
       pagination={{ clickable: true }}
       modules={[ Pagination ]}
     >

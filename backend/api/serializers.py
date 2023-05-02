@@ -76,6 +76,8 @@ class FeastSerializer(DynamicFieldsModelSerializer):
 
 class FavoriteSerializer(serializers.ModelSerializer):
 
+    cocktail = CocktailSerializer(many=False, read_only=True, fields=('pk', 'name', 'urlname',))
+
     class Meta:
         model = Favorite
         fields = ['cocktail']

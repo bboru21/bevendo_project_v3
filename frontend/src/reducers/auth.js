@@ -14,10 +14,14 @@ import {
     REFRESH_FAIL,
     SET_AUTH_LOADING,
     REMOVE_AUTH_LOADING,
+    ADD_FAVORITE_SUCCESS,
+    REMOVE_FAVORITE_SUCCESS,
 } from '../actions/types';
 
 const initialState = {
-    user: null,
+    user: {
+        favorites: [],
+    },
     isAuthenticated: false,
     loading: false,
     register_success: false,
@@ -99,6 +103,22 @@ const authReducer = (state = initialState, action) => {
             return {
                 ...state,
                 loading: false,
+            };
+        case ADD_FAVORITE_SUCCESS:
+            return {
+                ...state,
+                user: {
+                    ...state.user,
+                    favorites: payload.favorites,
+                }
+            };
+        case REMOVE_FAVORITE_SUCCESS:
+            return {
+                ...state,
+                user: {
+                    ...state.user,
+                    favorites: payload.favorites,
+                }
             };
         default:
             return state;

@@ -19,6 +19,7 @@ logger = logging.getLogger(__name__)
 from .serializers import (
     CocktailSerializer,
     FeastSerializer,
+    FavoriteSerializer,
 )
 from account.serializers import UserSerializer
 
@@ -265,7 +266,10 @@ class FavoriteView(APIView):
 
             if favorite.exists():
                 return Response(
-                    { 'success': 'Cocktail already added to favorites' },
+                    {
+                        'success': 'Cocktail already added to favorites',
+                        'favorites': FavoriteSerializer(user.favorites, many=True).data,
+                    },
                     status=status.HTTP_200_OK,
                 )
             else:
@@ -275,7 +279,10 @@ class FavoriteView(APIView):
                 )
                 favorite.save()
                 return Response(
-                    { 'success': 'Cocktail successfully added to favorites' },
+                    {
+                        'success': 'Cocktail successfully added to favorites',
+                        'favorites': FavoriteSerializer(user.favorites, many=True).data,
+                    },
                     status=status.HTTP_201_CREATED,
                 )
 
@@ -301,12 +308,18 @@ class FavoriteView(APIView):
             if favorite.exists():
                 favorite.delete()
                 return Response(
-                    { 'success': 'Cocktail successfully removed from favorites' },
+                    {
+                        'success': 'Cocktail successfully removed from favorites',
+                        'favorites': FavoriteSerializer(user.favorites, many=True).data,
+                    },
                     status=status.HTTP_200_OK,
                 )
             else:
                 return Response(
-                    { 'success': 'Cocktail is not present within favorites' },
+                    {
+                        'success': 'Cocktail is not present within favorites',
+                        'favorites': FavoriteSerializer(user.favorites, many=True).data,
+                    },
                     status=status.HTTP_200_OK,
                 )
 

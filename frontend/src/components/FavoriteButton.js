@@ -1,28 +1,30 @@
-import { useEffect, useState, useRef } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import classNames from 'classnames';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faThumbsUp } from '@fortawesome/free-solid-svg-icons';
 import _ from 'underscore';
+import { add_favorite, remove_favorite } from '../actions/user';
+import { connect } from 'react-redux';
 
 const FavoriteButton = ({
+  favorites,
   cocktailId,
   className='',
 }) => {
 
-  const user = useSelector(state => state.auth.user);
+  const dispatch = useDispatch();
 
-  const favorites = useRef([]);
-  // useEffect(() => {
-  //   favorites.current = _.get(user, 'favorites', []).map(obj => obj['cocktail']);
-  // }, [user]);
+  const favoriteCocktailIds = favorites.map(obj => obj['cocktail']['pk']);
+  const isFavorited = favoriteCocktailIds.indexOf(cocktailId) > -1;
 
   const handleClick = () => {
-    // setIsFavorited(!isFavorited);
+    if (isFavorited) {
+      dispatch(remove_favorite(cocktailId));
+    } else {
+      dispatch(add_favorite(cocktailId));
+    }
   };
 
-  // const isFavorited = favorites.current.indexOf(cocktailId) > -1;
-  const isFavorited = false;
   return (
     <button
       className={classNames("btn btn-sm", className, {
@@ -36,4 +38,9 @@ const FavoriteButton = ({
   );
 };
 
-export default FavoriteButton;
+const mapStateToProps = (state, ownProps) => ({
+  favorites: state.auth.user.favorites,
+  ...ownProps,
+});
+
+export default connect(mapStateToProps)(FavoriteButton);

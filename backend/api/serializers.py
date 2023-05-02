@@ -1,6 +1,7 @@
 from .models import (
     Cocktail,
     CocktailIngredient,
+    Favorite,
     Feast,
     Ingredient,
 )
@@ -19,7 +20,7 @@ class DynamicFieldsModelSerializer(serializers.ModelSerializer):
         fields = kwargs.pop('fields', None)
 
         # Instantiate the superclass normally
-        super().__init__(*args, **kwargs) 
+        super().__init__(*args, **kwargs)
 
         if fields is not None:
             # Drop any fields that are not specified in the 'fields' argument.
@@ -50,18 +51,18 @@ class CocktailSerializer(DynamicFieldsModelSerializer):
     ingredients = CocktailIngredientSerializer(many=True, read_only=True)
     # feasts = FeastSerializer(many=True, read_only=True) # TODO results in a NameError due to hoisting issue
     feasts = serializers.SerializerMethodField()
-    
+
     def get_feasts(self, obj):
         return FeastSerializer(
-            obj.feast_set.all(), 
+            obj.feast_set.all(),
             many=True,
-            
+
             fields=('name', 'urlname',)
         ).data
-    
+
     class Meta:
         model = Cocktail
-        fields = ['pk', 'name', 'ingredients', 'instructions', 'slug', 'urlname', 'feasts']     
+        fields = ['pk', 'name', 'ingredients', 'instructions', 'slug', 'urlname', 'feasts']
 
 
 class FeastSerializer(DynamicFieldsModelSerializer):
@@ -71,3 +72,12 @@ class FeastSerializer(DynamicFieldsModelSerializer):
     class Meta:
         model = Feast
         fields = ['pk', 'name', 'date', 'cocktails', 'slug', 'urlname']
+
+
+class FavoriteSerializer(serializers.ModelSerializer):
+
+    cocktail = CocktailSerializer(many=False, read_only=True, fields=('pk', 'name', 'urlname',))
+
+    class Meta:
+        model = Favorite
+        fields = ['cocktail']

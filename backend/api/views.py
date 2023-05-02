@@ -19,6 +19,7 @@ logger = logging.getLogger(__name__)
 from .serializers import (
     CocktailSerializer,
     FeastSerializer,
+    FavoriteSerializer,
 )
 from account.serializers import UserSerializer
 
@@ -253,10 +254,48 @@ class FavoriteView(APIView):
 
     def post(self, request):
         '''
-            Adds/removes a cocktail from a users favorites.
+            Adds a cocktail to a user's favorites.
+        '''
 
-            TODO:
-            * determine if insert/delete functionality should be seperated
+        try:
+            data = request.data
+
+            user = User.objects.get(pk=request.user.pk)
+            cocktail = Cocktail.objects.get(pk=data['cocktail_id'])
+            favorite = Favorite.objects.filter(cocktail=cocktail, user=user)
+
+            if favorite.exists():
+                return Response(
+                    {
+                        'success': 'Cocktail already added to favorites',
+                        'favorites': FavoriteSerializer(user.favorites, many=True).data,
+                    },
+                    status=status.HTTP_200_OK,
+                )
+            else:
+                favorite = Favorite(
+                    cocktail=cocktail,
+                    user=user,
+                )
+                favorite.save()
+                return Response(
+                    {
+                        'success': 'Cocktail successfully added to favorites',
+                        'favorites': FavoriteSerializer(user.favorites, many=True).data,
+                    },
+                    status=status.HTTP_201_CREATED,
+                )
+
+        except BaseException as error:
+            logger.error(f'error occured while adding a favorite: {error}')
+            return Response(
+                {'error': 'Something went wrong when trying to add a favorite'},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            )
+
+    def delete(self, request):
+        '''
+            Removes a cocktail from a user's favorites.
         '''
 
         try:
@@ -269,23 +308,24 @@ class FavoriteView(APIView):
             if favorite.exists():
                 favorite.delete()
                 return Response(
-                    { 'success': 'Cocktail successfully removed from favorites' },
+                    {
+                        'success': 'Cocktail successfully removed from favorites',
+                        'favorites': FavoriteSerializer(user.favorites, many=True).data,
+                    },
                     status=status.HTTP_200_OK,
                 )
             else:
-                favorite = Favorite(
-                    cocktail=cocktail,
-                    user=user,
-                )
-                favorite.save()
                 return Response(
-                    { 'success': 'Cocktail successfully added to favorites' },
-                    status=status.HTTP_201_CREATED,
+                    {
+                        'success': 'Cocktail is not present within favorites',
+                        'favorites': FavoriteSerializer(user.favorites, many=True).data,
+                    },
+                    status=status.HTTP_200_OK,
                 )
 
         except BaseException as error:
-            logger.error(f'error occured while adding a favorite: {error}')
+            logger.error(f'error occured while removing a favorite: {error}')
             return Response(
-                {'error': 'Something went wrong when trying to add a favorite'},
+                {'error': 'Something went wrong when trying to remove a favorite'},
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR,
             )

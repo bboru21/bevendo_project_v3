@@ -9,9 +9,9 @@ const SearchBar = () => {
 
   const containerRef = useRef(null);
 
-  let cursor = -1;
+  const cursor = useRef(-1);
   useEffect(() => {
-    cursor = -1;
+    cursor.current = -1;
   });
 
   useEffect(() =>{
@@ -47,26 +47,13 @@ const SearchBar = () => {
 
   const focusOnInput = () => {
     // reset arrow navigation cursor, and set focus to input element
-    cursor = -1;
+    cursor.current = -1;
     const container = containerRef?.current;
     container && container.querySelector('input')?.focus();
   };
 
   const clearInputValue = () => {
     containerRef.current.querySelector('input').value = '';
-  }
-
-  const handleBlur = (event) => {
-    /* TODO: figure out if we need this */
-    // /*
-    //   On component container blur, close search if newly focused element is
-    //   not a child of the container.
-    // */
-    // const node = event.relatedTarget;
-    // if (!node || !containerRef.current?.contains(node)) {
-    //  setSearchQuery('');
-    //  setShowSearchResults(false);
-    // }
   }
 
   const handleFocus = () => {
@@ -94,15 +81,15 @@ const SearchBar = () => {
         container ? container.querySelectorAll(".search-result-item a") : []
       );
 
-      if (next && (cursor < results.length-1)) {
-        cursor = cursor + 1;
+      if (next && (cursor.current < results.length-1)) {
+        cursor.current = cursor.current + 1;
       } else if (previous) {
-        cursor = cursor -1;
+        cursor.current = cursor.current -1;
       }
 
       if (next || previous) {
-        if (results[cursor]) {
-          const result = results[cursor];
+        if (results[cursor.current]) {
+          const result = results[cursor.current];
           result.focus();
         } else {
           focusOnInput();
@@ -121,7 +108,6 @@ const SearchBar = () => {
     <div
       onFocus={handleFocus}
       onKeyDown={handleKeyDown}
-      onBlur={handleBlur}
       ref={containerRef}
       className="search-bar"
     >

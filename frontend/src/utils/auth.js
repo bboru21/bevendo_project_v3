@@ -10,6 +10,7 @@ export const loginRedirect = () => {
   const loading = useSelector(state => state.auth.loading);
 
   if (typeof window !== 'undefined' && !loading && !isAuthenticated) {
-      router.push(`/login?redirect=${encodeURIComponent(window.location.pathname)}`);
+      const redirect = encodeURIComponent(window.location.pathname);
+      router.push(`/login?redirect=${redirect}`);
   }
 };

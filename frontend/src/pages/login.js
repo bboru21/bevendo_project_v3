@@ -45,7 +45,6 @@ const LoginPage = () => {
 
         const params = new URLSearchParams(window.location.search);
         const redirect = params.get("redirect");
-
         router.push(redirect ? redirect : '/dashboard');
     }
     return (

@@ -39,7 +39,7 @@ const FavoriteButton = ({
 };
 
 const mapStateToProps = (state, ownProps) => ({
-  favorites: state.auth.user.favorites,
+  favorites: _.get(state, 'auth.user.favorites', []),
   ...ownProps,
 });
 

@@ -4,7 +4,7 @@ import cookie from 'cookie';
 import { API_URL } from '../config/index';
 import FeastSwiper from '../components/swipers/FeastSwiper';
 import FavoriteSwiper from '../components/swipers/FavoriteSwiper';
-import { loginRedirect } from '../utils/auth.js';
+import loginRedirect from '../hooks/loginRedirect';
 
 const Dashboard = ({ error, feasts }) => {
 

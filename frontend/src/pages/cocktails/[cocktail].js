@@ -2,7 +2,7 @@ import Layout from '../../hocs/Layout';
 import cookie from 'cookie';
 import { API_URL } from '../../config/index';
 import LinkList from '../../components/LinkList';
-import { loginRedirect } from '../../utils/auth.js';
+import loginRedirect from '../../hooks/loginRedirect';
 import FavoriteButton from '../../components/FavoriteButton';
 
 const Cocktail = ({ error, cocktail }) => {

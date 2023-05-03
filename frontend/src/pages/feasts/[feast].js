@@ -4,7 +4,7 @@ import { API_URL, CATHOLIC_CULTURE_URL } from '../../config/index';
 import ExternalLink from '../../components/ExternalLink';
 import LinkList from '../../components/LinkList';
 import { displayDate } from '../../utils/dates';
-import { loginRedirect } from '../../utils/auth.js';
+import loginRedirect from '../../hooks/loginRedirect';
 
 
 const Feast = ({ error, feast }) => {

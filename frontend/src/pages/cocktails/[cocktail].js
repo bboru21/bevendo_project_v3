@@ -28,8 +28,8 @@ const Cocktail = ({ error, cocktail }) => {
                             <FavoriteButton className="ms-2" cocktailId={cocktail.pk} />
                         </h1>
                         <ul>
-                          {cocktail.ingredients.map(i => (
-                           <li key={cocktail.pk}>{i.amount} {i.measurement} {i.ingredient.name}</li>
+                          {cocktail.ingredients.map(ingredient => (
+                           <li key={ingredient.pk}>{ingredient.amount} {ingredient.measurement} {ingredient.ingredient.name}</li>
                           ))}
                         </ul>
                         <p>{cocktail.instructions}</p>

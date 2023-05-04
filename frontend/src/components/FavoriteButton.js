@@ -39,8 +39,8 @@ const FavoriteButton = ({
 };
 
 const mapStateToProps = (state, ownProps) => ({
-  favorites: _.get(state, 'auth.user.favorites', []),
-  ...ownProps,
+    favorites: _.get(state, ['auth', 'user', 'favorites'], []),
+    ...ownProps,
 });
 
 export default connect(mapStateToProps)(FavoriteButton);

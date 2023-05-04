@@ -19,6 +19,10 @@ const LoginPage = () => {
     }, [dispatch]);
 
     const handleSubmit = event => {
+        /*
+            Values retrieved onSubmit instead of onChange to accomodate cases
+            where autofill does not trigger the latter.
+        */
         event.preventDefault();
 
         const username = event.target.querySelector('input[name="username"]').value;

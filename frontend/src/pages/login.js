@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useRouter } from 'next/router';
 import { login, reset_register_success } from '../actions/auth';
@@ -12,29 +12,17 @@ const LoginPage = () => {
     const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
     const loading = useSelector(state => state.auth.loading);
 
-    const [formData, setFormData] = useState({
-        username: '',
-        password: '',
-    });
-
-    const {
-        username,
-        password,
-    } = formData;
-
     useEffect(() => {
         if (dispatch && dispatch !== null && typeof dispatch !== 'undefined') {
             dispatch(reset_register_success());
         }
     }, [dispatch]);
 
-    const handleChange = event => setFormData({
-        ...formData,
-        [event.target.name]: event.target.value,
-    });
-
     const handleSubmit = event => {
         event.preventDefault();
+
+        const username = event.target.querySelector('input[name="username"]').value;
+        const password = event.target.querySelector('input[name="password"]').value;
 
         if (dispatch && dispatch !== null && dispatch !== undefined) {
             dispatch(login(username, password));
@@ -71,9 +59,7 @@ const LoginPage = () => {
                             type='text'
                             name='username'
                             placeholder='Username*'
-                            onChange={handleChange}
                             required
-                            value={username}
                         />
                     </div>
                     <div className='form-group'>
@@ -85,10 +71,8 @@ const LoginPage = () => {
                             type='password'
                             name='password'
                             placeholder='Password*'
-                            onChange={handleChange}
                             minLength={8}
                             required
-                            value={password}
                         />
                     </div>
                     {

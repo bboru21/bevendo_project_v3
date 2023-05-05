@@ -2,6 +2,7 @@ import { useDispatch } from 'react-redux';
 import classNames from 'classnames';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faThumbsUp } from '@fortawesome/free-solid-svg-icons';
+import { faThumbsUp as faThumbsUpRegular } from '@fortawesome/free-regular-svg-icons';
 import _ from 'underscore';
 import { add_favorite, remove_favorite } from '../actions/user';
 import { connect } from 'react-redux';
@@ -27,13 +28,10 @@ const FavoriteButton = ({
 
   return (
     <button
-      className={classNames("btn btn-sm", className, {
-        ['btn-outline-secondary']: !isFavorited,
-        ['btn-secondary']: isFavorited,
-      })}
+      className={classNames("btn btn-sm btn-outline-secondary", className)}
       onClick={handleClick}
     >
-      <FontAwesomeIcon icon={faThumbsUp} size="1x" />
+      <FontAwesomeIcon icon={isFavorited ? faThumbsUp : faThumbsUpRegular} size="1x" />
     </button>
   );
 };

@@ -5,8 +5,11 @@ import { API_URL } from '../config/index';
 import FeastSwiper from '../components/swipers/FeastSwiper';
 import FavoriteSwiper from '../components/swipers/FavoriteSwiper';
 import loginRedirect from '../hooks/loginRedirect';
+import ExternalLink from '../components/ExternalLink';
+import { displayDate } from '../utils/dates';
+import { USDollar } from '../utils/currency';
 
-const Dashboard = ({ error, feasts }) => {
+const Dashboard = ({ error, feasts, deals, latestPullDate }) => {
 
     loginRedirect();
 
@@ -31,17 +34,56 @@ const Dashboard = ({ error, feasts }) => {
                         </p>
                     )}
                 </div>
-                {/* TODO move heading into component, use mapStateToProps */}
-                {feasts && (
-                    <div className='container-fluid py-3'>
-                        <h2 className='display-7 fw-bold mb-3'>
-                            Upcoming Feasts and Cocktails
-                        </h2>
-                        <FeastSwiper feasts={feasts} />
-                    </div>
-                )}
 
-                <FavoriteSwiper />
+                {!error && (
+                    <>
+                        {/* TODO move heading into component, use mapStateToProps */}
+                        {feasts && (
+                            <div className='container-fluid py-3'>
+                                <h2 className='display-7 fw-bold mb-3'>
+                                    Upcoming Feasts
+                                </h2>
+                                <FeastSwiper feasts={feasts} />
+                            </div>
+                        )}
+
+                        <FavoriteSwiper />
+
+                        {deals && deals.length > 0 && (
+                            <div className='container-fluid py-3'>
+                                <h2 className='display-7 fw-bold mb-3'>
+                                    Weekly Virginia ABC Deals
+                                </h2>
+                                <p>
+                                    Below are this weeks deals for a small number of selected products.
+                                    Deals are idenfitied by having a <a href="#best-price-score">Best Price Score*</a> of 70 or better according to their size and price per liter, and are sorted by their discount from the average price per bottle size.
+                                    Price information is current as of {displayDate(latestPullDate)} and is compared with data from as early as April 2020.</p>
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">Product</th>
+                                            <th scope="col">Price (Below Avg/Size)</th>
+                                            <th scope="col">On-Sale</th>
+                                            <th scope="col">Best Price</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    {deals.map(deal => (
+                                        <tr>
+                                            <td><ExternalLink href={`${deal.url}?productSize=${deal.product_size}`}>{deal.name} ({deal.size})</ExternalLink></td>
+                                            <td>{USDollar.format(deal.current_price)} ({USDollar.format(deal.price_below_average_per_size)})</td>
+                                            <td>{deal.is_on_sale ? 'Yes' : 'No'}</td>
+                                            <td>{deal.is_best_price ? 'Yes' : 'No'}</td>
+                                        </tr>
+                                    ))}
+                                    </tbody>
+                                </table>
+
+                                <p id="best-price-score">* "Best Price Score" is a calculation which is 30% based on price being below average price per liter, and 70% based on being below the average price for the bottle size.</p>
+                            </div>
+                        )}
+                    </>
+                )}
            </div>
         </Layout>
     );
@@ -77,6 +119,8 @@ export async function getServerSideProps({ req }) {
             return {
                 props: {
                     feasts: data.feasts,
+                    deals: data.deals,
+                    latestPullDate: data.latest_pull_date,
                 }
             };
 

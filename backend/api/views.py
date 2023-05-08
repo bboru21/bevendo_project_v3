@@ -118,8 +118,15 @@ class DashboardPageView(AuthorizedPageView):
             # TODO add prefetch_related('cocktails')
             feasts = FeastSerializer(qs, many=True).data
 
+            latest_pull_date = get_latest_price_pull_date()
+            deals = get_email_deals(latest_pull_date)
+
             res.data.update(
-                { 'feasts': feasts },
+                {
+                    'feasts': feasts,
+                    'deals': deals,
+                    'latest_pull_date': latest_pull_date.strftime('%Y-%m-%d'),
+                },
                 status=status.HTTP_200_OK,
             )
             return res

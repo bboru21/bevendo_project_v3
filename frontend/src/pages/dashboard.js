@@ -58,7 +58,7 @@ const Dashboard = ({ error, feasts, deals, latestPullDate }) => {
                                     Below are this weeks deals for a small number of selected products.
                                     Deals are idenfitied by having a <a href="#best-price-score">Best Price Score*</a> of 70 or better according to their size and price per liter, and are sorted by their discount from the average price per bottle size.
                                     Price information is current as of {displayDate(latestPullDate)} and is compared with data from as early as April 2020.</p>
-                                <table class="table">
+                                <table className="table">
                                     <thead>
                                         <tr>
                                             <th scope="col">Product</th>

@@ -68,8 +68,8 @@ const Dashboard = ({ error, feasts, deals, latestPullDate }) => {
                                         </tr>
                                     </thead>
                                     <tbody>
-                                    {deals.map(deal => (
-                                        <tr>
+                                    {deals.map((deal, i) => (
+                                        <tr key={`deal-${i}`}>
                                             <td><ExternalLink href={`${deal.url}?productSize=${deal.product_size}`}>{deal.name} ({deal.size})</ExternalLink></td>
                                             <td>{USDollar.format(deal.current_price)} ({USDollar.format(deal.price_below_average_per_size)})</td>
                                             <td>{deal.is_on_sale ? 'Yes' : 'No'}</td>
@@ -79,7 +79,7 @@ const Dashboard = ({ error, feasts, deals, latestPullDate }) => {
                                     </tbody>
                                 </table>
 
-                                <p id="best-price-score">* "Best Price Score" is a calculation which is 30% based on price being below average price per liter, and 70% based on being below the average price for the bottle size.</p>
+                                <p id="best-price-score">* &rdquo;Best Price Score&ldquo; is a calculation which is 30% based on price being below average price per liter, and 70% based on being below the average price for the bottle size.</p>
                             </div>
                         )}
                     </>

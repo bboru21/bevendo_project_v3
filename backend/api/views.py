@@ -251,6 +251,9 @@ class SearchView(APIView):
             for feast in feasts:
                 results.append({ 'label': feast.name, 'value': feast.urlname })
 
+        if len(results) == 0:
+            results = [{ 'label': 'No results found.', 'value': None }]
+
         return Response(
             { 'results': results },
             status=status.HTTP_200_OK,

@@ -125,9 +125,13 @@ const SearchBar = () => {
         <ul className="search-result-list">
           {searchResults.map( result => (
             <li key={result.value} className="search-result-item">
-                <Link href={result.value} legacyBehavior>
-                  <a className="px-2 py-1 link-secondary" onClick={handleClick}>{result.label}</a>
-                </Link>
+                {result.value ? (
+                  <Link href={result.value} legacyBehavior>
+                    <a className="px-2 py-1 link-secondary" onClick={handleClick}>{result.label}</a>
+                  </Link>
+                ) : (
+                  <div className="px-2 py-1">{result.label}</div>
+                )}
             </li>
           ))}
         </ul>

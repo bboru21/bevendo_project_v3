@@ -14,7 +14,7 @@ config.autoAddCss = false
 import "bootstrap/dist/css/bootstrap.min.css";
 
 // custom styles
-import "../styles/styles.css";
+import "../styles/styles.scss";
 
 const App = ({ Component, pageProps }) => {
   const store = useStore(pageProps.initialReduxState);

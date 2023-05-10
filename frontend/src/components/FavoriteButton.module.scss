@@ -1,0 +1,31 @@
+@import "src/styles/_variables.scss";
+
+.button {
+  position: relative;
+  top: -0.25rem;
+  width: 2.5rem;
+  height: 2.5rem;
+  font-size: 1.25rem;
+  border-radius: 50%;
+  color: $gray-600;
+  border: 2px solid $gray-600;
+  outline: none;
+
+  &:hover {
+    opacity: 0.75;
+  }
+
+  & svg {
+    color: $gray-600;
+  }
+
+  &.isFavorited {
+    color: $blue;
+    background: $blue;
+    border-color: $blue;
+
+    & svg {
+      color: $white;
+    }
+  }
+}

@@ -6,6 +6,7 @@ import { faThumbsUp as faThumbsUpRegular } from '@fortawesome/free-regular-svg-i
 import _ from 'underscore';
 import { add_favorite, remove_favorite } from '../actions/user';
 import { connect } from 'react-redux';
+import css from './FavoriteButton.module.scss';
 
 const FavoriteButton = ({
   favorites,
@@ -28,8 +29,11 @@ const FavoriteButton = ({
 
   return (
     <button
-      className={classNames("btn btn-sm btn-outline-secondary", className)}
+      className={classNames(className, css.button, {
+        [css.isFavorited]: isFavorited,
+      })}
       onClick={handleClick}
+      title={isFavorited ? `Remove from favorites` : `Add to favorites`}
     >
       <FontAwesomeIcon icon={isFavorited ? faThumbsUp : faThumbsUpRegular} size="1x" />
     </button>

@@ -35,7 +35,7 @@ const FavoriteButton = ({
       onClick={handleClick}
       title={isFavorited ? `Remove from favorites` : `Add to favorites`}
     >
-      <FontAwesomeIcon icon={isFavorited ? faThumbsUp : faThumbsUpRegular} size="1x" />
+      <FontAwesomeIcon icon={isFavorited ? faThumbsUp : faThumbsUpRegular} size="2x" />
     </button>
   );
 };

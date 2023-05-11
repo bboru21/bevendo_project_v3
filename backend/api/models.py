@@ -100,7 +100,12 @@ class Ingredient(models.Model):
 class ControlledBeverage(models.Model):
     name = models.CharField(max_length=250, unique=True)
     slug = models.SlugField(null=True, blank=True, unique=True)
-    ingredients = models.ManyToManyField(Ingredient, default=None, blank=True)
+    ingredients = models.ManyToManyField(
+        Ingredient,
+        default=None,
+        blank=True,
+        related_name='controlled_beverages',
+    )
     is_in_stock = models.BooleanField(default=False, null=True)
 
     def save(self, *args, **kwargs):

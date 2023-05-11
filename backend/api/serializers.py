@@ -4,6 +4,7 @@ from .models import (
     Favorite,
     Feast,
     Ingredient,
+    ControlledBeverage,
 )
 from rest_framework import serializers
 
@@ -30,11 +31,34 @@ class DynamicFieldsModelSerializer(serializers.ModelSerializer):
                 self.fields.pop(field_name)
 
 
+class ControlledBeverageSerializer(serializers.ModelSerializer):
+
+    ext_url = serializers.SerializerMethodField()
+    current_prices = serializers.SerializerMethodField()
+
+    def get_ext_url(self, obj):
+        if hasattr(obj, 'abc_product'):
+            return obj.abc_product.url
+        return None
+
+    def get_current_prices(self, obj):
+        if hasattr(obj, 'abc_product'):
+            # print(obj.abc_product.prices)
+            pass
+        return []
+
+    class Meta:
+        model = ControlledBeverage
+        fields = ['name', 'ext_url', 'current_prices']
+
+
 class IngredientSerializer(serializers.ModelSerializer):
+
+    controlled_beverages = ControlledBeverageSerializer(many=True, read_only=True)
 
     class Meta:
         model = Ingredient
-        fields = ['name', 'is_controlled', 'urlname']
+        fields = ['name', 'is_controlled', 'urlname', 'controlled_beverages']
 
 
 class CocktailIngredientSerializer(serializers.ModelSerializer):

@@ -11,6 +11,7 @@ from .views import (
     DashboardPageView,
     FeastPageView,
     CocktailPageView,
+    IngredientPageView,
     SearchView,
     FavoriteView,
 )
@@ -19,6 +20,7 @@ page_urls = [
     path('dashboard/', DashboardPageView.as_view()),
     path('feasts/<slug:slug>/', FeastPageView.as_view()),
     path('cocktails/<slug:slug>/', CocktailPageView.as_view()),
+    path('ingredients/<slug:slug>/', IngredientPageView.as_view()),
 ]
 
 urlpatterns = [

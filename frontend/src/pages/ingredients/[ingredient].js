@@ -1,20 +1,11 @@
-import { useRouter } from 'next/router';
-import { useSelector } from 'react-redux';
 import Layout from '../../hocs/Layout';
 import cookie from 'cookie';
 import { API_URL } from '../../config/index';
-import LinkList from '../../components/LinkList';
+import loginRedirect from '../../hooks/loginRedirect';
 
 const Ingredient = ({ error, ingredient }) => {
 
-    const router = useRouter();
-
-    const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
-    const loading = useSelector(state => state.auth.loading);
-
-    if (typeof window !== 'undefined' && !loading && !isAuthenticated) {
-        router.push('/login');
-    }
+    loginRedirect();
 
     return (
         <Layout

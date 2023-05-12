@@ -2,6 +2,9 @@ import Layout from '../../hocs/Layout';
 import cookie from 'cookie';
 import { API_URL } from '../../config/index';
 import loginRedirect from '../../hooks/loginRedirect';
+import { USDollar } from '../../utils/currency';
+import ProConIcon from '../../components/ProConIcon';
+
 
 const Ingredient = ({ error, ingredient }) => {
 
@@ -23,6 +26,47 @@ const Ingredient = ({ error, ingredient }) => {
                         <h1 className='display-5 fw-bold'>
                             {ingredient.name}
                         </h1>
+
+                        {ingredient.controlled_beverages.length > 0 && (
+                            <>
+                            <h2>Products</h2>
+
+                            <ul>
+                            {ingredient.controlled_beverages.map(b => (
+                                <li key={b.pk}>
+                                    <h3>{b.name}</h3>
+                                    {b.current_prices.length > 0 && (
+                                        <table className="table">
+                                            <thead>
+                                                <tr>
+                                                    <th>Size</th>
+                                                    <th>Price</th>
+                                                    <th>Is On Sale?</th>
+                                                    <th>Price/Liter</th>
+                                                    <th>Price Score</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                            {b.current_prices.map(p => (
+                                                <tr key={p.pk}>
+                                                    <td>{p.size}</td>
+                                                    <td>{USDollar.format(p.current_price)}</td>
+                                                    <td>
+                                                        <ProConIcon isPro={p.is_on_sale} />
+                                                    </td>
+                                                    <td>{USDollar.format(p.price_per_liter)}</td>
+                                                    <td>{p.price_score}</td>
+                                                </tr>
+                                            ))}
+                                            </tbody>
+                                        </table>
+                                    )}
+                                </li>
+                            ))}
+                            </ul>
+                            </>
+
+                        )}
                       </>
                     )}
                 </div>

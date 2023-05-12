@@ -66,7 +66,12 @@ class ABCProduct(models.Model):
     avg_price_1_5_l = models.DecimalField(max_digits=10, decimal_places=2, null=True, default=None, blank=True)
     avg_price_1_75_l = models.DecimalField(max_digits=10, decimal_places=2, null=True, default=None, blank=True)
 
-    controlled_beverage = models.OneToOneField(ControlledBeverage, on_delete=models.SET_NULL, null=True)
+    controlled_beverage = models.OneToOneField(
+        ControlledBeverage,
+        on_delete=models.SET_NULL,
+        null=True,
+        related_name="abc_product",
+    )
 
     active = models.BooleanField(default=True, null=False)
 
@@ -84,7 +89,11 @@ class ABCProduct(models.Model):
 
 
 class ABCPrice(models.Model):
-    product = models.ForeignKey(ABCProduct, on_delete=models.CASCADE)
+    product = models.ForeignKey(
+        ABCProduct,
+        on_delete=models.CASCADE,
+        related_name="prices",
+    )
     size = models.CharField(max_length=250, null=True, default=None)
     current_price = models.DecimalField(max_digits=10, decimal_places=2)
     price_per_liter = models.DecimalField(max_digits=10, decimal_places=2)

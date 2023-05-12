@@ -4,6 +4,7 @@ import { API_URL } from '../../config/index';
 import LinkList from '../../components/LinkList';
 import loginRedirect from '../../hooks/loginRedirect';
 import FavoriteButton from '../../components/FavoriteButton';
+import Link from 'next/link';
 
 const Cocktail = ({ error, cocktail }) => {
 
@@ -12,7 +13,7 @@ const Cocktail = ({ error, cocktail }) => {
     return (
         <Layout
             title='Bevendo | Cocktail'
-            content='Cocktail day profile page.'
+            content='Cocktail profile page.'
         >
            <div className='p-5 bg-light rounded-3'>
                 <div className='container-fluid py-3'>
@@ -28,8 +29,20 @@ const Cocktail = ({ error, cocktail }) => {
                             <FavoriteButton className="ms-2" cocktailId={cocktail.pk} />
                         </h1>
                         <ul>
-                          {cocktail.ingredients.map(ingredient => (
-                           <li key={ingredient.pk}>{ingredient.amount} {ingredient.measurement} {ingredient.ingredient.name}</li>
+                          {cocktail.ingredients.map(i => (
+                           <li key={i.pk}>
+                            {i.ingredient.is_controlled ? (
+                                <Link href={i.ingredient.urlname}>
+                                    <a>
+                                    {i.amount} {i.measurement} {i.ingredient.name}
+                                    </a>
+                                </Link>
+                            ) : (
+                                <>
+                                {i.amount} {i.measurement} {i.ingredient.name}
+                                </>
+                            )}
+                           </li>
                           ))}
                         </ul>
                         <p>{cocktail.instructions}</p>

@@ -17,8 +17,9 @@ logger = logging.getLogger(__name__)
 
 
 from .serializers import (
-    CocktailSerializer,
     FeastSerializer,
+    CocktailSerializer,
+    IngredientSerializer,
     FavoriteSerializer,
 )
 from account.serializers import UserSerializer
@@ -27,6 +28,7 @@ from .models import (
     Favorite,
     Feast,
     Cocktail,
+    Ingredient,
 )
 
 from .utils import (
@@ -175,6 +177,30 @@ class CocktailPageView(AuthorizedPageView):
             return res
         except ObjectDoesNotExist:
             return Response({'error': 'Cocktail not found'}, status=status.HTTP_404_NOT_FOUND)
+        except BaseException as error:
+            logger.error(f'Something went wrong when trying to load page data: {error}')
+            return Response(
+                { 'error': 'Something went wrong when trying to load page data', },
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            )
+
+
+class IngredientPageView(AuthorizedPageView):
+    def get(self, request, slug, format=None):
+
+        res = super().get(request, format)
+
+        try:
+
+            qs = Ingredient.objects.get(slug=slug)
+            ingredient = IngredientSerializer(qs, many=False).data
+
+            res.data.update({
+                'ingredient': ingredient,
+            }, status=status.HTTP_200_OK)
+            return res
+        except ObjectDoesNotExist:
+            return Response({'error': 'Ingredient not found'}, status=status.HTTP_404_NOT_FOUND)
         except BaseException as error:
             logger.error(f'Something went wrong when trying to load page data: {error}')
             return Response(

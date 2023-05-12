@@ -4,8 +4,11 @@ from .models import (
     Favorite,
     Feast,
     Ingredient,
+    ControlledBeverage,
 )
 from rest_framework import serializers
+from ext_data.abc_models import get_latest_price_pull_date
+from ext_data.abc_serializers import ABCPriceSerializer
 
 
 class DynamicFieldsModelSerializer(serializers.ModelSerializer):
@@ -30,11 +33,39 @@ class DynamicFieldsModelSerializer(serializers.ModelSerializer):
                 self.fields.pop(field_name)
 
 
+class ControlledBeverageSerializer(serializers.ModelSerializer):
+
+    ext_url = serializers.SerializerMethodField()
+    current_prices = serializers.SerializerMethodField()
+
+    def get_ext_url(self, obj):
+        if hasattr(obj, 'abc_product'):
+            return obj.abc_product.url
+        return None
+
+    def get_current_prices(self, obj):
+        if hasattr(obj, 'abc_product'):
+            latest_pull_date = get_latest_price_pull_date()
+
+            return ABCPriceSerializer(
+                obj.abc_product.prices.filter(pull_date=latest_pull_date),
+                many=True,
+            ).data
+
+        return []
+
+    class Meta:
+        model = ControlledBeverage
+        fields = ['name', 'ext_url', 'current_prices']
+
+
 class IngredientSerializer(serializers.ModelSerializer):
+
+    controlled_beverages = ControlledBeverageSerializer(many=True, read_only=True)
 
     class Meta:
         model = Ingredient
-        fields = ['name',]
+        fields = ['name', 'is_controlled', 'urlname', 'controlled_beverages']
 
 
 class CocktailIngredientSerializer(serializers.ModelSerializer):

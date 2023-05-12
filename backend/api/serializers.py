@@ -7,6 +7,8 @@ from .models import (
     ControlledBeverage,
 )
 from rest_framework import serializers
+from ext_data.abc_models import get_latest_price_pull_date
+from ext_data.abc_serializers import ABCPriceSerializer
 
 
 class DynamicFieldsModelSerializer(serializers.ModelSerializer):
@@ -43,8 +45,13 @@ class ControlledBeverageSerializer(serializers.ModelSerializer):
 
     def get_current_prices(self, obj):
         if hasattr(obj, 'abc_product'):
-            # print(obj.abc_product.prices)
-            pass
+            latest_pull_date = get_latest_price_pull_date()
+
+            return ABCPriceSerializer(
+                obj.abc_product.prices.filter(pull_date=latest_pull_date),
+                many=True,
+            ).data
+
         return []
 
     class Meta:

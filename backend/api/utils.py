@@ -101,6 +101,8 @@ def get_email_feasts_products(start_date, end_date, latest_pull_date):
                     products = ControlledBeverage.objects \
                                 .filter(ingredients__in=[ingredient.pk])
 
+
+
                     _ingredient = {
                         'name': ingredient.name,
                         'is_controlled': True,
@@ -112,15 +114,15 @@ def get_email_feasts_products(start_date, end_date, latest_pull_date):
                     for product in products:
 
                         # print(product.name)
-                        if hasattr(product, 'abcproduct'):
-                            abcproduct = product.abcproduct
+                        if hasattr(product, 'abc_product'):
+                            abc_product = product.abc_product
                             _product = {
-                                'id': abcproduct.id,
-                                'name': abcproduct.name,
+                                'id': abc_product.id,
+                                'name': abc_product.name,
                             }
 
                             prices = ABCPrice.objects \
-                                        .filter(product=abcproduct) \
+                                        .filter(product=abc_product) \
                                         .filter(pull_date=latest_pull_date)
                             _prices = []
 
@@ -130,11 +132,11 @@ def get_email_feasts_products(start_date, end_date, latest_pull_date):
                                 # from time to time, getattr fails here because ABC store changes the sizes
                                 # for now, we're OK with it failing because that forces us to update the ABCProduct model
                                 best_price_column_name = format_abc_product_best_column_name(price.size)
-                                best_price = getattr(abcproduct, best_price_column_name)
+                                best_price = getattr(abc_product, best_price_column_name)
                                 amount_above_best_price = (price.current_price - best_price) if best_price else 0
 
                                 avg_price_column_name = format_abc_product_avg_column_name(price.size)
-                                avg_price_per_size = getattr(abcproduct, avg_price_column_name)
+                                avg_price_per_size = getattr(abc_product, avg_price_column_name)
 
                                 if avg_price_per_size:
                                     price_below_average_per_size = avg_price_per_size - price.current_price
@@ -144,12 +146,12 @@ def get_email_feasts_products(start_date, end_date, latest_pull_date):
                                 _prices.append({
                                     'current_price': price.current_price,
                                     'size': price.size,
-                                    'price_below_average_per_liter': (abcproduct.avg_price_per_liter - price.price_per_liter),
+                                    'price_below_average_per_liter': (abc_product.avg_price_per_liter - price.price_per_liter),
                                     'price_below_average_per_size': price_below_average_per_size,
                                     'price_score': price.price_score,
                                     'price_per_liter_score': price.price_per_liter_score,
                                     'is_on_sale': price.is_on_sale,
-                                    'url': '{}?productSize={}'.format(abcproduct.url, price_index), # TODO store the actual URL
+                                    'url': '{}?productSize={}'.format(abc_product.url, price_index), # TODO store the actual URL
                                     'amount_above_best_price': amount_above_best_price,
                                     'price_per_liter': price.price_per_liter,
                                 })

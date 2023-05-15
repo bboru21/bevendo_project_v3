@@ -4,6 +4,7 @@ import { API_URL } from '../../config/index';
 import loginRedirect from '../../hooks/loginRedirect';
 import { USDollar } from '../../utils/currency';
 import ProConIcon from '../../components/ProConIcon';
+import ExternalLink from '../../components/ExternalLink';
 
 
 const Ingredient = ({ error, ingredient }) => {
@@ -46,7 +47,6 @@ const Ingredient = ({ error, ingredient }) => {
                                                         <span className="d-none d-md-block">Is On-Sale?</span>
                                                     </th>
                                                     <th scope="col">
-
                                                         <span className="d-block d-md-none">PPL</span>
                                                         <span className="d-none d-md-block">Price/Liter</span>
                                                     </th>
@@ -59,7 +59,9 @@ const Ingredient = ({ error, ingredient }) => {
                                             <tbody>
                                             {b.current_prices.map(p => (
                                                 <tr key={p.pk}>
-                                                    <td>{p.size}</td>
+                                                    <td>
+                                                        {p.url ? (<ExternalLink href={p.url}>{p.size}</ExternalLink>) : (<>{p.size}</>)}
+                                                    </td>
                                                     <td>{USDollar.format(p.current_price)}</td>
                                                     <td>
                                                         <ProConIcon isPro={p.is_on_sale} />

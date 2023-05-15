@@ -16,6 +16,7 @@ class ABCPriceSerializer(serializers.ModelSerializer):
           'price_per_liter',
           'price_per_liter_score',
           'size',
+          'url',
           # TODO below fields calulated in api.utils, determine how to use here
           # 'amount_above_best_price',
           # 'price_below_average_per_liter',

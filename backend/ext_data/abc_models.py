@@ -239,6 +239,13 @@ class ABCPrice(models.Model):
 
         return deals
 
+    @property
+    def url(self):
+        url = self.product.url
+        if self.product_size:
+            url = f'{url}?productSize={self.product_size}'
+        return url
+
     def __str__(self):
         return '{} ({}) - ${} (${}/liter)'.format(
             self.product.name,

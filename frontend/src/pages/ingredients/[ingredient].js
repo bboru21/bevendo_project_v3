@@ -31,7 +31,7 @@ const Ingredient = ({ error, ingredient }) => {
                             <>
                             <h2>Products</h2>
 
-                            <ul>
+                            <ul className="product-list">
                             {ingredient.controlled_beverages.map(b => (
                                 <li key={b.pk}>
                                     <h3>{b.name}</h3>
@@ -39,11 +39,21 @@ const Ingredient = ({ error, ingredient }) => {
                                         <table className="table">
                                             <thead>
                                                 <tr>
-                                                    <th>Size</th>
-                                                    <th>Price</th>
-                                                    <th>Is On Sale?</th>
-                                                    <th>Price/Liter</th>
-                                                    <th>Price Score</th>
+                                                    <th scope="col">Size</th>
+                                                    <th scope="col">Price</th>
+                                                    <th scope="col">
+                                                        <span className="d-block d-md-none">Sale</span>
+                                                        <span className="d-none d-md-block">Is On-Sale?</span>
+                                                    </th>
+                                                    <th scope="col">
+
+                                                        <span className="d-block d-md-none">PPL</span>
+                                                        <span className="d-none d-md-block">Price/Liter</span>
+                                                    </th>
+                                                    <th scope="col">
+                                                        <span className="d-block d-md-none">Score</span>
+                                                        <span className="d-none d-md-block">Price Score</span>
+                                                    </th>
                                                 </tr>
                                             </thead>
                                             <tbody>

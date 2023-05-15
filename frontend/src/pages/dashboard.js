@@ -8,6 +8,7 @@ import loginRedirect from '../hooks/loginRedirect';
 import ExternalLink from '../components/ExternalLink';
 import { displayDate } from '../utils/dates';
 import { USDollar } from '../utils/currency';
+import ProConIcon from '../components/ProConIcon';
 
 const Dashboard = ({ error, feasts, deals, latestPullDate }) => {
 
@@ -62,9 +63,19 @@ const Dashboard = ({ error, feasts, deals, latestPullDate }) => {
                                     <thead>
                                         <tr>
                                             <th scope="col">Product</th>
-                                            <th scope="col">Price (Below Avg/Size)</th>
-                                            <th scope="col">On-Sale</th>
-                                            <th scope="col">Best Price</th>
+                                            <th scope="col">
+                                                <span className="d-block d-md-none">Price</span>
+                                                <span className="d-none d-md-block">Price (Below Avg/Size)</span>
+                                            </th>
+                                            <th scope="col">
+
+                                                <span className="d-block d-md-none">Sale</span>
+                                                <span className="d-none d-md-block">Is On-Sale?</span>
+                                            </th>
+                                            <th scope="col">
+                                                <span className="d-block d-md-none">Best</span>
+                                                <span className="d-none d-md-block">Is Best Price?</span>
+                                            </th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -72,8 +83,8 @@ const Dashboard = ({ error, feasts, deals, latestPullDate }) => {
                                         <tr key={`deal-${i}`}>
                                             <td><ExternalLink href={`${deal.url}?productSize=${deal.product_size}`}>{deal.name} ({deal.size})</ExternalLink></td>
                                             <td>{USDollar.format(deal.current_price)} ({USDollar.format(deal.price_below_average_per_size)})</td>
-                                            <td>{deal.is_on_sale ? 'Yes' : 'No'}</td>
-                                            <td>{deal.is_best_price ? 'Yes' : 'No'}</td>
+                                            <td><ProConIcon isPro={deal.is_on_sale} /></td>
+                                            <td><ProConIcon isPro={deal.is_best_price} /></td>
                                         </tr>
                                     ))}
                                     </tbody>

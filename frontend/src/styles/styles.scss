@@ -81,3 +81,12 @@ footer {
   height: fit-content;
 }
 /* end swiper custom styles */
+
+.product-list {
+  & {
+    padding-left: 0;
+  }
+  & > li {
+    list-style: none;
+  }
+}

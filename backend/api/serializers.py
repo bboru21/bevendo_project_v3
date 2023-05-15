@@ -47,8 +47,11 @@ class ControlledBeverageSerializer(serializers.ModelSerializer):
         if hasattr(obj, 'abc_product'):
             latest_pull_date = get_latest_price_pull_date()
 
+            qs = obj.abc_product.prices.filter(pull_date=latest_pull_date)
+            qs = sorted(qs, key=lambda x: x.price_score, reverse=True)
+
             return ABCPriceSerializer(
-                obj.abc_product.prices.filter(pull_date=latest_pull_date),
+                qs,
                 many=True,
             ).data
 

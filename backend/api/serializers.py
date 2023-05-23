@@ -98,10 +98,16 @@ class CocktailSerializer(DynamicFieldsModelSerializer):
         model = Cocktail
         fields = ['pk', 'name', 'ingredients', 'instructions', 'slug', 'urlname', 'feasts']
 
+class CocktailStubSerializer(CocktailSerializer):
+
+    class Meta:
+        model = Cocktail
+        fields = ['pk', 'name', 'urlname']
+
 
 class FeastSerializer(DynamicFieldsModelSerializer):
 
-    cocktails = CocktailSerializer(many=True, read_only=True)
+    cocktails = CocktailStubSerializer(many=True, read_only=True)
 
     class Meta:
         model = Feast

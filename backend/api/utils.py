@@ -128,31 +128,16 @@ def get_email_feasts_products(start_date, end_date, latest_pull_date):
 
                             price_index = 0
                             for price in prices:
-
-                                # from time to time, getattr fails here because ABC store changes the sizes
-                                # for now, we're OK with it failing because that forces us to update the ABCProduct model
-                                best_price_column_name = format_abc_product_best_column_name(price.size)
-                                best_price = getattr(abc_product, best_price_column_name)
-                                amount_above_best_price = (price.current_price - best_price) if best_price else 0
-
-                                avg_price_column_name = format_abc_product_avg_column_name(price.size)
-                                avg_price_per_size = getattr(abc_product, avg_price_column_name)
-
-                                if avg_price_per_size:
-                                    price_below_average_per_size = avg_price_per_size - price.current_price
-                                else:
-                                    price_below_average_per_size = 'N/A'
-
                                 _prices.append({
                                     'current_price': price.current_price,
                                     'size': price.size,
-                                    'price_below_average_per_liter': (abc_product.avg_price_per_liter - price.price_per_liter),
-                                    'price_below_average_per_size': price_below_average_per_size,
+                                    'price_below_average_per_liter': price.price_below_average_per_liter,
+                                    'price_below_average_per_size': price.price_below_average_per_size,
                                     'price_score': price.price_score,
                                     'price_per_liter_score': price.price_per_liter_score,
                                     'is_on_sale': price.is_on_sale,
                                     'url': '{}?productSize={}'.format(abc_product.url, price_index), # TODO store the actual URL
-                                    'amount_above_best_price': amount_above_best_price,
+                                    'amount_above_best_price': price.amount_above_best_price,
                                     'price_per_liter': price.price_per_liter,
                                 })
                                 price_index = price_index+1
@@ -194,23 +179,20 @@ def get_email_deals(latest_pull_date):
 
             if not limit or price.current_price <= limit:
 
-                avg_price = price.avg_price
                 best_price = price.best_price
 
 
-                avg_price_column_name = format_abc_product_avg_column_name(price.size)
-                avg_price_per_size = getattr(price.product, avg_price_column_name)
-                price_below_average_per_size = avg_price_per_size - price.current_price
+
 
                 deals.append({
                     'name': price.product.name,
                     'size': price.size,
                     'current_price': price.current_price,
                     'is_on_sale': price.is_on_sale,
-                    'price_below_average': (avg_price - price.current_price),
-                    'price_below_average_per_size': price_below_average_per_size,
+                    'price_below_average': price.price_below_average,
+                    'price_below_average_per_size': price.price_below_average_per_size,
                     'score': price.price_score,
-                    'is_best_price': best_price==price.current_price,
+                    'is_best_price': price.is_best_price,
                     'product_size': price.product_size,
                     'url': price.product.url,
                 })

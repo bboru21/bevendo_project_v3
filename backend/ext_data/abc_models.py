@@ -246,6 +246,38 @@ class ABCPrice(models.Model):
             url = f'{url}?productSize={self.product_size}'
         return url
 
+    @property
+    def amount_above_best_price(self):
+        best_price_column_name = format_abc_product_best_column_name(self.size)
+        # from time to time, getattr fails here because ABC store changes the sizes
+        # for now, we're OK with it failing because that forces us to update the ABCProduct model
+        best_price = getattr(self.product, best_price_column_name)
+
+        return (self.current_price - best_price) if best_price else 0
+
+    @property
+    def price_below_average_per_size(self):
+
+        avg_price_column_name = format_abc_product_avg_column_name(self.size)
+        # from time to time, getattr fails here because ABC store changes the sizes
+        # for now, we're OK with it failing because that forces us to update the ABCProduct model
+        avg_price_per_size = getattr(self.product, avg_price_column_name)
+
+        return (avg_price_per_size - self.current_price) if avg_price_per_size else None
+
+    @property
+    def price_below_average(self):
+        return (self.avg_price - self.current_price)
+
+    @property
+    def price_below_average_per_liter(self):
+        return (self.product.avg_price_per_liter - self.price_per_liter)
+
+    @property
+    def is_best_price(self):
+        # should never be less, but just in case...
+        return self.best_price >= self.current_price
+
     def __str__(self):
         return '{} ({}) - ${} (${}/liter)'.format(
             self.product.name,

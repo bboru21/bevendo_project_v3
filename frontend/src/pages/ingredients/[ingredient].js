@@ -43,16 +43,20 @@ const Ingredient = ({ error, ingredient }) => {
                                                     <th scope="col">Size</th>
                                                     <th scope="col">Price</th>
                                                     <th scope="col">
-                                                        <span className="d-block d-md-none">Sale</span>
-                                                        <span className="d-none d-md-block">Is On-Sale?</span>
-                                                    </th>
-                                                    <th scope="col">
                                                         <span className="d-block d-md-none">PPL</span>
                                                         <span className="d-none d-md-block">Price/Liter</span>
                                                     </th>
                                                     <th scope="col">
-                                                        <span className="d-block d-md-none">Score</span>
-                                                        <span className="d-none d-md-block">Price Score</span>
+                                                        <span className="d-block d-md-none">Best</span>
+                                                        <span className="d-none d-md-block">Is Best Price?</span>
+                                                    </th>
+                                                    <th scope="col">
+                                                        <span className="d-block d-md-none">Above Best</span>
+                                                        <span className="d-none d-md-block">Amount Above Best Price</span>
+                                                    </th>
+                                                    <th scope="col">
+                                                        <span className="d-block d-md-none">Sale</span>
+                                                        <span className="d-none d-md-block">Is On-Sale?</span>
                                                     </th>
                                                 </tr>
                                             </thead>
@@ -63,11 +67,10 @@ const Ingredient = ({ error, ingredient }) => {
                                                         {p.url ? (<ExternalLink href={p.url}>{p.size}</ExternalLink>) : (<>{p.size}</>)}
                                                     </td>
                                                     <td>{USDollar.format(p.current_price)}</td>
-                                                    <td>
-                                                        <ProConIcon isPro={p.is_on_sale} />
-                                                    </td>
                                                     <td>{USDollar.format(p.price_per_liter)}</td>
-                                                    <td>{p.price_score}</td>
+                                                    <td><ProConIcon isPro={p.is_best_price} /></td>
+                                                    <td>{!p.is_best_price ? USDollar.format(p.amount_above_best_price) : ''}</td>
+                                                    <td><ProConIcon isPro={p.is_on_sale} /></td>
                                                 </tr>
                                             ))}
                                             </tbody>

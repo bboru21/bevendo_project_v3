@@ -9,6 +9,7 @@ import ExternalLink from '../components/ExternalLink';
 import { displayDate } from '../utils/dates';
 import { USDollar } from '../utils/currency';
 import ProConIcon from '../components/ProConIcon';
+import Heading from '../components/Heading';
 
 const Dashboard = ({ error, feasts, deals, latestPullDate }) => {
 
@@ -23,9 +24,7 @@ const Dashboard = ({ error, feasts, deals, latestPullDate }) => {
         >
            <div className='p-5 bg-light rounded-3'>
                 <div className='container-fluid py-3'>
-                    <h1 className='display-5 fw-bold'>
-                        User Dashboard
-                    </h1>
+                    <Heading text="User Dashboard" />
                     <p className='fs-4 mt-3'>
                         Welcome to Bevendo{user === null ? '' : `, ${user.first_name}`}!
                     </p>

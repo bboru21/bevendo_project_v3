@@ -4,6 +4,7 @@ import { useRouter } from 'next/router';
 import { register } from '../actions/auth';
 import Layout from '../hocs/Layout';
 import { Oval as Loader } from 'react-loader-spinner';
+import Heading from '../components/Heading';
 
 const RegisterPage = () => {
 
@@ -52,7 +53,7 @@ const RegisterPage = () => {
             title='Bevendo | Register'
             content='Register page for Bevendo app'>
             <>
-                <h1 className='display-4 mt-5'>Register</h1>
+                <Heading text="Register" />
                 <form
                     className='bg-light p-5 mt-5 mb-5'
                     onSubmit={handleOnSubmit}

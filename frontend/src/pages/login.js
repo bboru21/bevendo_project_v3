@@ -4,6 +4,7 @@ import { useRouter } from 'next/router';
 import { login, reset_register_success } from '../actions/auth';
 import Layout from '../hocs/Layout';
 import { Oval as Loader } from 'react-loader-spinner';
+import Heading from '../components/Heading';
 
 const LoginPage = () => {
 
@@ -50,9 +51,7 @@ const LoginPage = () => {
                     className='bg-light p-5 mt-5 mb-5'
                     onSubmit={handleSubmit}
                 >
-                    <h1 className='display-5 fw-bold'>
-                        Log Into Your Account
-                    </h1>
+                    <Heading text="Log Into Your Account" />
 
                     <div className='form-group'>
                         <label className='form-label mt-5' htmlFor='username'>

@@ -10,10 +10,13 @@ import {
     LOAD_USER_FAIL,
     AUTHENTICATED_SUCCESS,
     AUTHENTICATED_FAIL,
-    REFRESH_SUCCESS, 
+    REFRESH_SUCCESS,
     REFRESH_FAIL,
     SET_AUTH_LOADING,
     REMOVE_AUTH_LOADING,
+    CHANGE_PASSWORD_SUCCESS,
+    CHANGE_PASSWORD_FAIL,
+    RESET_CHANGE_PASSWORD_SUCCESS,
 } from './types';
 
 export const load_user = () => async dispatch => {
@@ -46,7 +49,7 @@ export const load_user = () => async dispatch => {
 
 export const check_auth_status = () => async dispatch => {
     /*
-        Could dispatch SET_AUTH_LOADING/REMOVE_AUTH_LOADING here, but since 
+        Could dispatch SET_AUTH_LOADING/REMOVE_AUTH_LOADING here, but since
         this function is called only within request_refresh, we set it there.
     */
     try {
@@ -231,4 +234,55 @@ export const logout = () => async dispatch => {
             type: LOGOUT_FAIL,
         });
     }
+};
+
+export const change_password = (
+    current_password,
+    new_password,
+    re_new_password,
+) => async dispatch => {
+
+    const body = JSON.stringify({
+        current_password,
+        new_password,
+        re_new_password,
+    });
+
+    try {
+
+        const res = await fetch('/api/account/change-password', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body,
+        });
+
+        const data = await res.json();
+
+        if (res.status === 200) {
+            dispatch({
+                type: CHANGE_PASSWORD_SUCCESS,
+                payload: data,
+            });
+        } else {
+            dispatch({
+                type: CHANGE_PASSWORD_FAIL,
+                payload: data,
+            });
+        }
+    }
+    catch(error) {
+        dispatch({
+            type: CHANGE_PASSWORD_FAIL,
+            payload: {'error': 'Something went wrong when changing password'}
+        });
+    }
+};
+
+export const reset_change_password_success = () => dispatch => {
+    dispatch({
+        type: RESET_CHANGE_PASSWORD_SUCCESS,
+    });
 };

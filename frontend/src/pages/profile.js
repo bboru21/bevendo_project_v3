@@ -10,10 +10,12 @@ const Profile = () => {
 
     loginRedirect();
 
-    const dispatch = useDispatch();
+    const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
     const user = useSelector(state => state.auth.user);
     const change_password_success = useSelector(state => state.auth.change_password_success);
     const change_password_message = useSelector(state => state.auth.change_password_message);
+
+    const dispatch = useDispatch();
 
     useEffect(() => {
         if (dispatch && dispatch !== null && typeof dispatch !== 'undefined') {
@@ -33,7 +35,10 @@ const Profile = () => {
       }
     };
 
-    return (
+    const shouldRender = (isAuthenticated && user);
+
+    // TODO figure out better way to perform isAuthenticated check via inheritance, Higher Order Component or ?
+    return !shouldRender ? <></> : (
         <Layout
             title='Bevendo | Profile'
             content='User profile for Bevendo, a companion app to Drinking with the Saints'

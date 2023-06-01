@@ -16,15 +16,18 @@ import {
     REMOVE_AUTH_LOADING,
     ADD_FAVORITE_SUCCESS,
     REMOVE_FAVORITE_SUCCESS,
+    CHANGE_PASSWORD_SUCCESS,
+    CHANGE_PASSWORD_FAIL,
+    RESET_CHANGE_PASSWORD_SUCCESS,
 } from '../actions/types';
 
 const initialState = {
-    user: {
-        favorites: [],
-    },
+    user: null,
     isAuthenticated: false,
     loading: false,
     register_success: false,
+    change_password_success: null,
+    change_password_message: null,
 };
 
 const authReducer = (state = initialState, action) => {
@@ -119,6 +122,24 @@ const authReducer = (state = initialState, action) => {
                     ...state.user,
                     favorites: payload.favorites,
                 }
+            };
+        case CHANGE_PASSWORD_SUCCESS:
+            return {
+                ...state,
+                change_password_success: true,
+                change_password_message: payload.success,
+            };
+        case CHANGE_PASSWORD_FAIL:
+            return {
+                ...state,
+                change_password_success: false,
+                change_password_message: payload.error,
+            };
+        case RESET_CHANGE_PASSWORD_SUCCESS:
+            return {
+                ...state,
+                change_password_success: null,
+                change_password_message: null,
             };
         default:
             return state;

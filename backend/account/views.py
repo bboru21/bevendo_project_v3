@@ -12,6 +12,9 @@ from .serializers import UserSerializer
 logger = logging.getLogger(__name__)
 
 
+MIN_PASSWORD_LENGTH = 8
+
+
 def index(request):
     # logger.error("API Index Page error")
     # logger.info("API Index Page info")
@@ -19,6 +22,64 @@ def index(request):
     # logger.warn("API Index page warning")
     return HttpResponse("API Index Page")
 
+
+class ChangePasswordView(APIView):
+    permission_classes = (permissions.AllowAny,)
+
+    def post(self, request):
+        try:
+
+            request_user = request.user
+            user = User.objects.filter(username=request_user.username)
+            if user.exists():
+                user = user.first()
+
+                data = request.data
+                current_password = data['current_password']
+                new_password = data['new_password']
+                re_new_password = data['re_new_password']
+
+                if user.check_password(current_password):
+
+                    if new_password == re_new_password:
+
+                        if len(new_password) >= MIN_PASSWORD_LENGTH:
+                            user.set_password(new_password)
+                            user.save()
+                            return Response(
+                                {'success': 'Password successfully changed'},
+                                status=status.HTTP_200_OK,
+                            )
+                        else:
+                            logger.warn(f'password length is less than {MIN_PASSWORD_LENGTH} characters, returning status 400')
+                            return Response(
+                                {'error': f'Password must be at least {MIN_PASSWORD_LENGTH} characters in length'},
+                                status=status.HTTP_400_BAD_REQUEST,
+                            )
+                    else:
+                        logger.warn('new passwords do not match, returning status 400')
+                        return Response(
+                            {'error': 'New passwords do not match'},
+                            status=status.HTTP_400_BAD_REQUEST,
+                        )
+                else:
+                    return Response(
+                        {'error': f'Current password does not match'},
+                        status=status.HTTP_400_BAD_REQUEST,
+                    )
+            else:
+                logger.warn(f'user with username {request_user.username} does not exist, returning status 400')
+                return Response(
+                    {'error': f'User with username {request_user.username} not found'},
+                    status=status.HTTP_400_BAD_REQUEST,
+                )
+
+        except BaseException as error:
+            logger.error(f'error occured while changing password: {error}')
+            return Response(
+                {'error': 'Something went wrong when trying to change your password'},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            )
 
 class RegisterView(APIView):
     permission_classes = (permissions.AllowAny,)
@@ -34,7 +95,7 @@ class RegisterView(APIView):
             re_password = data['re_password']
 
             if password == re_password:
-                if len(password) >= 8:
+                if len(password) >= MIN_PASSWORD_LENGTH:
                     if not User.objects.filter(username=username).exists():
                         user = User.objects.create_user(
                             first_name = first_name,
@@ -62,9 +123,9 @@ class RegisterView(APIView):
                         )
 
                 else:
-                    logger.warn('password length is less than 8 characters, returning status 400')
+                    logger.warn(f'password length is less than {MIN_PASSWORD_LENGTH} characters, returning status 400')
                     return Response(
-                        {'error': 'Password must be at least 8 characters in length'},
+                        {'error': f'Password must be at least {MIN_PASSWORD_LENGTH} characters in length'},
                         status=status.HTTP_400_BAD_REQUEST,
                     )
             else:

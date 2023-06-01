@@ -5,6 +5,7 @@ import LinkList from '../../components/LinkList';
 import loginRedirect from '../../hooks/loginRedirect';
 import FavoriteButton from '../../components/FavoriteButton';
 import Link from 'next/link';
+import Heading from '../../components/Heading';
 
 const Cocktail = ({ error, cocktail }) => {
 
@@ -23,11 +24,10 @@ const Cocktail = ({ error, cocktail }) => {
                         </p>
                     ) : (
                       <>
-                        <h1 className='display-5 fw-bold'>
-                            {cocktail.name}
-
-                            <FavoriteButton className="ms-2" cocktailId={cocktail.pk} />
-                        </h1>
+                        <Heading
+                            text={cocktail.name}
+                            button={<FavoriteButton className="ms-2" cocktailId={cocktail.pk} />}
+                        />
                         <ul>
                           {cocktail.ingredients.map(i => (
                            <li key={i.pk}>

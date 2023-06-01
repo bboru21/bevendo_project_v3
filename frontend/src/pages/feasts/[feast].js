@@ -5,6 +5,7 @@ import ExternalLink from '../../components/ExternalLink';
 import LinkList from '../../components/LinkList';
 import { displayDate } from '../../utils/dates';
 import loginRedirect from '../../hooks/loginRedirect';
+import Heading from '../../components/Heading';
 
 
 const Feast = ({ error, feast }) => {
@@ -26,10 +27,10 @@ const Feast = ({ error, feast }) => {
                         </>
                     ) : (
                         <>
-                            <h1 className='display-5 fw-bold'>
-                                {feast.name}
-                                <small className="text-muted fs-5 ms-2">{displayDate(feast.date)}</small>
-                            </h1>
+                            <Heading
+                                text={feast.name}
+                                subtext={displayDate(feast.date)}
+                            />
 
                             <p className="fs-5 fw-bold">External Links:</p>
                             <ul>

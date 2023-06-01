@@ -5,6 +5,7 @@ import loginRedirect from '../../hooks/loginRedirect';
 import { USDollar } from '../../utils/currency';
 import ProConIcon from '../../components/ProConIcon';
 import ExternalLink from '../../components/ExternalLink';
+import Heading from '../../components/Heading';
 
 
 const Ingredient = ({ error, ingredient }) => {
@@ -24,9 +25,9 @@ const Ingredient = ({ error, ingredient }) => {
                         </p>
                     ) : (
                       <>
-                        <h1 className='display-5 fw-bold'>
-                            {ingredient.name}
-                        </h1>
+                        <Heading
+                            text={ingredient.name}
+                        />
 
                         {ingredient.controlled_beverages.length > 0 && (
                             <>

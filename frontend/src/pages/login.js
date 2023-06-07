@@ -5,6 +5,7 @@ import { login, reset_register_success } from '../actions/auth';
 import Layout from '../hocs/Layout';
 import { Oval as Loader } from 'react-loader-spinner';
 import Heading from '../components/Heading';
+import Link from 'next/link';
 
 const LoginPage = () => {
 
@@ -95,6 +96,13 @@ const LoginPage = () => {
                         )
                     }
                 </form>
+
+                {/* temporarily disable until we are ready for new members to register */}
+                {process.env.NODE_ENV !== 'production' && (
+                    <p>
+                        Don't have an account? <Link href='/register'>Sign-up</Link>.
+                    </p>
+                )}
             </>
         </Layout>
     );

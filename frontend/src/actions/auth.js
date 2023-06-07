@@ -17,6 +17,9 @@ import {
     CHANGE_PASSWORD_SUCCESS,
     CHANGE_PASSWORD_FAIL,
     RESET_CHANGE_PASSWORD_SUCCESS,
+    SEND_PASSWORD_RESET_EMAIL_SUCCESS,
+    SEND_PASSWORD_RESET_EMAIL_FAIL,
+    RESET_SEND_PASSWORD_RESET_EMAIL_SUCCESS,
 } from './types';
 
 export const load_user = () => async dispatch => {
@@ -285,4 +288,23 @@ export const reset_change_password_success = () => dispatch => {
     dispatch({
         type: RESET_CHANGE_PASSWORD_SUCCESS,
     });
+};
+
+export const send_password_reset_email = (email) => async dispatch => {
+    const body = JSON.stringify({
+        email
+    });
+
+    try {
+        // TODO api request
+        dispatch({
+            type: 'SEND_PASSWORD_RESET_EMAIL_FAIL',
+            payload: {'error': 'Something went wrong when attempting to send password reset email'},
+        });
+    } catch(error) {
+        dispatch({
+            type: 'SEND_PASSWORD_RESET_EMAIL_FAIL',
+            payload: {'error': 'Something went wrong when attempting to send password reset email'},
+        });
+    }
 };

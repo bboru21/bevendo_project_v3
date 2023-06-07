@@ -59,25 +59,29 @@ const LoginPage = () => {
                             <strong>Username*</strong>
                         </label>
                         <input
-                            className='form-control'
+                            className='form-control mb-3'
                             type='text'
                             name='username'
+                            id="username"
                             placeholder='Username*'
                             required
                         />
                     </div>
                     <div className='form-group'>
-                        <label className='form-label mt-5' htmlFor='password'>
+                        <label className='form-label' htmlFor='password'>
                             <strong>Password*</strong>
                         </label>
                         <input
-                            className='form-control'
+                            className='form-control mb-3'
                             type='password'
                             name='password'
+                            id="password"
                             placeholder='Password*'
                             minLength={8}
                             required
                         />
+
+                        <p><Link href='/reset-password'>Forgot password?</Link></p>
                     </div>
                     {
                         loading ? (
@@ -90,7 +94,7 @@ const LoginPage = () => {
                                 />
                             </div>
                         ) : (
-                            <button className='btn btn-primary mt-5' type='submit'>
+                            <button className='btn btn-primary' type='submit'>
                                 Login
                             </button>
                         )

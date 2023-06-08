@@ -23,8 +23,37 @@ def index(request):
     return HttpResponse("API Index Page")
 
 
-class ChangePasswordView(APIView):
+class SendPasswordResetEmail(APIView):
     permission_classes = (permissions.AllowAny,)
+
+    def post(self, request):
+
+        try:
+            data = request.data
+            email = data['email']
+            user = User.objects.filter(email=email)
+            if user.exists():
+                # TODO add send email logic
+                return Response(
+                    {'success': f'Email sent to {email}'},
+                    status=status.HTTP_200_OK,
+                )
+            else:
+                logger.warn(f'user with email {email} does not exist, returning status 400')
+                return Response(
+                    {'error': f'User with email {email} does not exist'},
+                    status=status.HTTP_400_BAD_REQUEST,
+                )
+
+        except BaseException as error:
+            logger.error(f'error occured while attempting to send password reset email: {error}')
+            return Response(
+                {'error': 'Something went wrong when attempting to send password reset email'},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            )
+
+
+class ChangePasswordView(APIView):
 
     def post(self, request):
         try:

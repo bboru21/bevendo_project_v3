@@ -1,11 +1,23 @@
+import { useEffect } from 'react';
 import Layout from '../hocs/Layout';
 import Heading from '../components/Heading';
-import { useDispatch } from 'react-redux';
-import { send_password_reset_email } from '../actions/auth';
+import { useDispatch, useSelector } from 'react-redux';
+import { send_password_reset_email, reset_send_password_reset_email_success } from '../actions/auth';
+import classNames from 'classnames';
 
 const ResetPassword = () => {
 
+  const send_password_reset_email_success = useSelector(state => state.auth.send_password_reset_email_success);
+  const send_password_reset_email_message = useSelector(state => state.auth.send_password_reset_email_message);
+
+
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (dispatch && dispatch !== null && typeof dispatch !== 'undefined') {
+      dispatch(reset_send_password_reset_email_success());
+    }
+  }, [dispatch]);
 
   const handleSubmit = event => {
     event.preventDefault();
@@ -41,6 +53,15 @@ const ResetPassword = () => {
             placeholder='Email*'
             required
           />
+
+          <div className={classNames('mb-3', {
+            ['visible']: send_password_reset_email_message!==null,
+            ['invisible']: send_password_reset_email_message===null,
+            ['text-success']: send_password_reset_email_success===true,
+            ['text-danger']: send_password_reset_email_success===false,
+          })}>
+            {send_password_reset_email_message || '[Placeholder]'}
+          </div>
 
           <button className='btn btn-primary' type='submit'>
             Submit

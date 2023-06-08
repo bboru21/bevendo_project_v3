@@ -96,7 +96,7 @@ const Profile = () => {
                   />
               </div>
 
-              <div className={classNames({
+              <div className={classNames('mb-3', {
                 ['visible']: change_password_message!==null,
                 ['invisible']: change_password_message===null,
                 ['text-success']: change_password_success===true,
@@ -105,7 +105,7 @@ const Profile = () => {
                 {change_password_message || '[Placeholder]'}
               </div>
 
-              <button className='btn btn-primary mt-5' type='submit'>
+              <button className='btn btn-primary' type='submit'>
                   Change Password
               </button>
 

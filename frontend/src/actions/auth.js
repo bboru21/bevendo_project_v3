@@ -296,15 +296,38 @@ export const send_password_reset_email = (email) => async dispatch => {
     });
 
     try {
-        // TODO api request
-        dispatch({
-            type: 'SEND_PASSWORD_RESET_EMAIL_FAIL',
-            payload: {'error': 'Something went wrong when attempting to send password reset email'},
+        const res = await fetch('/api/account/send-password-reset-email', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body,
         });
+
+        const data = await res.json();
+
+        if (res.status === 200) {
+            dispatch({
+                type: SEND_PASSWORD_RESET_EMAIL_SUCCESS,
+                payload: data,
+            });
+        } else {
+            dispatch({
+                type: SEND_PASSWORD_RESET_EMAIL_FAIL,
+                payload: data,
+            });
+        }
     } catch(error) {
         dispatch({
-            type: 'SEND_PASSWORD_RESET_EMAIL_FAIL',
+            type: SEND_PASSWORD_RESET_EMAIL_FAIL,
             payload: {'error': 'Something went wrong when attempting to send password reset email'},
         });
     }
+};
+
+export const reset_send_password_reset_email_success = () => dispatch => {
+    dispatch({
+        type: RESET_SEND_PASSWORD_RESET_EMAIL_SUCCESS,
+    });
 };

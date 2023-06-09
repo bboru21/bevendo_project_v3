@@ -3,7 +3,7 @@ import Layout from '../hocs/Layout';
 import Heading from '../components/Heading';
 import { useDispatch, useSelector } from 'react-redux';
 import { send_password_reset_email, reset_send_password_reset_email_success } from '../actions/auth';
-import classNames from 'classnames';
+import FormControlFeedback from '../components/FormControlFeedback';
 
 const ResetPassword = () => {
 
@@ -54,14 +54,11 @@ const ResetPassword = () => {
             required
           />
 
-          <div className={classNames('mb-3', {
-            ['visible']: send_password_reset_email_message!==null,
-            ['invisible']: send_password_reset_email_message===null,
-            ['text-success']: send_password_reset_email_success===true,
-            ['text-danger']: send_password_reset_email_success===false,
-          })}>
-            {send_password_reset_email_message || '[Placeholder]'}
-          </div>
+          <FormControlFeedback
+            className="mb-3"
+            message={send_password_reset_email_message}
+            success={send_password_reset_email_success}
+          />
 
           <button className='btn btn-primary' type='submit'>
             Send Email

@@ -5,8 +5,15 @@ from rest_framework.response import Response
 from rest_framework import permissions, status
 from django.contrib.auth.models import User
 from django.http import HttpResponse
+from django.template.loader import render_to_string
+from django.contrib.sites.shortcuts import get_current_site
+from django.utils.http import urlsafe_base64_encode
+from django.utils.encoding import force_bytes
+from django.core.mail import send_mail
+from django.conf import settings
 
 from .serializers import UserSerializer
+from .tokens import password_reset_token
 
 
 logger = logging.getLogger(__name__)
@@ -31,18 +38,54 @@ class SendPasswordResetEmail(APIView):
         try:
             data = request.data
             email = data['email']
-            user = User.objects.filter(email=email)
-            if user.exists():
-                # TODO add send email logic
-                return Response(
-                    {'success': f'Email sent to {email}'},
-                    status=status.HTTP_200_OK,
+            user = User.objects.get(email=email)
+
+            if user:
+
+                user.is_active = False
+                user.profile.reset_password = True
+
+                reset_url = f'{settings.FRONTEND_URL}/reset-password?uidb64={urlsafe_base64_encode(force_bytes(user.pk))}&token={password_reset_token.make_token(user)}'
+
+                message = render_to_string('account/templates/password_reset_email.txt', {
+                    'user': user,
+                    'reset_url': reset_url,
+                })
+                html_message = render_to_string('account/templates/password_reset_email.html', {
+                    'user': user,
+                    'reset_url': reset_url,
+                })
+
+                success = send_mail(
+                    subject=f'Reset password for {settings.FRONTEND_URL}',
+                    message=message,
+                    html_message=html_message,
+                    from_email=settings.SENDER_EMAIL,
+                    recipient_list=[email],
                 )
+
+                if success > 0:
+
+                    # update user and profile only after email sent
+                    user.save()
+                    user.profile.save()
+
+                    return Response(
+                        {'success': f'If this mail address is known to us, a message will be sent to the profied email address'},
+                        status=status.HTTP_200_OK,
+                    )
+
+                else:
+                    logger.warn(f'email failed to send to {email}')
+                    return Response(
+                        {'error': 'Something went wrong when attempting to send password reset email'},
+                        status=status.HTTP_500_SERVER_ERROR,
+                    )
             else:
-                logger.warn(f'user with email {email} does not exist, returning status 400')
+                logger.warn(f'user with email {email} does not exist, returning status 200')
                 return Response(
-                    {'error': f'User with email {email} does not exist'},
-                    status=status.HTTP_400_BAD_REQUEST,
+                    {'error': f'If this mail address is known to us, a message will be sent to the profied email address'},
+                    status=status.HTTP_200_OK,
                 )
 
         except BaseException as error:

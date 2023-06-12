@@ -85,6 +85,7 @@ DJANGO_APPS = (
 
 # Apps specific for this project go here.
 LOCAL_APPS = (
+    'account.apps.AccountConfig',
     'api.apps.ApiConfig',
     'ext_data.apps.ExtDataConfig',
 )

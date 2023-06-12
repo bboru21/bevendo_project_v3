@@ -14,4 +14,5 @@ urlpatterns = [
     path('user', LoadUserView.as_view()),
     path('change-password', ChangePasswordView.as_view()),
     path('send-password-reset-email', SendPasswordResetEmail.as_view()),
+    # path('reset'),
 ]

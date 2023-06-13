@@ -48,11 +48,11 @@ class SendPasswordResetEmail(APIView):
                 reset_url = f'{settings.FRONTEND_URL}/reset-password?uidb64={urlsafe_base64_encode(force_bytes(user.pk))}&token={password_reset_token.make_token(user)}'
 
                 message = render_to_string('account/templates/password_reset_email.txt', {
-                    'user': user,
+                    'name': user.first_name,
                     'reset_url': reset_url,
                 })
                 html_message = render_to_string('account/templates/password_reset_email.html', {
-                    'user': user,
+                    'name': user.first_name,
                     'reset_url': reset_url,
                 })
 
@@ -68,7 +68,6 @@ class SendPasswordResetEmail(APIView):
 
                     # update user and profile only after email sent
                     user.save()
-                    user.profile.save()
 
                     return Response(
                         {'success': f'If this mail address is known to us, a message will be sent to the profied email address'},

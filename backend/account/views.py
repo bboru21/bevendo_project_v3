@@ -7,7 +7,7 @@ from django.contrib.auth.models import User
 from django.http import HttpResponse
 from django.template.loader import render_to_string
 from django.contrib.sites.shortcuts import get_current_site
-from django.utils.http import urlsafe_base64_encode
+from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.utils.encoding import force_bytes
 from django.core.mail import send_mail
 from django.conf import settings
@@ -92,6 +92,68 @@ class SendPasswordResetEmail(APIView):
             logger.error(f'error occured while attempting to send password reset email: {error}')
             return Response(
                 {'error': 'Something went wrong when attempting to send password reset email'},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            )
+
+
+class ResetPasswordView(APIView):
+
+    permission_classes = (permissions.AllowAny,)
+
+    def post(self, request):
+        try:
+            data = request.data
+
+            uid = urlsafe_base64_decode(data['uidb64'])
+            token = data['token']
+            password = data['password']
+            re_password = data['re_password']
+
+            if password == re_password:
+                if len(password) >= MIN_PASSWORD_LENGTH:
+
+                    user = User.objects.get(pk=uid)
+                    if user:
+                        if password_reset_token.check_token(user, token):
+                            user.set_password(password)
+                            user.is_active = True
+                            user.profile.reset_password = False
+                            user.save()
+
+                            return Response(
+                                {'success': 'Password successfully reset'},
+                                status=status.HTTP_200_OK,
+                            )
+
+                        else:
+                            logger.warn("check token failed for user {user.pk} and token {token}")
+                            return Response(
+                                { 'error': 'Token is no longer valid, please restart the reset password process' },
+                                status=status.HTTP_400_BAD_REQUEST,
+                            )
+                    else:
+                        logger.warn("error occured during user lookup for uid {uid}")
+                        return Response(
+                            { 'error': 'No user found, please restart the password reset process' },
+                            status=status.HTTP_400_BAD_REQUEST,
+                        )
+                else:
+                    logger.warn(f'password length is less than {MIN_PASSWORD_LENGTH} characters, returning status 400')
+                    return Response(
+                        {'error': f'Password must be at least {MIN_PASSWORD_LENGTH} characters in length'},
+                        status=status.HTTP_400_BAD_REQUEST,
+                    )
+            else:
+                logger.warn('new passwords do not match, returning status 400')
+                return Response(
+                    {'error': 'New passwords do not match'},
+                    status=status.HTTP_400_BAD_REQUEST,
+                )
+
+        except BaseException as error:
+            logger.error(f"Something went wrong when attempting to reset password: {error}")
+            return Response(
+                {'error': 'Something went wrong when attempting to reset password'},
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR,
             )
 

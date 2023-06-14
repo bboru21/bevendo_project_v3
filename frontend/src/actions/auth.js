@@ -17,6 +17,12 @@ import {
     CHANGE_PASSWORD_SUCCESS,
     CHANGE_PASSWORD_FAIL,
     RESET_CHANGE_PASSWORD_SUCCESS,
+    SEND_PASSWORD_RESET_EMAIL_SUCCESS,
+    SEND_PASSWORD_RESET_EMAIL_FAIL,
+    RESET_SEND_PASSWORD_RESET_EMAIL_SUCCESS,
+    PASSWORD_RESET_SUCCESS,
+    PASSWORD_RESET_FAIL,
+    RESET_PASSWORD_RESET_SUCCESS,
 } from './types';
 
 export const load_user = () => async dispatch => {
@@ -284,5 +290,92 @@ export const change_password = (
 export const reset_change_password_success = () => dispatch => {
     dispatch({
         type: RESET_CHANGE_PASSWORD_SUCCESS,
+    });
+};
+
+export const send_password_reset_email = (email) => async dispatch => {
+    const body = JSON.stringify({
+        email
+    });
+
+    try {
+        const res = await fetch('/api/account/send-password-reset-email', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body,
+        });
+
+        const data = await res.json();
+
+        if (res.status === 200) {
+            dispatch({
+                type: SEND_PASSWORD_RESET_EMAIL_SUCCESS,
+                payload: data,
+            });
+        } else {
+            dispatch({
+                type: SEND_PASSWORD_RESET_EMAIL_FAIL,
+                payload: data,
+            });
+        }
+    } catch(error) {
+        dispatch({
+            type: SEND_PASSWORD_RESET_EMAIL_FAIL,
+            payload: {'error': 'Something went wrong when attempting to send password reset email'},
+        });
+    }
+};
+
+export const reset_send_password_reset_email_success = () => dispatch => {
+    dispatch({
+        type: RESET_SEND_PASSWORD_RESET_EMAIL_SUCCESS,
+    });
+};
+
+export const reset_password = (password, re_password, uidb64, token) => async dispatch => {
+    const body = JSON.stringify({
+        password,
+        re_password,
+        uidb64,
+        token,
+    });
+
+    try {
+        const res = await fetch('/api/account/reset-password', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body,
+        });
+
+        const data = await res.json();
+
+        if (res.status === 200) {
+            dispatch({
+                type: PASSWORD_RESET_SUCCESS,
+                payload: data,
+            });
+        } else {
+            dispatch({
+                type: PASSWORD_RESET_FAIL,
+                payload: data,
+            });
+        }
+    } catch(error) {
+        dispatch({
+            type: PASSWORD_RESET_FAIL,
+            payload: {'error': 'Something went wrong while attempting to reset password'},
+        })
+    }
+};
+
+export const reset_password_reset_success = () => dispatch => {
+    dispatch({
+        type: RESET_PASSWORD_RESET_SUCCESS,
     });
 };

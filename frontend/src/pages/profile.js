@@ -4,7 +4,7 @@ import Layout from '../hocs/Layout';
 import loginRedirect from '../hooks/loginRedirect';
 import Heading from '../components/Heading';
 import { change_password, reset_change_password_success} from '../actions/auth';
-import classNames from 'classnames';
+import FormControlFeedback from '../components/FormControlFeedback';
 
 const Profile = () => {
 
@@ -96,16 +96,13 @@ const Profile = () => {
                   />
               </div>
 
-              <div className={classNames({
-                ['visible']: change_password_message!==null,
-                ['invisible']: change_password_message===null,
-                ['text-success']: change_password_success===true,
-                ['text-danger']: change_password_success===false,
-              })}>
-                {change_password_message || '[Placeholder]'}
-              </div>
+              <FormControlFeedback
+                className="mb-3"
+                message={change_password_message}
+                success={change_password_success}
+              />
 
-              <button className='btn btn-primary mt-5' type='submit'>
+              <button className='btn btn-primary' type='submit'>
                   Change Password
               </button>
 

@@ -19,6 +19,12 @@ import {
     CHANGE_PASSWORD_SUCCESS,
     CHANGE_PASSWORD_FAIL,
     RESET_CHANGE_PASSWORD_SUCCESS,
+    SEND_PASSWORD_RESET_EMAIL_SUCCESS,
+    SEND_PASSWORD_RESET_EMAIL_FAIL,
+    RESET_SEND_PASSWORD_RESET_EMAIL_SUCCESS,
+    PASSWORD_RESET_SUCCESS,
+    PASSWORD_RESET_FAIL,
+    RESET_PASSWORD_RESET_SUCCESS,
 } from '../actions/types';
 
 const initialState = {
@@ -28,6 +34,10 @@ const initialState = {
     register_success: false,
     change_password_success: null,
     change_password_message: null,
+    send_password_reset_email_success: null,
+    send_password_reset_email_message: null,
+    reset_password_success: null,
+    reset_password_message: null,
 };
 
 const authReducer = (state = initialState, action) => {
@@ -141,6 +151,43 @@ const authReducer = (state = initialState, action) => {
                 change_password_success: null,
                 change_password_message: null,
             };
+        case SEND_PASSWORD_RESET_EMAIL_SUCCESS:
+            return {
+                ...state,
+                send_password_reset_email_success: true,
+                send_password_reset_email_message: payload.success,
+            };
+        case SEND_PASSWORD_RESET_EMAIL_FAIL:
+            return {
+                ...state,
+                send_password_reset_email_success: false,
+                send_password_reset_email_message: payload.error,
+            };
+        case RESET_SEND_PASSWORD_RESET_EMAIL_SUCCESS:
+            return {
+                ...state,
+                send_password_reset_email_success: null,
+                send_password_reset_email_message: null,
+            };
+        case PASSWORD_RESET_SUCCESS:
+            return {
+                ...state,
+                password_reset_success: true,
+                password_reset_message: payload.success,
+            };
+        case PASSWORD_RESET_FAIL:
+            return {
+                ...state,
+                password_reset_success: false,
+                password_reset_message: payload.error,
+            };
+        case RESET_PASSWORD_RESET_SUCCESS:
+            return {
+                ...state,
+                password_reset_success: null,
+                password_reset_message: null,
+            };
+
         default:
             return state;
     };

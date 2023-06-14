@@ -104,7 +104,7 @@ const LoginPage = () => {
                 {/* temporarily disable until we are ready for new members to register */}
                 {process.env.NODE_ENV !== 'production' && (
                     <p>
-                        Don't have an account? <Link href='/register'>Sign-up</Link>.
+                        Don&rsquo;t have an account? <Link href='/register'>Sign-up</Link>.
                     </p>
                 )}
             </>

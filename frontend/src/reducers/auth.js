@@ -22,6 +22,9 @@ import {
     SEND_PASSWORD_RESET_EMAIL_SUCCESS,
     SEND_PASSWORD_RESET_EMAIL_FAIL,
     RESET_SEND_PASSWORD_RESET_EMAIL_SUCCESS,
+    PASSWORD_RESET_SUCCESS,
+    PASSWORD_RESET_FAIL,
+    RESET_PASSWORD_RESET_SUCCESS,
 } from '../actions/types';
 
 const initialState = {
@@ -33,6 +36,8 @@ const initialState = {
     change_password_message: null,
     send_password_reset_email_success: null,
     send_password_reset_email_message: null,
+    reset_password_success: null,
+    reset_password_message: null,
 };
 
 const authReducer = (state = initialState, action) => {
@@ -163,6 +168,24 @@ const authReducer = (state = initialState, action) => {
                 ...state,
                 send_password_reset_email_success: null,
                 send_password_reset_email_message: null,
+            };
+        case PASSWORD_RESET_SUCCESS:
+            return {
+                ...state,
+                password_reset_success: true,
+                password_reset_message: payload.success,
+            };
+        case PASSWORD_RESET_FAIL:
+            return {
+                ...state,
+                password_reset_success: false,
+                password_reset_message: payload.error,
+            };
+        case RESET_PASSWORD_RESET_SUCCESS:
+            return {
+                ...state,
+                password_reset_success: null,
+                password_reset_message: null,
             };
 
         default:

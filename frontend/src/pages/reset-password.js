@@ -1,14 +1,24 @@
 
-import { useDispatch } from 'react-redux';
+import { useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import Layout from '../hocs/Layout';
 import Heading from '../components/Heading';
 import FormControlFeedback from '../components/FormControlFeedback';
 import Link from 'next/link';
-import { reset_password } from '../actions/auth';
+import { reset_password, reset_password_reset_success } from '../actions/auth';
 
 const ResetPasswordPage = ({ uidb64, token, error }) => {
 
+  const password_reset_success = useSelector(state => state.auth.password_reset_success);
+  const password_reset_message = useSelector(state => state.auth.password_reset_message);
+
   const dispatch = useDispatch();
+
+  useEffect(() => {
+      if (dispatch && dispatch !== null && typeof dispatch !== 'undefined') {
+          dispatch(reset_password_reset_success());
+      }
+  }, [dispatch]);
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -81,20 +91,24 @@ const ResetPasswordPage = ({ uidb64, token, error }) => {
 
         <FormControlFeedback
           className="mb-3"
-          message={null}
-          success={null}
+          message={password_reset_message}
+          success={password_reset_success}
         />
 
         <input type="hidden" name="uidb64" value={uidb64} required />
         <input type="hidden" name="token" value={token} required />
 
         <button
-          className='btn btn-primary'
+          className='btn btn-primary mb-3'
           type='submit'
           disabled={!!error ? true : false}
         >
             Change Password
         </button>
+
+        <p><Link href='/send-password-reset-email'>Re-send Password Reset Email</Link></p>
+        <p><Link href='/login'>Login</Link></p>
+
       </form>
 
     </Layout>

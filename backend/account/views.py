@@ -70,7 +70,7 @@ class SendPasswordResetEmail(APIView):
                     user.save()
 
                     return Response(
-                        {'success': f'If this mail address is known to us, a message will be sent to the profied email address'},
+                        {'success': f'If this mail address is known to us, a message will be sent to the provided email address'},
                         status=status.HTTP_200_OK,
                     )
 
@@ -83,7 +83,7 @@ class SendPasswordResetEmail(APIView):
             else:
                 logger.warn(f'user with email {email} does not exist, returning status 200')
                 return Response(
-                    {'error': f'If this mail address is known to us, a message will be sent to the profied email address'},
+                    {'error': f'If this mail address is known to us, a message will be sent to the provided email address'},
                     status=status.HTTP_200_OK,
                 )
 
@@ -120,7 +120,7 @@ class ResetPasswordView(APIView):
                             user.save()
 
                             return Response(
-                                {'success': 'Password successfully reset'},
+                                {'success': 'Password successfully reset, please login using your new password'},
                                 status=status.HTTP_200_OK,
                             )
 

@@ -1,72 +1,126 @@
-import { useEffect } from 'react';
+
+import { useDispatch } from 'react-redux';
 import Layout from '../hocs/Layout';
 import Heading from '../components/Heading';
-import { useDispatch, useSelector } from 'react-redux';
-import { send_password_reset_email, reset_send_password_reset_email_success } from '../actions/auth';
 import FormControlFeedback from '../components/FormControlFeedback';
+import Link from 'next/link';
+import { reset_password } from '../actions/auth';
 
-const ResetPassword = () => {
-
-  const send_password_reset_email_success = useSelector(state => state.auth.send_password_reset_email_success);
-  const send_password_reset_email_message = useSelector(state => state.auth.send_password_reset_email_message);
-
+const ResetPasswordPage = ({ uidb64, token, error }) => {
 
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    if (dispatch && dispatch !== null && typeof dispatch !== 'undefined') {
-      dispatch(reset_send_password_reset_email_success());
-    }
-  }, [dispatch]);
-
-  const handleSubmit = event => {
+  const handleSubmit = (event) => {
     event.preventDefault();
 
-    const email = event.target.querySelector('input[name="email"]').value;
+    const data = new FormData(event.target);
+
+    const password = data.get('password'),
+    re_password =  data.get('re_password'),
+    uidb64 = data.get('uidb64'),
+    token = data.get('token');
 
     if (dispatch && dispatch !== null && dispatch !== undefined) {
-      dispatch(send_password_reset_email(email));
+      dispatch(reset_password(
+        password,
+        re_password,
+        uidb64,
+        token,
+      ));
     }
   }
   return (
     <Layout
-      title='Bevendo | Password Reset'
-      content='Password Reset page for Bevendo app'
+      title='Bevendo | Reset Password'
+      content='Reset Password page for Bevendo App'
     >
-      <>
-        <form
-           className='bg-light p-5 mt-5 mb-5'
-           onSubmit={handleSubmit}
+
+      <form className='bg-light p-5 mt-5 mb-5' onSubmit={handleSubmit}>
+
+        <Heading text="Reset Password" />
+
+        {!!error ? (
+          <>
+            <p>{error}</p>
+            <p>Please visit the <Link href="/send-password-reset-email">Send Password Reset Email page</Link> to restart the recovery process.</p>
+          </>
+        ) : (
+          <p>Please enter a new password.</p>
+        )}
+
+        <div className='form-group mb-3'>
+            <label className='form-label mt-5' htmlFor='password'>
+                <strong>New Password*</strong>
+            </label>
+            <input
+                className='form-control'
+                type='password'
+                name='password'
+                id='password'
+                placeholder='New Password*'
+                minLength={8}
+                required
+                disabled={!!error ? true : false}
+            />
+
+            <label className='form-label mt-5' htmlFor='re_password'>
+                <strong>Confirm New Password*</strong>
+            </label>
+
+            <input
+                className='form-control'
+                type='password'
+                name='re_password'
+                id='re_password'
+                placeholder='Confirm New Password*'
+                minLength={8}
+                required
+                disabled={!!error ? true : false}
+            />
+        </div>
+
+        <FormControlFeedback
+          className="mb-3"
+          message={null}
+          success={null}
+        />
+
+        <input type="hidden" name="uidb64" value={uidb64} required />
+        <input type="hidden" name="token" value={token} required />
+
+        <button
+          className='btn btn-primary'
+          type='submit'
+          disabled={!!error ? true : false}
         >
-          <Heading text="Reset Password" />
+            Change Password
+        </button>
+      </form>
 
-          <p>Please enter your email address associated with your account. A message will be sent to that address with a link allowing you to update your password.</p>
-
-          <label className='form-label' htmlFor='email'>
-            <strong>Email*</strong>
-          </label>
-          <input
-            type="email"
-            name="email"
-            id="email"
-            className='form-control mb-3'
-            placeholder='Email*'
-            required
-          />
-
-          <FormControlFeedback
-            className="mb-3"
-            message={send_password_reset_email_message}
-            success={send_password_reset_email_success}
-          />
-
-          <button className='btn btn-primary' type='submit'>
-            Send Email
-          </button>
-        </form>
-      </>
     </Layout>
   );
 };
 
-export default ResetPassword;
+export function getServerSideProps({ query }) {
+  const { uidb64=null, token=null } = query;
+
+  if (typeof uidb64 === "string" && typeof token==="string") {
+    return {
+      props: {
+        error: null,
+        uidb64,
+        token,
+      }
+    }
+  } else {
+    return {
+      props: {
+        error: 'This password recovery link is invalid.',
+        uidb64,
+        token,
+      }
+    }
+  }
+}
+
+export default ResetPasswordPage;

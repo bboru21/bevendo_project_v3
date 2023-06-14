@@ -81,7 +81,7 @@ const LoginPage = () => {
                             required
                         />
 
-                        <p><Link href='/reset-password'>Forgot password?</Link></p>
+                        <p><Link href='/send-password-reset-email'>Forgot password?</Link></p>
                     </div>
                     {
                         loading ? (

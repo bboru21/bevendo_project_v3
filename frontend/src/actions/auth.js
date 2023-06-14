@@ -331,3 +331,14 @@ export const reset_send_password_reset_email_success = () => dispatch => {
         type: RESET_SEND_PASSWORD_RESET_EMAIL_SUCCESS,
     });
 };
+
+export const reset_password = (password, re_password, uidb64, token) => async dispatch => {
+    const body = JSON.stringify({
+        password,
+        re_password,
+        uidb64,
+        token,
+    });
+
+    // TODO add api call here
+}

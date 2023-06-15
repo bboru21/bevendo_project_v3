@@ -1,3 +1,6 @@
+import css from './Heading.module.scss';
+import classNames from 'classnames';
+
 const Heading = ({
   text,
   subtext,
@@ -5,7 +8,7 @@ const Heading = ({
 }) => (
   <h1 className='display-5 fw-bold'>
       {text}
-      { subtext && <small className="text-muted fs-5 ms-2">{subtext}</small> }
+      { subtext && <small className={classNames("text-muted", "fs-5", css.small)}>{subtext}</small> }
       { button && button }
   </h1>
 );

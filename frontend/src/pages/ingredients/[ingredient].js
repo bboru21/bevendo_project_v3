@@ -43,13 +43,13 @@ const Ingredient = ({ error, ingredient }) => {
                                                 <tr>
                                                     <th scope="col">Size</th>
                                                     <th scope="col">Price</th>
-                                                    <th scope="col">
+                                                    <th scope="col" className="d-none d-sm-table-cell">
                                                         <span className="d-block d-md-none">PPL</span>
-                                                        <span className="d-none d-md-block">Price/Liter</span>
+                                                        <span className="d-none d-md-block">Per Liter</span>
                                                     </th>
                                                     <th scope="col">
                                                         <span className="d-block d-md-none">Best</span>
-                                                        <span className="d-none d-md-block">Is Best Price?</span>
+                                                        <span className="d-none d-md-inline-block">Is Best Price?</span>
                                                     </th>
                                                     <th scope="col">
                                                         <span className="d-block d-md-none">Above Best</span>
@@ -68,9 +68,9 @@ const Ingredient = ({ error, ingredient }) => {
                                                         {p.url ? (<ExternalLink href={p.url}>{p.size}</ExternalLink>) : (<>{p.size}</>)}
                                                     </td>
                                                     <td>{USDollar.format(p.current_price)}</td>
-                                                    <td>{USDollar.format(p.price_per_liter)}</td>
+                                                    <td className="d-none d-sm-table-cell">{USDollar.format(p.price_per_liter)}</td>
                                                     <td><ProConIcon isPro={p.is_best_price} /></td>
-                                                    <td>{!p.is_best_price ? USDollar.format(p.amount_above_best_price) : ''}</td>
+                                                    <td>{!p.is_best_price ? USDollar.format(p.amount_above_best_price) : '$0.00'}</td>
                                                     <td><ProConIcon isPro={p.is_on_sale} /></td>
                                                 </tr>
                                             ))}

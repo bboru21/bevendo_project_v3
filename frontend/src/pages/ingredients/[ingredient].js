@@ -17,7 +17,7 @@ const Ingredient = ({ error, ingredient }) => {
             title='Bevendo | Ingredient'
             content='Ingredient profile page.'
         >
-           <div className='p-5 bg-light rounded-3'>
+           <div className='p-3 p-md-5 bg-light rounded-3 mb-3'>
                 <div className='container-fluid py-3'>
                     {error ? (
                         <p className='fs-4 mt-3'>

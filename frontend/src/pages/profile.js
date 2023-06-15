@@ -64,13 +64,13 @@ const Profile = () => {
             title='Bevendo | Profile'
             content='User profile for Bevendo, a companion app to Drinking with the Saints'
         >
-           <div className='p-5 bg-light rounded-3 mb-3'>
+           <div className='p-3 p-md-5 bg-light rounded-3 mb-3'>
                 <div className='container-fluid py-3'>
                     <Heading text="User Profile" subtext={`${user.first_name} ${user.last_name}`} />
                 </div>
            </div>
 
-           <div className="p-5 bg-light rounded-3">
+           <div className="p-3 p-md-5 bg-light rounded-3 mb-3">
                 <h2>Settings</h2>
                 <div className="accordion" id="profileSettingsAccordion">
                         <div className="accordion-item">

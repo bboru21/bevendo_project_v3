@@ -22,7 +22,7 @@ const Dashboard = ({ error, feasts, deals, latestPullDate }) => {
             title='Bevendo | Dashboard'
             content='Dashboard for Bevendo, a companion app to Drinking with the Saints'
         >
-           <div className='p-5 bg-light rounded-3'>
+           <div className='p-3 p-md-5 bg-light rounded-3 mb-3'>
                 <div className='container-fluid py-3'>
                     <Heading text="User Dashboard" />
                     <p className='fs-4 mt-3'>

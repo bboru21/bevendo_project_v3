@@ -1,0 +1,18 @@
+Ciao {{first_name}},
+
+At long last, Bevendo is now a website, and you can check it out here:
+
+http://bevendo.online
+
+And as a member of this distribution list, you can login with the following credentials:
+
+User Name: {{username}}
+Password: {{password}}
+
+There you can view upcoming feasts and Virginia ABC pricing info, search for feasts/cocktails/ingredients, and even add recipes to your favorites!
+
+Just a note that though the codebase is secure, the site does not yet use HTTPS protocol, and  I would advise against changing your password to anyting sensitive.
+
+Salute,
+
+Bryan

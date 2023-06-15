@@ -14,7 +14,7 @@ const HomePage = () => {
     >
       <div className='p-3 p-md-5 bg-light rounded-3'>
         <div className='container-fluid py-3'>
-          <Heading text="Home Page" />
+          <Heading text="Home" />
           <p className='fs-4 mt-3'>
             Welcome to Bevendo, a cocktail app project.
           </p>

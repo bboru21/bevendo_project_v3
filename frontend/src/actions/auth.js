@@ -23,6 +23,9 @@ import {
     PASSWORD_RESET_SUCCESS,
     PASSWORD_RESET_FAIL,
     RESET_PASSWORD_RESET_SUCCESS,
+    CHANGE_EMAIL_SUCCESS,
+    CHANGE_EMAIL_FAIL,
+    RESET_CHANGE_EMAIL_SUCCESS,
 } from './types';
 
 export const load_user = () => async dispatch => {
@@ -377,5 +380,54 @@ export const reset_password = (password, re_password, uidb64, token) => async di
 export const reset_password_reset_success = () => dispatch => {
     dispatch({
         type: RESET_PASSWORD_RESET_SUCCESS,
+    });
+};
+
+export const change_email = (
+    email,
+    re_email,
+) => async dispatch => {
+
+    const body = JSON.stringify({
+        email,
+        re_email,
+    });
+
+    try {
+
+        const res = await fetch('/api/account/change-email', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body,
+        });
+
+        const data = await res.json();
+
+        if (res.status === 200) {
+            dispatch({
+                type: CHANGE_EMAIL_SUCCESS,
+                payload: data,
+            });
+        } else {
+            dispatch({
+                type: CHANGE_EMAIL_FAIL,
+                payload: data,
+            });
+        }
+    }
+    catch(error) {
+        dispatch({
+            type: CHANGE_EMAIL_FAIL,
+            payload: {'error': 'Something went wrong when changing email'}
+        });
+    }
+};
+
+export const reset_change_email_success = () => dispatch => {
+    dispatch({
+        type: RESET_CHANGE_EMAIL_SUCCESS,
     });
 };

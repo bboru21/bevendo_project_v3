@@ -156,6 +156,43 @@ class ResetPasswordView(APIView):
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR,
             )
 
+class ChangeEmailView(APIView):
+
+    def post(self, request):
+        try:
+            request_user = request.user
+            user = User.objects.get(username=request_user.username)
+            if user:
+                data = request.data
+                email = data['email']
+                re_email = data['re_email']
+
+                if email == re_email:
+                    user.email = email
+                    user.save()
+                    return Response(
+                        {'success': 'Email successfully changed'},
+                        status=status.HTTP_200_OK,
+                    )
+
+                else:
+                    logger.warn('new emails do not match, returning status 400')
+                    return Response(
+                        {'error': 'New emails do not match'},
+                        status=status.HTTP_400_BAD_REQUEST,
+                    )
+            else:
+                logger.warn(f'user with username {request_user.username} does not exist, returning status 400')
+                return Response(
+                    {'error': f'User with username {request_user.username} not found'},
+                    status=status.HTTP_400_BAD_REQUEST,
+                )
+        except BaseException as error:
+            logger.error(f'error occured while changing email: {error}')
+            return Response(
+                {'error': 'Something went wrong when trying to change your email address'},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            )
 
 class ChangePasswordView(APIView):
 

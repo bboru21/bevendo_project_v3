@@ -3,7 +3,12 @@ import { useSelector, useDispatch } from 'react-redux';
 import Layout from '../hocs/Layout';
 import loginRedirect from '../hooks/loginRedirect';
 import Heading from '../components/Heading';
-import { change_password, reset_change_password_success} from '../actions/auth';
+import {
+    change_password,
+    reset_change_password_success,
+    change_email,
+    reset_change_email_success,
+} from '../actions/auth';
 import FormControlFeedback from '../components/FormControlFeedback';
 
 const Profile = () => {
@@ -14,14 +19,30 @@ const Profile = () => {
     const user = useSelector(state => state.auth.user);
     const change_password_success = useSelector(state => state.auth.change_password_success);
     const change_password_message = useSelector(state => state.auth.change_password_message);
+    const change_email_success = useSelector(state => state.auth.change_email_success);
+    const change_email_message = useSelector(state => state.auth.change_email_message);
 
     const dispatch = useDispatch();
 
     useEffect(() => {
         if (dispatch && dispatch !== null && typeof dispatch !== 'undefined') {
             dispatch(reset_change_password_success());
+            dispatch(reset_change_email_success());
         }
     }, [dispatch]);
+
+    const handleChangeEmailSubmit = event => {
+        event.preventDefault();
+
+        const data = new FormData(event.target);
+
+        const email = data.get('email'),
+        re_email =  data.get('re_email');
+
+        if (dispatch && dispatch !== null && dispatch !== undefined) {
+            dispatch(change_email(email, re_email));
+          }
+      };
 
     const handleChangePasswordSubmit = event => {
       event.preventDefault();
@@ -48,6 +69,49 @@ const Profile = () => {
                     <Heading text="User Profile" subtext={`${user.first_name} ${user.last_name}`} />
                 </div>
            </div>
+
+           <form
+            className='bg-light p-5 mt-5 mb-5'
+            onSubmit={handleChangeEmailSubmit}
+            >
+              <h2>Change Email</h2>
+              <div className='form-group mb-3'>
+                  <label className='form-label mt-5' htmlFor='email'>
+                      <strong>New Email*</strong>
+                  </label>
+                  <input
+                      className='form-control'
+                      type='email'
+                      name='email'
+                      id='email'
+                      placeholder='New Email*'
+                      required
+                  />
+
+                  <label className='form-label mt-5' htmlFor='re_email'>
+                      <strong>Confirm New Email*</strong>
+                  </label>
+                  <input
+                      className='form-control'
+                      type='email'
+                      name='re_email'
+                      id='re_email'
+                      placeholder='Confirm New Email*'
+                      required
+                  />
+              </div>
+
+              <FormControlFeedback
+                className="mb-3"
+                message={change_email_message}
+                success={change_email_success}
+              />
+
+              <button className='btn btn-primary' type='submit'>
+                  Change Email
+              </button>
+
+           </form>
 
            <form
             className='bg-light p-5 mt-5 mb-5'

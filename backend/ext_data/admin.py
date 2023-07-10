@@ -1,4 +1,10 @@
 from django.contrib import admin
+from django.contrib.auth.mixins import PermissionRequiredMixin
+from django.views.generic.detail import DetailView
+from django.utils.html import format_html
+from django.urls import path, reverse
+from .models import ABCProduct
+
 
 from .models import (
     ABCProduct,
@@ -66,6 +72,7 @@ class ProductAdmin(admin.ModelAdmin):
         abstract = True
 
 class ABCProductAdmin(ProductAdmin):
+    list_display = ('name', 'pricing',)
     list_filter = ('active',)
     search_fields = (
         'name',
@@ -73,6 +80,20 @@ class ABCProductAdmin(ProductAdmin):
     autocomplete_fields = (
         'controlled_beverage',
     )
+
+    def get_urls(self):
+        return [
+            path(
+                "<pk>/pricing",
+                self.admin_site.admin_view(ABCProductPricingView.as_view()),
+                name="abc_product_pricing",
+            ),
+            *super().get_urls(),
+        ]
+
+    def pricing(self, obj):
+        url = reverse("admin:abc_product_pricing", args=(obj.pk,))
+        return format_html(f'<a href="{url}">📝</a>')
 
 admin.site.register(ABCProduct, ABCProductAdmin)
 
@@ -89,3 +110,16 @@ class LidlProductAdmin(admin.ModelAdmin):
 @admin.register(LidlProductPrice)
 class LidlProductPriceAdmin(admin.ModelAdmin):
     pass
+
+
+class ABCProductPricingView(PermissionRequiredMixin, DetailView):
+    permission_required = "ext_data.view_abc_product"
+    template_name = "ext_data/templates/abc_product_pricing.html"
+    model = ABCProduct
+
+    def get_context_data(self, **kwargs):
+        return {
+            **super().get_context_data(**kwargs),
+            **admin.site.each_context(self.request),
+            "opts": self.model._meta,
+        }

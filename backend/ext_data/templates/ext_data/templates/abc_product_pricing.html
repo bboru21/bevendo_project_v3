@@ -15,6 +15,14 @@
 
     <h1>{{object.name}} Pricing Data</h1>
 
-    <p>[Pricing Data]</p>
+    <ul>
+        {% for price in prices %}
+        <li>
+            {{price.size}} |
+            {{price.current_price}} |
+            {{price.pull_date}}
+        </li>
+        {% endfor %}
+    </ul>
 
 {% endblock %}

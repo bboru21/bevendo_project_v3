@@ -1,5 +1,6 @@
 from django.contrib import admin
 from django.contrib.auth.mixins import PermissionRequiredMixin
+from django.db.models import Count
 from django.views.generic.detail import DetailView
 from django.utils.html import format_html
 from django.urls import path, reverse
@@ -123,3 +124,13 @@ class ABCProductPricingView(PermissionRequiredMixin, DetailView):
             **admin.site.each_context(self.request),
             "opts": self.model._meta,
         }
+
+    def get(self, request, *args, **kwargs):
+        res = super().get(request, *args, **kwargs)
+
+        product = res.context_data.get('object')
+        prices = product.prices.values("current_price", "size", "pull_date").order_by("size", "pull_date")
+
+        res.context_data.update({ 'prices': prices })
+
+        return res

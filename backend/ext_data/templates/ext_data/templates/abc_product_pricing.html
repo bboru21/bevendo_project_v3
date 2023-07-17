@@ -15,6 +15,29 @@
 
     <h1>{{object.name}} Pricing Data</h1>
 
-    <p>[Pricing Data]</p>
+    <div>
+        <canvas id="priceChart"></canvas>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <script>
+    const ctx = document.getElementById('priceChart');
+
+    new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: {{ labels|safe }},
+            datasets: {{ datasets|safe }},
+        },
+        options: {
+        scales: {
+            y: {
+            beginAtZero: true
+            }
+        }
+        }
+    });
+    </script>
 
 {% endblock %}

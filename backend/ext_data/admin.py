@@ -1,5 +1,8 @@
+import json
+
 from django.contrib import admin
 from django.contrib.auth.mixins import PermissionRequiredMixin
+from django.db.models import Count
 from django.views.generic.detail import DetailView
 from django.utils.html import format_html
 from django.urls import path, reverse
@@ -123,3 +126,34 @@ class ABCProductPricingView(PermissionRequiredMixin, DetailView):
             **admin.site.each_context(self.request),
             "opts": self.model._meta,
         }
+
+    def get(self, request, *args, **kwargs):
+        res = super().get(request, *args, **kwargs)
+
+        # price chart data
+        # TODO can be cleaned up, perhaps using pandas
+        product = res.context_data.get('object')
+        qs = product.prices.values("current_price", "size", "pull_date").order_by("pull_date")
+
+        pull_dates = []
+        data = {}
+        for item in qs:
+            pull_date = item['pull_date'].strftime("%m/%d/%Y")
+            if pull_date not in pull_dates:
+                pull_dates.append(pull_date)
+
+            size = item['size']
+            current_price = item['current_price']
+            if size in data:
+                data[size].append(float(current_price))
+            else:
+                data[size] = [float(current_price)]
+
+        data = [{ 'label': k, 'data': v, 'borderWidth': 3 } for k, v in data.items()]
+
+        res.context_data.update({
+            'labels': json.dumps(pull_dates),
+            'datasets': json.dumps(data),
+        })
+
+        return res

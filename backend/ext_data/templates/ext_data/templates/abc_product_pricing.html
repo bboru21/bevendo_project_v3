@@ -15,14 +15,29 @@
 
     <h1>{{object.name}} Pricing Data</h1>
 
-    <ul>
-        {% for price in prices %}
-        <li>
-            {{price.size}} |
-            {{price.current_price}} |
-            {{price.pull_date}}
-        </li>
-        {% endfor %}
-    </ul>
+    <div>
+        <canvas id="priceChart"></canvas>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <script>
+    const ctx = document.getElementById('priceChart');
+
+    new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: {{ labels|safe }},
+            datasets: {{ datasets|safe }},
+        },
+        options: {
+        scales: {
+            y: {
+            beginAtZero: true
+            }
+        }
+        }
+    });
+    </script>
 
 {% endblock %}

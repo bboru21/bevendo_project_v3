@@ -6,6 +6,7 @@ import { USDollar } from '../../utils/currency';
 import ProConIcon from '../../components/ProConIcon';
 import ExternalLink from '../../components/ExternalLink';
 import Heading from '../../components/Heading';
+import PriceChartButton from '../../components/PriceChartButton';
 
 
 const Ingredient = ({ error, ingredient }) => {
@@ -36,7 +37,18 @@ const Ingredient = ({ error, ingredient }) => {
                             <ul className="product-list">
                             {ingredient.controlled_beverages.map(b => (
                                 <li key={b.pk}>
-                                    <h3>{b.name}</h3>
+                                    <h3>
+                                        {b.name}
+                                        <PriceChartButton
+                                            className="ms-2"
+                                            type="button"
+                                            data-bs-toggle="collapse"
+                                            data-bs-target={`#price-chart-container-${b.pk}`}
+                                            aria-expanded="false"
+                                            aria-controls={`price-chart-container-${b.pk}`}
+                                        />
+                                    </h3>
+                                    <div className="collapse" id={`price-chart-container-${b.pk}`}>[Price Chart Data]</div>
                                     {b.current_prices.length > 0 && (
                                         <table className="table">
                                             <thead>

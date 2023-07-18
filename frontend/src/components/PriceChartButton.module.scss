@@ -1,0 +1,41 @@
+@import "src/styles/_variables.scss";
+
+.button {
+  position: relative;
+  top: -0.25rem;
+  width: 40px;
+  height: 40px;
+  font-size: 0.5rem;
+  border-radius: 50%;
+  color: $gray-600;
+  border: 2px solid $gray-600;
+  outline: none;
+
+  &:focus-visible {
+    /* TODO copied from bootstrap, see if we can import this */
+    box-shadow: rgba(130, 138, 145, 0.5) 0px 0px 0px 4px;
+  }
+
+  &:hover {
+    opacity: 0.75;
+  }
+
+  & svg {
+    color: $gray-600;
+  }
+
+  &.isOpen {
+    color: $blue;
+    background: $blue;
+    border-color: $blue;
+
+    & svg {
+      color: $white;
+    }
+
+    &:focus-visible {
+      /* TODO copied from bootstrap, see if we can import this */
+      box-shadow: rgba(49, 132, 253, 0.5) 0px 0px 0px 4px;
+    }
+  }
+}

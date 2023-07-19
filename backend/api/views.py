@@ -1,5 +1,6 @@
 import datetime
 import logging
+import json
 
 from django.db.models import Case, IntegerField, Q, Value, When
 from django.shortcuts import render
@@ -29,6 +30,7 @@ from .models import (
     Feast,
     Cocktail,
     Ingredient,
+    ControlledBeverage,
 )
 
 from .utils import (
@@ -365,3 +367,36 @@ class FavoriteView(APIView):
                 {'error': 'Something went wrong when trying to remove a favorite'},
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR,
             )
+
+
+class PriceChartDataView(APIView):
+    def get(self, request, pk, format=None):
+
+        '''
+        # price chart data
+        # TODO can be cleaned up, logic also contained in ext_data.admin, perhaps use pandas as well
+        '''
+
+        beverage = ControlledBeverage.objects.get(pk=pk)
+        prices = beverage.abc_product.prices.all().values("current_price", "size", "pull_date").order_by("pull_date")
+
+        pull_dates = []
+        data = {}
+        for item in prices:
+            pull_date = item['pull_date'].strftime("%m/%d/%Y")
+            if pull_date not in pull_dates:
+                pull_dates.append(pull_date)
+
+            size = item['size']
+            current_price = item['current_price']
+            if size in data:
+                data[size].append(float(current_price))
+            else:
+                data[size] = [float(current_price)]
+
+        data = [{ 'label': k, 'data': v, 'borderWidth': 3 } for k, v in data.items()]
+
+        return Response({
+            'data': json.dumps(data),
+            'labels': json.dumps(pull_dates),
+        }, status=status.HTTP_200_OK)

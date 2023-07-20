@@ -53,6 +53,19 @@ def get_feasts_by_date_range(start_date, end_date):
 
     return feasts
 
+def get_date_range(days=None, months=None, years=None):
+    # used by PriceChartDataView
+
+    start_date = end_date = date.today()
+
+    if days:
+        start_date = end_date - timedelta(days=days)
+    elif months:
+        start_date = end_date - timedelta(days=(31 * months))
+    elif years:
+        start_date = end_date - timedelta(days=(365 * years))
+
+    return (start_date, end_date)
 
 def get_email_date_range(start_date=None):
 

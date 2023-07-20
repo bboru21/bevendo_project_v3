@@ -1,11 +1,50 @@
 
+import { useState } from 'react';
 import { USDollar } from '../../utils/currency';
 import ProConIcon from '../ProConIcon';
 import ExternalLink from '../ExternalLink';
 import PriceChartButton from '../PriceChartButton';
 
 
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend,
+} from 'chart.js';
+import { Line } from 'react-chartjs-2';
+
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend,
+);
+
+export const options = {
+  responsive: true,
+  plugins: {
+    legend: {
+      position: 'top',
+    },
+    title: {
+      display: false,
+      // text: 'Chart.js Line Chart',
+    },
+  },
+};
+
+
 const ControlledBeverageItem = ({ beverage }) => {
+
+  const [chartData, setChartData ] = useState(null);
 
   const handleButtonClick = async (event, pk) => {
 
@@ -18,7 +57,7 @@ const ControlledBeverageItem = ({ beverage }) => {
 
     if (res.status === 200) {
       const data = await res.json();
-      // TODO set state here
+      setChartData(data);
     }
   };
 
@@ -36,7 +75,11 @@ const ControlledBeverageItem = ({ beverage }) => {
               onClick={ (event) => { handleButtonClick(event, beverage.pk); }}
           />
       </h3>
-      <div className="collapse" id={`price-chart-container-${beverage.pk}`}>[Price Chart Data]</div>
+      <div className="collapse" id={`price-chart-container-${beverage.pk}`}>
+        {chartData && (
+          <Line options={options} data={chartData} />
+        )}
+      </div>
       {beverage.current_prices.length > 0 && (
           <table className="table">
               <thead>

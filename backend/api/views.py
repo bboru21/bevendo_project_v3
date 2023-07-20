@@ -38,6 +38,7 @@ from .utils import (
     get_email_date_range,
     get_email_feasts_products,
     get_email_deals,
+    get_date_range,
 )
 
 from ext_data.models import (
@@ -377,8 +378,17 @@ class PriceChartDataView(APIView):
         # TODO can be cleaned up, logic also contained in ext_data.admin, perhaps use pandas as well
         '''
 
-        beverage = ControlledBeverage.objects.get(pk=pk)
-        prices = beverage.abc_product.prices.all().values("current_price", "size", "pull_date").order_by("pull_date")
+        # TODO to be implemented later
+        start_date = None
+        end_date = None
+        # (start_date, end_date) = get_date_range(years=1)
+
+        qs = ControlledBeverage.objects.get(pk=pk).abc_product.prices.all()
+
+        if start_date and end_date:
+            qs = qs.filter(pull_date__range=(start_date, end_date))
+
+        prices = qs.values("current_price", "size", "pull_date").order_by("pull_date")
 
         pull_dates = []
         data = {}

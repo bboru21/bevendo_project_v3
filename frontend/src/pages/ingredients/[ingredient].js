@@ -2,11 +2,8 @@ import Layout from '../../hocs/Layout';
 import cookie from 'cookie';
 import { API_URL } from '../../config/index';
 import loginRedirect from '../../hooks/loginRedirect';
-import { USDollar } from '../../utils/currency';
-import ProConIcon from '../../components/ProConIcon';
-import ExternalLink from '../../components/ExternalLink';
 import Heading from '../../components/Heading';
-import PriceChartButton from '../../components/PriceChartButton';
+import ControlledBeverageItem from '../../components/ingredients/ControlledBeverageItem';
 
 
 const Ingredient = ({ error, ingredient }) => {
@@ -35,65 +32,13 @@ const Ingredient = ({ error, ingredient }) => {
                             <h2>Products</h2>
 
                             <ul className="product-list">
-                            {ingredient.controlled_beverages.map(b => (
-                                <li key={b.pk}>
-                                    <h3>
-                                        {b.name}
-                                        <PriceChartButton
-                                            className="ms-2"
-                                            type="button"
-                                            data-bs-toggle="collapse"
-                                            data-bs-target={`#price-chart-container-${b.pk}`}
-                                            aria-expanded="false"
-                                            aria-controls={`price-chart-container-${b.pk}`}
-                                        />
-                                    </h3>
-                                    <div className="collapse" id={`price-chart-container-${b.pk}`}>[Price Chart Data]</div>
-                                    {b.current_prices.length > 0 && (
-                                        <table className="table">
-                                            <thead>
-                                                <tr>
-                                                    <th scope="col">Size</th>
-                                                    <th scope="col">Price</th>
-                                                    <th scope="col" className="d-none d-sm-table-cell">
-                                                        <span className="d-block d-md-none">PPL</span>
-                                                        <span className="d-none d-md-block">Per Liter</span>
-                                                    </th>
-                                                    <th scope="col">
-                                                        <span className="d-block d-md-none">Best</span>
-                                                        <span className="d-none d-md-inline-block">Is Best Price?</span>
-                                                    </th>
-                                                    <th scope="col">
-                                                        <span className="d-block d-md-none">Above Best</span>
-                                                        <span className="d-none d-md-block">Amount Above Best Price</span>
-                                                    </th>
-                                                    <th scope="col">
-                                                        <span className="d-block d-md-none">Sale</span>
-                                                        <span className="d-none d-md-block">Is On-Sale?</span>
-                                                    </th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                            {b.current_prices.map(p => (
-                                                <tr key={p.pk}>
-                                                    <td>
-                                                        {p.url ? (<ExternalLink href={p.url}>{p.size}</ExternalLink>) : (<>{p.size}</>)}
-                                                    </td>
-                                                    <td>{USDollar.format(p.current_price)}</td>
-                                                    <td className="d-none d-sm-table-cell">{USDollar.format(p.price_per_liter)}</td>
-                                                    <td><ProConIcon isPro={p.is_best_price} /></td>
-                                                    <td>{!p.is_best_price ? USDollar.format(p.amount_above_best_price) : '$0.00'}</td>
-                                                    <td><ProConIcon isPro={p.is_on_sale} /></td>
-                                                </tr>
-                                            ))}
-                                            </tbody>
-                                        </table>
-                                    )}
+                            {ingredient.controlled_beverages.map(beverage => (
+                                <li key={beverage.pk}>
+                                    <ControlledBeverageItem beverage={beverage} />
                                 </li>
                             ))}
                             </ul>
                             </>
-
                         )}
                       </>
                     )}
@@ -120,6 +65,7 @@ export async function getServerSideProps({ params, req }) {
 
     try {
         const { ingredient } = params;
+
 
         const res = await fetch(`${API_URL}/api/v1/pages/ingredients/${ingredient}`, {
             method: 'GET',

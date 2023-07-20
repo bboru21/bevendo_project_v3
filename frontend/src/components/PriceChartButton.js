@@ -6,13 +6,15 @@ import css from './PriceChartButton.module.scss';
 
 const PriceChartButton = ({
   className='',
+  onClick: onClickProp = () => {},
   ...restProps
 }) => {
 
   const [isOpen, setIsOpen ] = useState(false);
 
-  const handleClick = () => {
+  const handleClick = (event) => {
     setIsOpen(!isOpen);
+    onClickProp(event);
   };
   return (
     <button

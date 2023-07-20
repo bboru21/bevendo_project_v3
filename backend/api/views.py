@@ -394,9 +394,7 @@ class PriceChartDataView(APIView):
             else:
                 data[size] = [float(current_price)]
 
-        data = [{ 'label': k, 'data': v, 'borderWidth': 3 } for k, v in data.items()]
-
         return Response({
-            'data': json.dumps(data),
-            'labels': json.dumps(pull_dates),
+            'datasets': [{ 'label': k, 'data': v, 'borderWidth': 3 } for k, v in data.items()],
+            'labels': pull_dates,
         }, status=status.HTTP_200_OK)

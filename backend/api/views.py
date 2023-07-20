@@ -378,10 +378,7 @@ class PriceChartDataView(APIView):
         # TODO can be cleaned up, logic also contained in ext_data.admin, perhaps use pandas as well
         '''
 
-        # TODO to be implemented later
-        start_date = None
-        end_date = None
-        # (start_date, end_date) = get_date_range(years=1)
+        (start_date, end_date) = get_date_range(years=1)
 
         qs = ControlledBeverage.objects.get(pk=pk).abc_product.prices.all()
 
@@ -405,6 +402,6 @@ class PriceChartDataView(APIView):
                 data[size] = [float(current_price)]
 
         return Response({
-            'datasets': [{ 'label': k, 'data': v, 'borderWidth': 3 } for k, v in data.items()],
+            'datasets': [{ 'label': k, 'data': v } for k, v in data.items()],
             'labels': pull_dates,
         }, status=status.HTTP_200_OK)

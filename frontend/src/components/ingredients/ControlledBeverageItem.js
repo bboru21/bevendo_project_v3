@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { USDollar } from '../../utils/currency';
 import ProConIcon from '../ProConIcon';
 import ExternalLink from '../ExternalLink';
-import PriceChartButton from '../PriceChartButton';
+import PriceChartButton from './PriceChartButton';
 import LineChart from '../charts/LineChart';
 import Modal from 'react-bootstrap/Modal';
 

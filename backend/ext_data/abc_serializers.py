@@ -2,6 +2,7 @@ from rest_framework import serializers
 
 from .models import (
     ABCPrice,
+    ABCProduct,
 )
 
 
@@ -10,6 +11,7 @@ class ABCPriceSerializer(serializers.ModelSerializer):
     class Meta:
         model = ABCPrice
         fields = (
+          'pk',
           'amount_above_best_price',
           'current_price',
           'is_best_price',

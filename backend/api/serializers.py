@@ -59,7 +59,7 @@ class ControlledBeverageSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = ControlledBeverage
-        fields = ['name', 'ext_url', 'current_prices']
+        fields = ['pk', 'name', 'ext_url', 'current_prices']
 
 
 class IngredientSerializer(serializers.ModelSerializer):

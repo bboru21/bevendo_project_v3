@@ -1,11 +1,14 @@
 import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 
 const SearchBar = () => {
 
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResults, setSearchResults] = useState([]);
   const [showSearchResults, setShowSearchResults] = useState(false);
+
+  const router = useRouter();
 
   const containerRef = useRef(null);
 
@@ -68,6 +71,13 @@ const SearchBar = () => {
   }
 
   const handleKeyDown = (event) => {
+
+    if (event.key === 'Enter') {
+      if (event.target === containerRef.current.querySelector("input")) {
+        event.preventDefault();
+        router.push(`/search?q=${searchQuery}`);
+      }
+    }
 
     // arrow navigation
     if (['ArrowDown', 'ArrowUp'].indexOf(event.key) > -1) {

@@ -13,7 +13,7 @@ const loginRedirect = () => {
     if (typeof window !== 'undefined' && !calledPush && !loading) {
       if (!isAuthenticated) {
 
-        const redirect = encodeURIComponent(window.location.pathname);
+        const redirect = encodeURIComponent( window.location.pathname + window.location.search);
         setCalledPush(true);
         router.push(`/login?redirect=${redirect}`);
       }

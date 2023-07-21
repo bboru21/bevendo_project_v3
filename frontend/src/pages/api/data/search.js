@@ -1,5 +1,5 @@
 import cookie from 'cookie';
-import { API_URL } from '../../config/index';
+import { API_URL } from '../../../config/index';
 
 const search = async (req, res) => {
     if (req.method === 'GET') {
@@ -16,7 +16,7 @@ const search = async (req, res) => {
             'Authorization': `Bearer ${access}`,
           },
         });
-  
+
         const data = await apiRes.json();
         if (apiRes.status === 200) {
             return res.status(200).json({

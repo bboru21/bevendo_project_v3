@@ -19,7 +19,7 @@ const SearchBar = () => {
     const getData = setTimeout( async () => {
       if (searchQuery) {
 
-        const res = await fetch(`/api/search?q=${searchQuery}`, {
+        const res = await fetch(`/api/data/search?q=${searchQuery}`, {
           method: 'GET',
           headers: {
             'Accept': 'application/json',

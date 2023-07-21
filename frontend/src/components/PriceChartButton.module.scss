@@ -23,19 +23,4 @@
   & svg {
     color: $gray-600;
   }
-
-  &.isOpen {
-    color: $blue;
-    background: $blue;
-    border-color: $blue;
-
-    & svg {
-      color: $white;
-    }
-
-    &:focus-visible {
-      /* TODO copied from bootstrap, see if we can import this */
-      box-shadow: rgba(49, 132, 253, 0.5) 0px 0px 0px 4px;
-    }
-  }
 }

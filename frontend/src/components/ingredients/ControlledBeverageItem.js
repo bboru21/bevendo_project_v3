@@ -5,11 +5,15 @@ import ProConIcon from '../ProConIcon';
 import ExternalLink from '../ExternalLink';
 import PriceChartButton from '../PriceChartButton';
 import LineChart from '../charts/LineChart';
+import Modal from 'react-bootstrap/Modal';
 
 
 const ControlledBeverageItem = ({ beverage }) => {
 
+  const [show, setShow] = useState(false);
   const [chartData, setChartData ] = useState(null);
+
+  const handleClose = () => setShow(false);
 
   const handleButtonClick = async (event, pk) => {
 
@@ -24,6 +28,9 @@ const ControlledBeverageItem = ({ beverage }) => {
       const data = await res.json();
       setChartData(data);
     }
+
+    // show modal
+    setShow(true);
   };
 
   return (
@@ -33,18 +40,23 @@ const ControlledBeverageItem = ({ beverage }) => {
           <PriceChartButton
               className="ms-2"
               type="button"
-              data-bs-toggle="collapse"
-              data-bs-target={`#price-chart-container-${beverage.pk}`}
-              aria-expanded="false"
-              aria-controls={`price-chart-container-${beverage.pk}`}
               onClick={ (event) => { handleButtonClick(event, beverage.pk); }}
           />
       </h3>
-      <div className="collapse" id={`price-chart-container-${beverage.pk}`}>
-        {chartData && (
-          <LineChart data={chartData} />
-        )}
-      </div>
+
+      <Modal
+        show={show}
+        dialogClassName="modal-xl modal-fullscreen-md-down"
+        onHide={handleClose}
+        aria-labelledby="example-custom-modal-styling-title"
+      >
+        <Modal.Header closeButton>
+          <Modal.Title id="example-custom-modal-styling-title">{beverage.name} Pricing Data</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          {chartData && <LineChart data={chartData} />}
+        </Modal.Body>
+      </Modal>
       {beverage.current_prices.length > 0 && (
           <table className="table">
               <thead>

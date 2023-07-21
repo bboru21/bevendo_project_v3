@@ -10,17 +10,13 @@ const PriceChartButton = ({
   ...restProps
 }) => {
 
-  const [isOpen, setIsOpen ] = useState(false);
-
   const handleClick = (event) => {
-    setIsOpen(!isOpen);
     onClickProp(event);
   };
+
   return (
     <button
-      className={classNames(css.button, className, {
-        [css.isOpen]: isOpen,
-      })}
+      className={classNames(css.button, className)}
       onClick={handleClick}
       title={'View Pricing Data'}
       {...restProps}

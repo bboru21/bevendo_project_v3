@@ -214,14 +214,23 @@ class IngredientPageView(AuthorizedPageView):
 
 class SearchView(APIView):
 
-    COCKTAIL_LIMIT = 25
-    FEAST_LIMIT = 25
+    COCKTAIL_LIMIT = 20
+    FEAST_LIMIT = 20
+    INGREDIENT_LIMIT = 10
 
     def get(self, request, format=None):
+
+
 
         results = []
 
         q = request.GET.get('q')
+        limit = request.GET.get('limit')
+        if limit == 'unlimited':
+            self.COCKTAIL_LIMIT = None
+            self.FEAST_LIMIT = None
+            self.INGREDIENT_LIMIT = None
+
         if q:
 
             # begin cocktails
@@ -252,7 +261,7 @@ class SearchView(APIView):
                 .order_by(preserved_order)[:self.COCKTAIL_LIMIT]
 
             for cocktail in cocktails:
-                results.append({ 'label': cocktail.name, 'value': cocktail.urlname })
+                results.append({ 'label': cocktail.name, 'value': cocktail.urlname, 'type': 'cocktail', 'q': q })
 
             # begin feasts
             q1 = Q(name=q)
@@ -278,10 +287,37 @@ class SearchView(APIView):
                 .order_by(preserved_order)[:self.FEAST_LIMIT]
 
             for feast in feasts:
-                results.append({ 'label': feast.name, 'value': feast.urlname })
+                results.append({ 'label': feast.name, 'value': feast.urlname, 'type': 'feast', 'q': q })
+
+            # begin ingredients
+            q1 = Q(name=q)
+            q2 = Q(name__icontains=q)
+
+            ingredient_ids = Ingredient.objects \
+                .filter(is_controlled=True) \
+                .filter(q1 | q2) \
+                .annotate(
+                    search_type_ordering=Case(
+                        When(q1, then=Value(3)),
+                        When(q2, then=Value(2)),
+                        default=Value(-1),
+                        output_field=IntegerField()
+                    )
+                ) \
+                .order_by('-search_type_ordering') \
+                .values_list('id', flat=True) \
+                .distinct()
+
+            preserved_order = Case(*[When(pk=pk, then=pos) for pos, pk in enumerate(ingredient_ids)])
+            ingredients = Ingredient.objects \
+                .filter(id__in=ingredient_ids) \
+                .order_by(preserved_order)[:self.INGREDIENT_LIMIT]
+
+            for ingredient in ingredients:
+                results.append({ 'label': ingredient.name, 'value': ingredient.urlname, 'type': 'ingredient', 'q': q })
 
         if len(results) == 0:
-            results = [{ 'label': 'No results found.', 'value': None }]
+            results = [{ 'label': 'No results found.', 'value': None, 'type': None, 'q': q }]
 
         return Response(
             { 'results': results },

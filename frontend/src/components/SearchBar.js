@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
+import { formatSearchLabel } from '../utils/search';
 
 const SearchBar = () => {
 
@@ -137,7 +138,7 @@ const SearchBar = () => {
             <li key={result.value} className="search-result-item">
                 {result.value ? (
                   <Link href={result.value} legacyBehavior>
-                    <a className="px-2 py-1 link-secondary" onClick={handleClick}>{result.label}</a>
+                    <a className="px-2 py-1 link-secondary" onClick={handleClick}>{formatSearchLabel(result.label, result.q)}</a>
                   </Link>
                 ) : (
                   <div className="px-2 py-1">{result.label}</div>

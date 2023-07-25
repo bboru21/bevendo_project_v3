@@ -1,16 +1,10 @@
-import { useSelector } from 'react-redux';
 import Layout from '../hocs/Layout';
 import cookie from 'cookie';
 import { API_URL } from '../config/index';
-import FeastSwiper from '../components/swipers/FeastSwiper';
-import FavoriteSwiper from '../components/swipers/FavoriteSwiper';
 import loginRedirect from '../hooks/loginRedirect';
-import ExternalLink from '../components/ExternalLink';
-import { displayDate } from '../utils/dates';
-import { USDollar } from '../utils/currency';
-import ProConIcon from '../components/ProConIcon';
 import Heading from '../components/Heading';
 import Link from 'next/link';
+import { formatSearchLabel } from '../utils/search';
 
 const Search = ({ error, q, results }) => {
 
@@ -34,7 +28,15 @@ const Search = ({ error, q, results }) => {
                 {!error && (
                     <>
                         <ul>
-                          {results.map( (result, i) => <li key={`result-${i}`}><Link href={result.value}>{result.label}</Link></li>)}
+                          {results.map( (result, i) => (
+                            <li key={`result-${i}`}>
+                                <Link href={result.value} legacyBehavior>
+                                    <a>
+                                        {formatSearchLabel(result.label, result.q)}
+                                    </a>
+                                </Link>
+                            </li>
+                          ))}
                         </ul>
                     </>
                 )}
@@ -61,7 +63,7 @@ export async function getServerSideProps({ req, query }) {
   try {
       const { q } = query;
 
-      const res = await fetch(`${API_URL}/api/v1/search?q=${q}`, {
+      const res = await fetch(`${API_URL}/api/v1/search?q=${q}&limit=unlimited`, {
           method: 'GET',
           headers: {
               'Accept': 'application/json',

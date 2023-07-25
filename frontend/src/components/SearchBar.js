@@ -1,11 +1,15 @@
 import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
+import { formatSearchLabel } from '../utils/search';
 
 const SearchBar = () => {
 
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResults, setSearchResults] = useState([]);
   const [showSearchResults, setShowSearchResults] = useState(false);
+
+  const router = useRouter();
 
   const containerRef = useRef(null);
 
@@ -69,6 +73,13 @@ const SearchBar = () => {
 
   const handleKeyDown = (event) => {
 
+    if (event.key === 'Enter') {
+      if (event.target === containerRef.current.querySelector("input")) {
+        event.preventDefault();
+        router.push(`/search?q=${searchQuery}`);
+      }
+    }
+
     // arrow navigation
     if (['ArrowDown', 'ArrowUp'].indexOf(event.key) > -1) {
       event.preventDefault();
@@ -127,7 +138,7 @@ const SearchBar = () => {
             <li key={result.value} className="search-result-item">
                 {result.value ? (
                   <Link href={result.value} legacyBehavior>
-                    <a className="px-2 py-1 link-secondary" onClick={handleClick}>{result.label}</a>
+                    <a className="px-2 py-1 link-secondary" onClick={handleClick}>{formatSearchLabel(result.label, result.q)}</a>
                   </Link>
                 ) : (
                   <div className="px-2 py-1">{result.label}</div>

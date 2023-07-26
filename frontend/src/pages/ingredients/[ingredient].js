@@ -32,11 +32,17 @@ const Ingredient = ({ error, ingredient }) => {
                             <h2>Products</h2>
 
                             <ul className="product-list">
-                            {ingredient.controlled_beverages.map(beverage => (
-                                <li key={beverage.pk}>
-                                    <ControlledBeverageItem beverage={beverage} />
-                                </li>
-                            ))}
+                            {ingredient.controlled_beverages.map(beverage => {
+                                if (beverage.current_prices.length === 0) {
+                                    return (<></>);
+                                } else {
+                                    return (
+                                        <li key={beverage.pk}>
+                                            <ControlledBeverageItem beverage={beverage} />
+                                        </li>
+                                    );
+                                }
+                            })}
                             </ul>
                             </>
                         )}

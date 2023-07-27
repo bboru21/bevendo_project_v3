@@ -5,10 +5,22 @@ import loginRedirect from '../hooks/loginRedirect';
 import Heading from '../components/Heading';
 import Link from 'next/link';
 import { formatSearchLabel } from '../utils/search';
+import { title } from '../utils/strings';
+import _ from 'underscore';
 
-const Search = ({ error, q, results }) => {
+const Search = ({ error, q, results: resultsProp }) => {
 
     loginRedirect();
+
+    const results = {};
+    resultsProp.forEach( result => {
+
+        if (!(result.type in results)) {
+            results[result.type] = [];
+        }
+
+        results[result.type].push({ ...result });
+    });
 
     return (
         <Layout
@@ -27,17 +39,23 @@ const Search = ({ error, q, results }) => {
 
                 {!error && (
                     <>
-                        <ul>
-                          {results.map( (result, i) => (
-                            <li key={`result-${i}`}>
-                                <Link href={result.value} legacyBehavior>
-                                    <a>
-                                        {formatSearchLabel(result.label, result.q)}
-                                    </a>
-                                </Link>
-                            </li>
-                          ))}
-                        </ul>
+                        {Object.keys(results).map( category => (
+                            <div key={category}>
+                                <h2>{title(category)}s</h2>
+
+                                <ul>
+                                    {results[category].map( result => (
+                                        <li key={result.value}>
+                                            <Link href={result.value} legacyBehavior>
+                                                <a>
+                                                    {formatSearchLabel(result.label, result.q)}
+                                                </a>
+                                            </Link>
+                                        </li>
+                                    ))}
+                                </ul>
+                            </div>
+                        ))}
                     </>
                 )}
            </div>

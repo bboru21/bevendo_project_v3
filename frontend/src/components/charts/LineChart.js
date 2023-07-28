@@ -40,7 +40,7 @@ const LineChart = ({ data: dataProp, title=null, }) => {
     labels: dataProp.labels,
     datasets: dataProp.datasets.map((item, i) => ({
       ...item,
-      borderWidth: 3,
+      borderWidth: 2,
       borderColor: COLORS[i],
       backgroundColor: COLORS[i],
     })),

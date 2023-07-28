@@ -38,7 +38,7 @@ const ControlledBeverageItem = ({ beverage }) => {
       <h3>
           {beverage.name}
           <PriceChartButton
-              className="ms-2"
+              className="ms-0 mt-2 ms-md-2 mt-md-0 d-block d-md-inline-block"
               type="button"
               onClick={ (event) => { handleButtonClick(event, beverage.pk); }}
           />

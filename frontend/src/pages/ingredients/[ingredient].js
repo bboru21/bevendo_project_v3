@@ -33,9 +33,7 @@ const Ingredient = ({ error, ingredient }) => {
 
                             <ul className="product-list">
                             {ingredient.controlled_beverages.map(beverage => {
-                                if (beverage.current_prices.length === 0) {
-                                    return (<></>);
-                                } else {
+                                if (beverage.current_prices.length > 0) {
                                     return (
                                         <li key={beverage.pk}>
                                             <ControlledBeverageItem beverage={beverage} />

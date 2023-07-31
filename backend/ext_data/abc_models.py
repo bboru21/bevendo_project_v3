@@ -1,17 +1,17 @@
-from django.db import models
-
+import logging
 import re
 
 from django.db import models
 from django.db.models import Max
 
 from api.models import ControlledBeverage
-
-
 from api.constants import (
     PRICE_PER_SIZE_SCORE_PERCENT,
     PRICE_PER_LITER_SCORE_PERCENT,
 )
+
+
+logger = logging.getLogger(__name__)
 
 ABC_PRODUCT_SIZES = (
     '50 ml',
@@ -251,17 +251,27 @@ class ABCPrice(models.Model):
         best_price_column_name = format_abc_product_best_column_name(self.size)
         # from time to time, getattr fails here because ABC store changes the sizes
         # for now, we're OK with it failing because that forces us to update the ABCProduct model
-        best_price = getattr(self.product, best_price_column_name)
+        try:
+            best_price = getattr(self.product, best_price_column_name)
+        except AttributeError:
+            best_price = None
+            logger.error(f'{self.product.name} ({self.product.id}) has new size {best_price_column_name} which has not been added to the Product model.')
 
         return (self.current_price - best_price) if best_price else 0
 
     @property
     def price_below_average_per_size(self):
 
+
         avg_price_column_name = format_abc_product_avg_column_name(self.size)
         # from time to time, getattr fails here because ABC store changes the sizes
         # for now, we're OK with it failing because that forces us to update the ABCProduct model
-        avg_price_per_size = getattr(self.product, avg_price_column_name)
+
+        try:
+            avg_price_per_size = getattr(self.product, avg_price_column_name)
+        except AttributeError:
+            avg_price_per_size = None
+            logger.error(f'{self.product.name} ({self.product.id}) has new size {avg_price_column_name} which has not been added to the Product model.')
 
         return (avg_price_per_size - self.current_price) if avg_price_per_size else None
 

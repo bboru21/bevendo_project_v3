@@ -164,6 +164,25 @@ class FeastPageView(AuthorizedPageView):
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR,
             )
 
+class FeastsPageView(AuthorizedPageView):
+    def get(self, request, format=None):
+        res = super().get(request, format)
+
+        try:
+            # TODO add prefetch_related('cocktails')
+            qs = Feast.objects.all()
+            feasts = FeastSerializer(qs, many=True).data
+            res.data.update({
+                'feasts': feasts,
+            }, status=status.HTTP_200_OK)
+            return res
+        except BaseException as error:
+            logger.error(f'Something went wrong when trying to load page data: {error}')
+            return Response(
+                { 'error': 'Something went wrong when trying to load page data', },
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            )
+
 
 class CocktailPageView(AuthorizedPageView):
     def get(self, request, slug, format=None):

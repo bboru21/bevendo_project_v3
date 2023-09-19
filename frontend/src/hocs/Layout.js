@@ -3,8 +3,9 @@ import { useDispatch } from 'react-redux';
 import { request_refresh } from '../actions/auth';
 import Head from 'next/head';
 import Navbar from '../components/Navbar';
+import Breadcrumbs from '../components/Breadcrumbs';
 
-const Layout = ({ title, content, children }) => {
+const Layout = ({ title, content, breadcrumbs: breadcrumbsProp=[], children }) => {
 
     const dispatch = useDispatch();
 
@@ -13,6 +14,15 @@ const Layout = ({ title, content, children }) => {
             dispatch(request_refresh());  // will also dispatch check_auth_status
         }
     }, [dispatch]);
+
+
+    const breadcrumbs = [
+        {
+            href: '/dashboard',
+            text: 'Dashboard',
+        },
+        ...breadcrumbsProp
+    ];
     return (
         <>
             <Head>
@@ -27,6 +37,7 @@ const Layout = ({ title, content, children }) => {
                     </div>
                 )}
                 <Navbar />
+                <Breadcrumbs breadcrumbs={breadcrumbs} />
                 <div className='container mt-5'>{children}</div>
                 <footer className="bg-light p-3">
                     <a href="mailto:bryan.e.hadro@gmail.com">Contact</a>

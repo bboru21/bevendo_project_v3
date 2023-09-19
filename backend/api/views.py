@@ -2,7 +2,7 @@ import datetime
 import logging
 import json
 
-from django.db.models import Case, IntegerField, Q, Value, When
+from django.db.models import Case, F, IntegerField, Q, Value, When
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.utils.dateformat import DateFormat
@@ -169,7 +169,7 @@ class FeastsPageView(AuthorizedPageView):
         res = super().get(request, format)
 
         try:
-            qs = Feast.objects.all()
+            qs = Feast.objects.order_by('name').all()
             feasts = FeastSerializer(qs, many=True, fields=('pk', 'name', 'date', 'urlname')).data
             res.data.update({
                 'feasts': feasts,

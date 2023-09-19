@@ -12,10 +12,16 @@ const Feast = ({ error, feast }) => {
 
     loginRedirect();
 
+    const breadcrumbs = error ? [] : [
+        { href: '/feasts', text: 'Feasts'},
+        { href: feast.urlname, text: feast.name},
+    ];
+
     return (
         <Layout
             title='Bevendo | Feast'
             content='Feast day profile page.'
+            breadcrumbs={breadcrumbs}
         >
            <div className='p-3 p-md-5 bg-light rounded-3 mb-3'>
                 <div className='container-fluid py-3'>

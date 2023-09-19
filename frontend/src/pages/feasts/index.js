@@ -1,14 +1,10 @@
 import Layout from '../../hocs/Layout';
 import loginRedirect from '../../hooks/loginRedirect';
 import Heading from '../../components/Heading';
-import { performAPIGet } from '../../utils/api';
 import Link from 'next/link';
+import { performAPIGet } from '../../utils/api';
+import { displayDate } from '../../utils/dates';
 
-/*
-  TODO
-  - format date
-  - add breadcrumbs
-*/
 
 const Feasts = ({ feasts, error }) => {
 
@@ -18,6 +14,7 @@ const Feasts = ({ feasts, error }) => {
     <Layout
       title='Bevendo | Feasts'
       content='Feasts Page for Bevendo, a companion app to Drinking with the Saints'
+      breadcrumbs={[{ text: 'Feasts', href: '/feasts'}]}
     >
       <div className='p-3 p-md-5 bg-light rounded-3 mb-3'>
         <div className='container-fluid py-3'>
@@ -35,9 +32,7 @@ const Feasts = ({ feasts, error }) => {
                 {feasts.map( feast => (
                   <li key={feast.pk}>
                       <Link href={feast.urlname} legacyBehavior>
-                          <a>
-                              {feast.name} ({feast.date})
-                          </a>
+                          <a>{feast.name}{ feast.date ? ` (${displayDate(feast.date)})` : ''}</a>
                       </Link>
                   </li>
                 ))}

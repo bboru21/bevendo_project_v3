@@ -8,8 +8,6 @@ import Link from 'next/link';
   TODO
   - format date
   - add breadcrumbs
-  - remove unnecessary data from API response
-  - implement performAPIGet elsewhere as needed
 */
 
 const Feasts = ({ feasts, error }) => {
@@ -35,8 +33,8 @@ const Feasts = ({ feasts, error }) => {
           <>
             <ul>
                 {feasts.map( feast => (
-                  <li key={feast.slug}>
-                      <Link href={`/feasts/${feast.slug}`} legacyBehavior>
+                  <li key={feast.pk}>
+                      <Link href={feast.urlname} legacyBehavior>
                           <a>
                               {feast.name} ({feast.date})
                           </a>

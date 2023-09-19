@@ -169,9 +169,8 @@ class FeastsPageView(AuthorizedPageView):
         res = super().get(request, format)
 
         try:
-            # TODO add prefetch_related('cocktails')
             qs = Feast.objects.all()
-            feasts = FeastSerializer(qs, many=True).data
+            feasts = FeastSerializer(qs, many=True, fields=('pk', 'name', 'date', 'urlname')).data
             res.data.update({
                 'feasts': feasts,
             }, status=status.HTTP_200_OK)

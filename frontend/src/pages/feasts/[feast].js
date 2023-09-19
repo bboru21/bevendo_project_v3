@@ -1,11 +1,11 @@
 import Layout from '../../hocs/Layout';
-import cookie from 'cookie';
-import { API_URL, CATHOLIC_CULTURE_URL } from '../../config/index';
+import { CATHOLIC_CULTURE_URL } from '../../config/index';
 import ExternalLink from '../../components/ExternalLink';
 import LinkList from '../../components/LinkList';
 import { displayDate } from '../../utils/dates';
 import loginRedirect from '../../hooks/loginRedirect';
 import Heading from '../../components/Heading';
+import { performAPIGet } from '../../utils/api';
 
 
 const Feast = ({ error, feast }) => {
@@ -53,28 +53,10 @@ const Feast = ({ error, feast }) => {
 
 export async function getServerSideProps({ params, req }) {
 
-    const cookies = cookie.parse(req.headers.cookie ?? '');
-    const access = cookies.access ?? false;
-
-    // this should never happen, but just in case
-    if (access === false) {
-        return {
-            props: {
-                error: 'User unauthorized to load page data',
-            }
-        };
-    }
-
     try {
         const { feast } = params;
 
-        const res = await fetch(`${API_URL}/api/v1/pages/feasts/${feast}`, {
-            method: 'GET',
-            headers: {
-                'Accept': 'application/json',
-                'Authorization': `Bearer ${access}`,
-            },
-        });
+        const res = await performAPIGet(`/pages/feasts/${feast}`, req);
 
         if (res.status === 200) {
             const data = await res.json();

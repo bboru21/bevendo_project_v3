@@ -1,6 +1,10 @@
 import cookie from 'cookie';
 import { API_URL } from '../config/index';
 
+/*
+  Performs a GET request to the API endpoint, checking to ensure the access cookie is present.
+  Commonly used within getServerSideProps.
+*/
 export const performAPIGet = async (urlSegment, req) => {
 
   const cookies = cookie.parse(req.headers.cookie ?? '');

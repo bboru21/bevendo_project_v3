@@ -1,11 +1,10 @@
 import Layout from '../../hocs/Layout';
-import cookie from 'cookie';
-import { API_URL } from '../../config/index';
 import LinkList from '../../components/LinkList';
 import loginRedirect from '../../hooks/loginRedirect';
 import FavoriteButton from '../../components/FavoriteButton';
 import Link from 'next/link';
 import Heading from '../../components/Heading';
+import { performAPIGet } from '../../utils/api';
 
 const Cocktail = ({ error, cocktail }) => {
 
@@ -59,28 +58,12 @@ const Cocktail = ({ error, cocktail }) => {
 
 export async function getServerSideProps({ params, req }) {
 
-    const cookies = cookie.parse(req.headers.cookie ?? '');
-    const access = cookies.access ?? false;
 
-    // this should never happen, but just in case
-    if (access === false) {
-        return {
-            props: {
-                error: 'User unauthorized to load page data',
-            }
-        };
-    }
 
     try {
         const { cocktail } = params;
 
-        const res = await fetch(`${API_URL}/api/v1/pages/cocktails/${cocktail}`, {
-            method: 'GET',
-            headers: {
-                'Accept': 'application/json',
-                'Authorization': `Bearer ${access}`,
-            },
-        });
+        const res = await performAPIGet(`/pages/cocktails/${cocktail}`, req);
 
         if (res.status === 200) {
             const data = await res.json();

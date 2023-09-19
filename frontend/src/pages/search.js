@@ -1,12 +1,11 @@
 import Layout from '../hocs/Layout';
-import cookie from 'cookie';
-import { API_URL } from '../config/index';
 import loginRedirect from '../hooks/loginRedirect';
 import Heading from '../components/Heading';
 import Link from 'next/link';
 import { formatSearchLabel } from '../utils/search';
 import { title } from '../utils/strings';
 import _ from 'underscore';
+import { performAPIGet } from '../utils/api';
 
 const Search = ({ error, q, results: resultsProp }) => {
 
@@ -66,28 +65,11 @@ const Search = ({ error, q, results: resultsProp }) => {
 
 export async function getServerSideProps({ req, query }) {
 
-  const cookies = cookie.parse(req.headers.cookie ?? '');
-  const access = cookies.access ?? false;
-
-  // this should never happen, but just in case
-  if (access === false) {
-      return {
-          props: {
-              error: 'User unauthorized to load page data',
-          }
-      };
-  }
-
   try {
+
       const { q } = query;
 
-      const res = await fetch(`${API_URL}/api/v1/search?q=${q}&limit=unlimited`, {
-          method: 'GET',
-          headers: {
-              'Accept': 'application/json',
-              'Authorization': `Bearer ${access}`,
-          },
-      });
+      const res = await performAPIGet(`/search?q=${q}&limit=unlimited`, req);
 
       if (res.status === 200) {
           const data = await res.json();

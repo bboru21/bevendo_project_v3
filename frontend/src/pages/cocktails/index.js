@@ -10,11 +10,17 @@ const Cocktails = ({ cocktails, error }) => {
 
   loginRedirect();
 
+  // TODO refactor so parents do not have to be repeated
+  const breadcrumbs = [
+    { href: '/dashboard', text: 'Dashboard'},
+    { href: '/cocktails', text: 'Cocktails'},
+  ];
+
   return (
     <Layout
       title='Bevendo | Cocktails'
       content='Cocktails Page for Bevendo, a companion app to Drinking with the Saints'
-      breadcrumbs={[{ text: 'Cocktails', href: '/cocktails'}]}
+      breadcrumbs={breadcrumbs}
     >
       <div className='p-3 p-md-5 bg-light rounded-3 mb-3'>
         <div className='container-fluid py-3'>

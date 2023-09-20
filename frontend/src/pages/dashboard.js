@@ -15,11 +15,17 @@ const Dashboard = ({ error, feasts, deals, latestPullDate }) => {
     loginRedirect();
 
     const user = useSelector(state => state.auth.user);
-
+    const breadcrumbs = [
+        {
+            href: '/dashboard',
+            text: 'Dashboard',
+        }
+    ];
     return (
         <Layout
             title='Bevendo | Dashboard'
             content='Dashboard for Bevendo, a companion app to Drinking with the Saints'
+            breadcrumbs={breadcrumbs}
         >
            <div className='p-3 p-md-5 bg-light rounded-3 mb-3'>
                 <div className='container-fluid py-3'>

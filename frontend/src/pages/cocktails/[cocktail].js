@@ -10,7 +10,9 @@ const Cocktail = ({ error, cocktail }) => {
 
     loginRedirect();
 
+    // TODO refactor so parents do not have to be repeated
     const breadcrumbs = error ? [] : [
+        { href: '/dashboard', text: 'Dashboard'},
         { href: '/cocktails', text: 'Cocktails'},
         { href: cocktail.urlname, text: cocktail.name, active: true},
     ];

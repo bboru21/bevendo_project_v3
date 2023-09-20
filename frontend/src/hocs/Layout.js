@@ -5,7 +5,7 @@ import Head from 'next/head';
 import Navbar from '../components/Navbar';
 import Breadcrumbs from '../components/Breadcrumbs';
 
-const Layout = ({ title, content, breadcrumbs: breadcrumbsProp=[], children }) => {
+const Layout = ({ title, content, breadcrumbs: breadcrumbs=[], children }) => {
 
     const dispatch = useDispatch();
 
@@ -15,14 +15,6 @@ const Layout = ({ title, content, breadcrumbs: breadcrumbsProp=[], children }) =
         }
     }, [dispatch]);
 
-
-    const breadcrumbs = [
-        {
-            href: '/dashboard',
-            text: 'Dashboard',
-        },
-        ...breadcrumbsProp
-    ];
     return (
         <>
             <Head>

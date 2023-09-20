@@ -39,6 +39,8 @@ from .utils import (
     get_email_feasts_products,
     get_email_deals,
     get_date_range,
+    get_sortable_feast,
+    get_sortable_cocktail,
 )
 
 from ext_data.models import (
@@ -169,8 +171,9 @@ class FeastsPageView(AuthorizedPageView):
         res = super().get(request, format)
 
         try:
-            qs = Feast.objects.order_by('name').all()
+            qs = Feast.objects.all()
             feasts = FeastSerializer(qs, many=True, fields=('pk', 'name', 'date', 'urlname')).data
+            feasts = sorted(feasts, key=lambda f: get_sortable_feast(f['name']))
             res.data.update({
                 'feasts': feasts,
             }, status=status.HTTP_200_OK)
@@ -188,8 +191,9 @@ class CocktailsPageView(AuthorizedPageView):
         res = super().get(*args, **kwargs)
 
         try:
-            qs = Cocktail.objects.order_by('name').all()
+            qs = Cocktail.objects.all()
             cocktails = CocktailSerializer(qs, many=True, fields=('pk', 'name', 'urlname')).data
+            cocktails = sorted(cocktails, key=lambda c: get_sortable_cocktail(c['name']))
 
             res.data.update({
                 'cocktails': cocktails,

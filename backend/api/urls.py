@@ -9,7 +9,9 @@ from rest_framework import routers
 from .views import (
     email_preview,
     DashboardPageView,
+    FeastsPageView,
     FeastPageView,
+    CocktailsPageView,
     CocktailPageView,
     IngredientPageView,
     SearchView,
@@ -19,7 +21,9 @@ from .views import (
 
 page_urls = [
     path('dashboard/', DashboardPageView.as_view()),
+    path('feasts/', FeastsPageView.as_view()),
     path('feasts/<slug:slug>/', FeastPageView.as_view()),
+    path('cocktails/', CocktailsPageView.as_view()),
     path('cocktails/<slug:slug>/', CocktailPageView.as_view()),
     path('ingredients/<slug:slug>/', IngredientPageView.as_view()),
 ]

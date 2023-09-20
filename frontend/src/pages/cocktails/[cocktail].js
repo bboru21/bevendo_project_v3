@@ -1,20 +1,27 @@
 import Layout from '../../hocs/Layout';
-import cookie from 'cookie';
-import { API_URL } from '../../config/index';
 import LinkList from '../../components/LinkList';
 import loginRedirect from '../../hooks/loginRedirect';
 import FavoriteButton from '../../components/FavoriteButton';
 import Link from 'next/link';
 import Heading from '../../components/Heading';
+import { performAPIGet } from '../../utils/api';
 
 const Cocktail = ({ error, cocktail }) => {
 
     loginRedirect();
 
+    // TODO refactor so parents do not have to be repeated
+    const breadcrumbs = error ? [] : [
+        { href: '/dashboard', text: 'Dashboard'},
+        { href: '/cocktails', text: 'Cocktails'},
+        { href: cocktail.urlname, text: cocktail.name, active: true},
+    ];
+
     return (
         <Layout
             title='Bevendo | Cocktail'
             content='Cocktail profile page.'
+            breadcrumbs={breadcrumbs}
         >
            <div className='p-3 p-md-5 bg-light rounded-3 mb-3'>
                 <div className='container-fluid py-3'>
@@ -59,28 +66,12 @@ const Cocktail = ({ error, cocktail }) => {
 
 export async function getServerSideProps({ params, req }) {
 
-    const cookies = cookie.parse(req.headers.cookie ?? '');
-    const access = cookies.access ?? false;
 
-    // this should never happen, but just in case
-    if (access === false) {
-        return {
-            props: {
-                error: 'User unauthorized to load page data',
-            }
-        };
-    }
 
     try {
         const { cocktail } = params;
 
-        const res = await fetch(`${API_URL}/api/v1/pages/cocktails/${cocktail}`, {
-            method: 'GET',
-            headers: {
-                'Accept': 'application/json',
-                'Authorization': `Bearer ${access}`,
-            },
-        });
+        const res = await performAPIGet(`/pages/cocktails/${cocktail}`, req);
 
         if (res.status === 200) {
             const data = await res.json();

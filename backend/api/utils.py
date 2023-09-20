@@ -1,4 +1,5 @@
 import logging
+import re
 from datetime import (
     date,
     timedelta,
@@ -222,3 +223,19 @@ def nextyear(dt):
        # February 29th in a leap year
        # Add 365 days instead to arrive at March 1st
        return dt + timedelta(days=365)
+
+
+"""
+    Substracts common strings from the Feast name which are not desired to be factored into sorting.
+"""
+def get_sortable_feast(name):
+    return re.sub('^(Bl\.|St\.|The|Feast of)', '', name).strip()
+
+
+"""
+    Substracts common strings from the Cocktail name which are not desired to be factored into sorting.
+"""
+def get_sortable_cocktail(name):
+    name = re.sub('[\(\)]', '', name)
+    name = re.sub('(St\-|St\.\s)', 'St ', name)
+    return name

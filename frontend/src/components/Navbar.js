@@ -75,6 +75,38 @@ const Navbar = () => {
               </Link>
             </li>
             <li className='nav-item'>
+              <Link href='/feasts'>
+                <a
+                    className={
+                        router.pathname === '/feasts' ?
+                        'nav-link active' : 'nav-link'
+                    }
+                    aria-current={
+                        router.pathname === '/feasts' ?
+                        'page' : 'false'
+                    }
+                >
+                    Feasts
+                </a>
+              </Link>
+            </li>
+            <li className='nav-item'>
+              <Link href='/cocktails'>
+                <a
+                    className={
+                        router.pathname === '/cocktails' ?
+                        'nav-link active' : 'nav-link'
+                    }
+                    aria-current={
+                        router.pathname === '/cocktails' ?
+                        'page' : 'false'
+                    }
+                >
+                    Cocktails
+                </a>
+              </Link>
+            </li>
+            <li className='nav-item'>
               <Link href='/profile'>
                 <a
                     className={

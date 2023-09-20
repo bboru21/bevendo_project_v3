@@ -2,7 +2,7 @@ import datetime
 import logging
 import json
 
-from django.db.models import Case, IntegerField, Q, Value, When
+from django.db.models import Case, F, IntegerField, Q, Value, When
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.utils.dateformat import DateFormat
@@ -39,6 +39,8 @@ from .utils import (
     get_email_feasts_products,
     get_email_deals,
     get_date_range,
+    get_sortable_feast,
+    get_sortable_cocktail,
 )
 
 from ext_data.models import (
@@ -157,6 +159,46 @@ class FeastPageView(AuthorizedPageView):
             return res
         except ObjectDoesNotExist:
             return Response({'error': 'Feast not found'}, status=status.HTTP_404_NOT_FOUND)
+        except BaseException as error:
+            logger.error(f'Something went wrong when trying to load page data: {error}')
+            return Response(
+                { 'error': 'Something went wrong when trying to load page data', },
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            )
+
+class FeastsPageView(AuthorizedPageView):
+    def get(self, request, format=None):
+        res = super().get(request, format)
+
+        try:
+            qs = Feast.objects.all()
+            feasts = FeastSerializer(qs, many=True, fields=('pk', 'name', 'date', 'urlname')).data
+            feasts = sorted(feasts, key=lambda f: get_sortable_feast(f['name']))
+            res.data.update({
+                'feasts': feasts,
+            }, status=status.HTTP_200_OK)
+            return res
+        except BaseException as error:
+            logger.error(f'Something went wrong when trying to load page data: {error}')
+            return Response(
+                { 'error': 'Something went wrong when trying to load page data', },
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            )
+
+
+class CocktailsPageView(AuthorizedPageView):
+    def get(self, *args, **kwargs):
+        res = super().get(*args, **kwargs)
+
+        try:
+            qs = Cocktail.objects.all()
+            cocktails = CocktailSerializer(qs, many=True, fields=('pk', 'name', 'urlname')).data
+            cocktails = sorted(cocktails, key=lambda c: get_sortable_cocktail(c['name']))
+
+            res.data.update({
+                'cocktails': cocktails,
+            }, status=status.HTTP_200_OK)
+            return res
         except BaseException as error:
             logger.error(f'Something went wrong when trying to load page data: {error}')
             return Response(

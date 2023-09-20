@@ -4,6 +4,7 @@ import { API_URL } from '../../config/index';
 import loginRedirect from '../../hooks/loginRedirect';
 import Heading from '../../components/Heading';
 import ControlledBeverageItem from '../../components/ingredients/ControlledBeverageItem';
+import { performAPIGet } from '../../utils/api';
 
 
 const Ingredient = ({ error, ingredient }) => {
@@ -55,29 +56,10 @@ const Ingredient = ({ error, ingredient }) => {
 
 export async function getServerSideProps({ params, req }) {
 
-    const cookies = cookie.parse(req.headers.cookie ?? '');
-    const access = cookies.access ?? false;
-
-    // this should never happen, but just in case
-    if (access === false) {
-        return {
-            props: {
-                error: 'User unauthorized to load page data',
-            }
-        };
-    }
-
     try {
         const { ingredient } = params;
 
-
-        const res = await fetch(`${API_URL}/api/v1/pages/ingredients/${ingredient}`, {
-            method: 'GET',
-            headers: {
-                'Accept': 'application/json',
-                'Authorization': `Bearer ${access}`,
-            },
-        });
+        const res = await performAPIGet(`/pages/ingredients/${ingredient}`, req);
 
         if (res.status === 200) {
             const data = await res.json();

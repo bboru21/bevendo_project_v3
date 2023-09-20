@@ -1,7 +1,5 @@
 import { useSelector } from 'react-redux';
 import Layout from '../hocs/Layout';
-import cookie from 'cookie';
-import { API_URL } from '../config/index';
 import FeastSwiper from '../components/swipers/FeastSwiper';
 import FavoriteSwiper from '../components/swipers/FavoriteSwiper';
 import loginRedirect from '../hooks/loginRedirect';
@@ -10,17 +8,24 @@ import { displayDate } from '../utils/dates';
 import { USDollar } from '../utils/currency';
 import ProConIcon from '../components/ProConIcon';
 import Heading from '../components/Heading';
+import { performAPIGet } from '../utils/api';
 
 const Dashboard = ({ error, feasts, deals, latestPullDate }) => {
 
     loginRedirect();
 
     const user = useSelector(state => state.auth.user);
-
+    const breadcrumbs = [
+        {
+            href: '/dashboard',
+            text: 'Dashboard',
+        }
+    ];
     return (
         <Layout
             title='Bevendo | Dashboard'
             content='Dashboard for Bevendo, a companion app to Drinking with the Saints'
+            breadcrumbs={breadcrumbs}
         >
            <div className='p-3 p-md-5 bg-light rounded-3 mb-3'>
                 <div className='container-fluid py-3'>
@@ -102,26 +107,8 @@ const Dashboard = ({ error, feasts, deals, latestPullDate }) => {
 
 export async function getServerSideProps({ req }) {
 
-    const cookies = cookie.parse(req.headers.cookie ?? '');
-    const access = cookies.access ?? false;
-
-    // this should never happen, but just in case
-    if (access === false) {
-        return {
-            props: {
-                error: 'User unauthorized to load page data',
-            }
-        };
-    }
-
     try {
-        const res = await fetch(`${API_URL}/api/v1/pages/dashboard`, {
-            method: 'GET',
-            headers: {
-                'Accept': 'application/json',
-                'Authorization': `Bearer ${access}`,
-            },
-        });
+        const res = await performAPIGet('/pages/dashboard', req);
 
         if (res.status === 200) {
             const data = await res.json();

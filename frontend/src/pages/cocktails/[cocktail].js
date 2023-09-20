@@ -10,10 +10,16 @@ const Cocktail = ({ error, cocktail }) => {
 
     loginRedirect();
 
+    const breadcrumbs = error ? [] : [
+        { href: '/cocktails', text: 'Cocktails'},
+        { href: cocktail.urlname, text: cocktail.name, active: true},
+    ];
+
     return (
         <Layout
             title='Bevendo | Cocktail'
             content='Cocktail profile page.'
+            breadcrumbs={breadcrumbs}
         >
            <div className='p-3 p-md-5 bg-light rounded-3 mb-3'>
                 <div className='container-fluid py-3'>

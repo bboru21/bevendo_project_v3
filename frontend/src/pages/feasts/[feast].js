@@ -14,7 +14,7 @@ const Feast = ({ error, feast }) => {
 
     const breadcrumbs = error ? [] : [
         { href: '/feasts', text: 'Feasts'},
-        { href: feast.urlname, text: feast.name},
+        { href: feast.urlname, text: feast.name, active: true },
     ];
 
     return (

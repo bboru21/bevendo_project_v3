@@ -183,6 +183,26 @@ class FeastsPageView(AuthorizedPageView):
             )
 
 
+class CocktailsPageView(AuthorizedPageView):
+    def get(self, *args, **kwargs):
+        res = super().get(*args, **kwargs)
+
+        try:
+            qs = Cocktail.objects.order_by('name').all()
+            cocktails = CocktailSerializer(qs, many=True, fields=('pk', 'name', 'urlname')).data
+
+            res.data.update({
+                'cocktails': cocktails,
+            }, status=status.HTTP_200_OK)
+            return res
+        except BaseException as error:
+            logger.error(f'Something went wrong when trying to load page data: {error}')
+            return Response(
+                { 'error': 'Something went wrong when trying to load page data', },
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            )
+
+
 class CocktailPageView(AuthorizedPageView):
     def get(self, request, slug, format=None):
         res = super().get(request, format)

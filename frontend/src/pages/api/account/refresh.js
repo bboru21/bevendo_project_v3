@@ -1,4 +1,4 @@
-import { API_URL } from '../../../config/index';
+import { API_URL, ACCESS_TOKEN_LIFETIME, REFRESH_TOKEN_LIFETIME } from '../../../config/index';
 import cookie from 'cookie';
 
 const refresh = async (req, res) => {
@@ -35,7 +35,7 @@ const refresh = async (req, res) => {
             'access', data.access, {
               'httpOnly': true,
               'secure': false, // process.env.NODE_ENV !== 'development',
-              'maxAge': 60 * 30, // 30 minutes, must match ACCESS_TOKEN_LIFETIME
+              'maxAge': ACCESS_TOKEN_LIFETIME,
               'sameSite': 'strict',
               'path': '/'
             }
@@ -44,7 +44,7 @@ const refresh = async (req, res) => {
             'refresh', data.refresh, {
               'httpOnly': true,
               'secure': false, // process.env.NODE_ENV !== 'development',
-              'maxAge': 60 * 60 * 24, // 1 day, must match REFRESH_TOKEN_LIFETIME 
+              'maxAge': REFRESH_TOKEN_LIFETIME,
               'sameSite': 'strict',
               'path': '/'
             }

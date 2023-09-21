@@ -286,8 +286,8 @@ REST_FRAMEWORK = {
 }
 
 SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=30),
-    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
+    'ACCESS_TOKEN_LIFETIME': timedelta(days=1), # 24 hours, must match ACCESS_TOKEN_LIFETIME in config/index.js
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=7), # 1 week, must match REFRESH_TOKEN_LIFETIME in config/index.js
     'ROTATE_REFRESH_TOKENS': True,
     'BLACKLIST_AFTER_ROTATION': False,
     'AUTH_HEADER_TYPES': ('Bearer',),

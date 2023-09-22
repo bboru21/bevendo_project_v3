@@ -43,15 +43,17 @@ const RegisterPage = () => {
         }
     };
     if (typeof window !== 'undefined' && isAuthenticated) {
-        router.push('/dashboard');
+        router.push('/');
     }
     if (register_success) {
         router.push('/login');
     }
     return (
         <Layout
-            title='Bevendo | Register'
-            content='Register page for Bevendo app'>
+            title='Register'
+            content='Register page for Bevendo app'
+            showBreadcrumbs={false}
+        >
             <>
                 <Heading text="Register" />
                 <form

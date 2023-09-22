@@ -10,15 +10,13 @@ const Feasts = ({ feasts, error }) => {
 
   loginRedirect();
 
-  // TODO refactor so parents do not have to be repeated
   const breadcrumbs = [
-    { href: '/dashboard', text: 'Dashboard'},
     { href: '/feasts', text: 'Feasts'},
   ];
 
   return (
     <Layout
-      title='Bevendo | Feasts'
+      title='Feasts'
       content='Feasts Page for Bevendo, a companion app to Drinking with the Saints'
       breadcrumbs={breadcrumbs}
     >

@@ -12,16 +12,16 @@ const Feast = ({ error, feast }) => {
 
     loginRedirect();
 
-    // TODO refactor so parents do not have to be repeated
     const breadcrumbs = error ? [] : [
-        { href: '/dashboard', text: 'Dashboard'},
         { href: '/feasts', text: 'Feasts'},
         { href: feast.urlname, text: feast.name, active: true },
     ];
 
+    const title = error ? 'Feast' : feast.name;
+
     return (
         <Layout
-            title='Bevendo | Feast'
+            title={title}
             content='Feast day profile page.'
             breadcrumbs={breadcrumbs}
         >

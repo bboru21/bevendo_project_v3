@@ -23,7 +23,7 @@ const Search = ({ error, q, results: resultsProp }) => {
 
     return (
         <Layout
-            title='Bevendo | Dashboard'
+            title='Search'
             content='Search Page for Bevendo, a companion app to Drinking with the Saints'
         >
            <div className='p-3 p-md-5 bg-light rounded-3 mb-3'>

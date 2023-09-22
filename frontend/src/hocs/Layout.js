@@ -5,7 +5,7 @@ import Head from 'next/head';
 import Navbar from '../components/Navbar';
 import Breadcrumbs from '../components/Breadcrumbs';
 
-const Layout = ({ title, content, breadcrumbs: breadcrumbs=[], children }) => {
+const Layout = ({ title, content, breadcrumbs: breadcrumbsProp=[], showBreadcrumbs=true, children }) => {
 
     const dispatch = useDispatch();
 
@@ -15,10 +15,15 @@ const Layout = ({ title, content, breadcrumbs: breadcrumbs=[], children }) => {
         }
     }, [dispatch]);
 
+    const breadcrumbs = [
+        { href: '/', text: 'Dashboard'},
+        ...breadcrumbsProp,
+    ];
+
     return (
         <>
             <Head>
-                <title>{title}</title>
+                <title>{`Bevendo | ${title}`}</title>
                 <meta name='description' content={content} />
             </Head>
 
@@ -29,7 +34,7 @@ const Layout = ({ title, content, breadcrumbs: breadcrumbs=[], children }) => {
                     </div>
                 )}
                 <Navbar />
-                <Breadcrumbs breadcrumbs={breadcrumbs} />
+                {showBreadcrumbs && <Breadcrumbs breadcrumbs={breadcrumbs} />}
                 <div className='container mt-5'>{children}</div>
                 <footer className="bg-light p-3">
                     <a href="mailto:bryan.e.hadro@gmail.com">Contact</a>

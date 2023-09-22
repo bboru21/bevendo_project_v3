@@ -11,10 +11,19 @@ const Ingredient = ({ error, ingredient }) => {
 
     loginRedirect();
 
+    // TODO refactor so parents do not have to be repeated
+    const breadcrumbs = error ? [] : [
+        { href: '/ingredients', text: 'Ingredients'},
+        { href: ingredient.urlname, text: ingredient.name, active: true},
+    ];
+
+    const title = error ? 'Ingredient' : ingredient.name;
+
     return (
         <Layout
-            title='Bevendo | Ingredient'
+            title={title}
             content='Ingredient profile page.'
+            breadcrumbs={breadcrumbs}
         >
            <div className='p-3 p-md-5 bg-light rounded-3 mb-3'>
                 <div className='container-fluid py-3'>

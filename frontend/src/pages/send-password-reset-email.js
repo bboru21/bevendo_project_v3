@@ -30,8 +30,9 @@ const SendPasswordResetEmailPage = () => {
   }
   return (
     <Layout
-      title='Bevendo | Send Password Reset Email'
+      title='Send Password Reset Email'
       content='Send Password Reset Email page for Bevendo app'
+      showBreadcrumbs={false}
     >
       <>
         <form

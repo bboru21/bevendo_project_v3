@@ -39,20 +39,24 @@ const LoginPage = () => {
 
         const params = new URLSearchParams(window.location.search);
         const redirect = params.get("redirect");
-        router.push(redirect ? redirect : '/dashboard');
+        router.push(redirect ? redirect : '/');
 
         return <></>;
     }
     return (
         <Layout
-            title='Bevendo | Login'
-            content='Login page for Bevendo app'>
+            title='Login'
+            content='Login page for Bevendo app'
+            showBreadcrumbs={false}
+        >
             <>
                 <form
                     className='bg-light p-5 mt-5 mb-5'
                     onSubmit={handleSubmit}
                 >
-                    <Heading text="Log Into Your Account" />
+                    <Heading text="Login" className="mb-3" />
+
+                    <p className="fs-4">Welcome to Bevendo, a cocktail app project.<br/> Please login to continue.</p>
 
                     <div className='form-group'>
                         <label className='form-label mt-5' htmlFor='username'>

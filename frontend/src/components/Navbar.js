@@ -107,6 +107,22 @@ const Navbar = () => {
               </Link>
             </li>
             <li className='nav-item'>
+              <Link href='/ingredients'>
+                <a
+                    className={
+                        router.pathname === '/ingredients' ?
+                        'nav-link active' : 'nav-link'
+                    }
+                    aria-current={
+                        router.pathname === '/ingredients' ?
+                        'page' : 'false'
+                    }
+                >
+                    Ingredients
+                </a>
+              </Link>
+            </li>
+            <li className='nav-item'>
               <Link href='/profile'>
                 <a
                     className={

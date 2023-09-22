@@ -13,6 +13,7 @@ from .views import (
     FeastPageView,
     CocktailsPageView,
     CocktailPageView,
+    IngredientsPageView,
     IngredientPageView,
     SearchView,
     FavoriteView,
@@ -25,6 +26,7 @@ page_urls = [
     path('feasts/<slug:slug>/', FeastPageView.as_view()),
     path('cocktails/', CocktailsPageView.as_view()),
     path('cocktails/<slug:slug>/', CocktailPageView.as_view()),
+    path('ingredients/', IngredientsPageView.as_view()),
     path('ingredients/<slug:slug>/', IngredientPageView.as_view()),
 ]
 

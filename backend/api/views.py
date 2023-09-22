@@ -230,6 +230,27 @@ class CocktailPageView(AuthorizedPageView):
             )
 
 
+class IngredientsPageView(AuthorizedPageView):
+    def get(self, *args, **kwargs):
+        res = super().get(*args, **kwargs)
+
+        try:
+            qs = Ingredient.objects.filter(is_controlled=True).order_by('name')
+             # TODO - exclude ingredients without ABC Data
+            ingredients = IngredientSerializer(qs, many=True, fields=('pk', 'name', 'urlname')).data
+
+            res.data.update({
+                'ingredients': ingredients,
+            }, status=status.HTTP_200_OK)
+            return res
+        except BaseException as error:
+            logger.error(f'Something went wrong when trying to load page data: {error}')
+            return Response(
+                { 'error': 'Something went wrong when trying to load page data', },
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            )
+
+
 class IngredientPageView(AuthorizedPageView):
     def get(self, request, slug, format=None):
 
@@ -335,6 +356,7 @@ class SearchView(APIView):
             q1 = Q(name=q)
             q2 = Q(name__icontains=q)
 
+            # TODO - exclude ingredients without ABC Data
             ingredient_ids = Ingredient.objects \
                 .filter(is_controlled=True) \
                 .filter(q1 | q2) \

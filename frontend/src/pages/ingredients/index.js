@@ -5,25 +5,25 @@ import Link from 'next/link';
 import { performAPIGet } from '../../utils/api';
 
 
-const Cocktails = ({ cocktails, error }) => {
+const Ingredients = ({ ingredients, error }) => {
 
   loginRedirect();
 
   // TODO refactor so parents do not have to be repeated
   const breadcrumbs = [
     { href: '/dashboard', text: 'Dashboard'},
-    { href: '/cocktails', text: 'Cocktails'},
+    { href: '/ingredients', text: 'Ingredients'},
   ];
 
   return (
     <Layout
-      title='Cocktails'
-      content='Cocktails Page for Bevendo, a companion app to Drinking with the Saints'
+      title='Ingredients'
+      content='Ingredients Page for Bevendo, a companion app to Drinking with the Saints'
       breadcrumbs={breadcrumbs}
     >
       <div className='p-3 p-md-5 bg-light rounded-3 mb-3'>
         <div className='container-fluid py-3'>
-          <Heading text={"Cocktails"} />
+          <Heading text={"Ingredients"} />
             {error && (
                 <p className='fs-4 mt-3'>
                     {error}
@@ -34,10 +34,10 @@ const Cocktails = ({ cocktails, error }) => {
         {!error && (
           <>
             <ul>
-                {cocktails.map( cocktail => (
-                  <li key={cocktail.pk}>
-                      <Link href={cocktail.urlname} legacyBehavior>
-                          <a>{cocktail.name}</a>
+                {ingredients.map( ingredient => (
+                  <li key={ingredient.pk}>
+                      <Link href={ingredient.urlname} legacyBehavior>
+                          <a>{ingredient.name}</a>
                       </Link>
                   </li>
                 ))}
@@ -53,14 +53,14 @@ export async function getServerSideProps({ req }) {
 
   try {
 
-    const res = await performAPIGet('/pages/cocktails', req);
+    const res = await performAPIGet('/pages/ingredients', req);
 
     if (res.status === 200) {
       const data = await res.json();
 
       return {
         props: {
-          cocktails: data.cocktails,
+          ingredients: data.ingredients,
         }
       }
     } else {
@@ -82,4 +82,4 @@ export async function getServerSideProps({ req }) {
   }
 };
 
-export default Cocktails;
+export default Ingredients;

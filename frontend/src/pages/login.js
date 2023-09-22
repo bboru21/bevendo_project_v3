@@ -39,14 +39,16 @@ const LoginPage = () => {
 
         const params = new URLSearchParams(window.location.search);
         const redirect = params.get("redirect");
-        router.push(redirect ? redirect : '/dashboard');
+        router.push(redirect ? redirect : '/');
 
         return <></>;
     }
     return (
         <Layout
             title='Login'
-            content='Login page for Bevendo app'>
+            content='Login page for Bevendo app'
+            showBreadcrumbs={false}
+        >
             <>
                 <form
                     className='bg-light p-5 mt-5 mb-5'

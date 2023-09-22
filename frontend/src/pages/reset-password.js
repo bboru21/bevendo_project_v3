@@ -43,6 +43,7 @@ const ResetPasswordPage = ({ uidb64, token, error }) => {
     <Layout
       title='Reset Password'
       content='Reset Password page for Bevendo App'
+      showBreadcrumbs={false}
     >
 
       <form className='bg-light p-5 mt-5 mb-5' onSubmit={handleSubmit}>

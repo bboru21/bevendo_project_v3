@@ -13,7 +13,6 @@ const Ingredient = ({ error, ingredient }) => {
 
     // TODO refactor so parents do not have to be repeated
     const breadcrumbs = error ? [] : [
-        { href: '/dashboard', text: 'Dashboard'},
         { href: '/ingredients', text: 'Ingredients'},
         { href: ingredient.urlname, text: ingredient.name, active: true},
     ];

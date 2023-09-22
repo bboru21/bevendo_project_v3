@@ -10,9 +10,7 @@ const Feasts = ({ feasts, error }) => {
 
   loginRedirect();
 
-  // TODO refactor so parents do not have to be repeated
   const breadcrumbs = [
-    { href: '/dashboard', text: 'Dashboard'},
     { href: '/feasts', text: 'Feasts'},
   ];
 

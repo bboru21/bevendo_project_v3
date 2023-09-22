@@ -52,12 +52,9 @@ const LoginPage = () => {
                     className='bg-light p-5 mt-5 mb-5'
                     onSubmit={handleSubmit}
                 >
-                    <Heading text="Log Into Your Account" />
+                    <Heading text="Login" className="mb-3" />
 
-                    <p className='fs-4 mt-3'>
-                        Welcome to Bevendo, a cocktail app project.
-                    </p>
-                    <p className="text-muted">Please login to continue.</p>
+                    <p className="fs-4">Welcome to Bevendo, a cocktail app project.<br/> Please login to continue.</p>
 
                     <div className='form-group'>
                         <label className='form-label mt-5' htmlFor='username'>

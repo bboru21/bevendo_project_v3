@@ -59,14 +59,14 @@ const Navbar = () => {
     const authLinks = (
         <>
             <li className='nav-item'>
-              <Link href='/dashboard'>
+              <Link href='/'>
                 <a
                     className={
-                        router.pathname === '/dashboard' ?
+                        router.pathname === '/' ?
                         'nav-link active' : 'nav-link'
                     }
                     aria-current={
-                        router.pathname === '/dashboard' ?
+                        router.pathname === '/' ?
                         'page' : 'false'
                     }
                 >
@@ -153,22 +153,6 @@ const Navbar = () => {
             </button>
             <div className='collapse navbar-collapse' id='navbarSupportedContent'>
               <ul className='navbar-nav me-auto mb-2 mb-lg-0'>
-                <li className='nav-item'>
-                  <Link href='/'>
-                    <a
-                        className={
-                            router.pathname === '/' ?
-                            'nav-link active' : 'nav-link'
-                        }
-                        aria-current={
-                            router.pathname === '/' ?
-                            'page' : 'false'
-                        }
-                    >
-                        Home
-                    </a>
-                  </Link>
-                </li>
                 { isAuthenticated ? authLinks : guestLinks }
               </ul>
               { isAuthenticated && <SearchBar />}

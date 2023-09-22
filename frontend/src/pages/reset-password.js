@@ -41,7 +41,7 @@ const ResetPasswordPage = ({ uidb64, token, error }) => {
   }
   return (
     <Layout
-      title='Bevendo | Reset Password'
+      title='Reset Password'
       content='Reset Password page for Bevendo App'
     >
 

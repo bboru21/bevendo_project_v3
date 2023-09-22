@@ -18,7 +18,7 @@ const Cocktails = ({ cocktails, error }) => {
 
   return (
     <Layout
-      title='Bevendo | Cocktails'
+      title='Cocktails'
       content='Cocktails Page for Bevendo, a companion app to Drinking with the Saints'
       breadcrumbs={breadcrumbs}
     >

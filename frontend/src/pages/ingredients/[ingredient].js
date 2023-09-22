@@ -11,9 +11,11 @@ const Ingredient = ({ error, ingredient }) => {
 
     loginRedirect();
 
+    const title = error ? 'Ingredient' : ingredient.name;
+
     return (
         <Layout
-            title='Bevendo | Ingredient'
+            title={title}
             content='Ingredient profile page.'
         >
            <div className='p-3 p-md-5 bg-light rounded-3 mb-3'>

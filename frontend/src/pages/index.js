@@ -23,7 +23,7 @@ const Dashboard = ({ error, feasts, deals, latestPullDate }) => {
     ];
     return (
         <Layout
-            title='Bevendo | Dashboard'
+            title='Dashboard'
             content='Dashboard for Bevendo, a companion app to Drinking with the Saints'
             breadcrumbs={breadcrumbs}
         >

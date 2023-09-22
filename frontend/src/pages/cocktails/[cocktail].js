@@ -17,9 +17,11 @@ const Cocktail = ({ error, cocktail }) => {
         { href: cocktail.urlname, text: cocktail.name, active: true},
     ];
 
+    const title = error ? 'Cocktail' : cocktail.name;
+
     return (
         <Layout
-            title='Bevendo | Cocktail'
+            title={title}
             content='Cocktail profile page.'
             breadcrumbs={breadcrumbs}
         >

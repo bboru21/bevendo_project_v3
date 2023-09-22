@@ -50,7 +50,7 @@ const RegisterPage = () => {
     }
     return (
         <Layout
-            title='Bevendo | Register'
+            title='Register'
             content='Register page for Bevendo app'>
             <>
                 <Heading text="Register" />

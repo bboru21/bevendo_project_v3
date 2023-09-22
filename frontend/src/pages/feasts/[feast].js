@@ -19,9 +19,11 @@ const Feast = ({ error, feast }) => {
         { href: feast.urlname, text: feast.name, active: true },
     ];
 
+    const title = error ? 'Feast' : feast.name;
+
     return (
         <Layout
-            title='Bevendo | Feast'
+            title={title}
             content='Feast day profile page.'
             breadcrumbs={breadcrumbs}
         >

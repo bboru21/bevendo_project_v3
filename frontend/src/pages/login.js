@@ -45,7 +45,7 @@ const LoginPage = () => {
     }
     return (
         <Layout
-            title='Bevendo | Login'
+            title='Login'
             content='Login page for Bevendo app'>
             <>
                 <form

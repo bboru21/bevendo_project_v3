@@ -18,7 +18,7 @@ const Layout = ({ title, content, breadcrumbs: breadcrumbs=[], children }) => {
     return (
         <>
             <Head>
-                <title>{title}</title>
+                <title>{`Bevendo | ${title}`}</title>
                 <meta name='description' content={content} />
             </Head>
 

@@ -22,38 +22,49 @@ class Command(BaseCommand):
 
     def add_arguments(self, parser):
         parser.add_argument(
-            '--group_name',
+            '--group',
+            '-g',
             type=str,
-            help='name of the group to send the e-mail to',
-            default='Weekly E-Mail',
+            help='name of the group whose members will be e-mailed',
+            default='Weekly E-Mail Test', # 'Weekly E-Mail'
+        )
+        parser.add_argument(
+            '--users',
+            '-u',
+            type=str,
+            help='usernames within the group who will be e-mailed',
+            nargs='+',
         )
 
     def handle(self, *args, **options):
 
-      users = User.objects.filter(groups__name=options['group_name']).filter(is_active=True)
+        users = User.objects.filter(groups__name=options['group']).filter(is_active=True)
+        if options['users']:
+            users = users.filter(username__in=options['users'])
 
-      for user in users:
+        for user in users:
 
-        message = render_to_string('api/templates/invitation_email.txt', {
-            'first_name': user.first_name,
-            'username': user.username,
-            'password': 'changeme123!',
-        })
+            message = render_to_string('api/templates/invitation_email.txt', {
+                'first_name': user.first_name,
+                'username': user.username,
+                'password': 'changeme123!',
+            })
 
-        html_message = render_to_string('api/templates/invitation_email.html', {
-            'first_name': user.first_name,
-            'username': user.username,
-            'password': 'changeme123!',
-        })
+            html_message = render_to_string('api/templates/invitation_email.html', {
+                'first_name': user.first_name,
+                'username': user.username,
+                'password': 'changeme123!',
+            })
 
-        success = send_mail(
-            subject=f'Invite for bevendo.online',
-            message=message,
-            html_message=html_message,
-            from_email=settings.SENDER_EMAIL,
-            recipient_list=[user.email],
-        )
+            success = send_mail(
+                subject=f'Invite for bevendo.online',
+                message=message,
+                html_message=html_message,
+                from_email=settings.SENDER_EMAIL,
+                recipient_list=[user.email],
+            )
+            logger.debug(f'email to {user.first_name} {user.last_name} returned value {success}')
 
         now = datetime.now()
-        dt_string = now.strftime("%d/%m/%Y %H:%M:%S")
+        dt_string = now.strftime("%m/%d/%Y %H:%M:%S")
         logger.info(f'send_invitation_email script ran {dt_string}')

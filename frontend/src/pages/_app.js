@@ -16,11 +16,17 @@ import "bootstrap/dist/css/bootstrap.min.css";
 // custom styles
 import "../styles/styles.scss";
 
+import { usePreserveScroll } from '../hooks/usePreserveScroll';
+
 const App = ({ Component, pageProps }) => {
   const store = useStore(pageProps.initialReduxState);
   useEffect(() => {
     require("bootstrap/dist/js/bootstrap.bundle.min.js");
   }, []);
+
+
+  usePreserveScroll();
+
   return (
       <Provider store={store}>
         <NextNProgress />

@@ -7,23 +7,42 @@ import Link from 'next/link';
 import { displayDate } from '../../utils/dates';
 import { breakpoints } from './constants';
 
+import _ from 'underscore';
+
 // Import Swiper styles
 import 'swiper/css';
 import 'swiper/css/pagination';
 
 
+const _SESSION_KEY = "feastSwiperIndex";
+
+
 const FeastSwiper = ({ feasts }) => {
+
+  /* store slide index in sessionStorage for better browsing experience */
+  const pathname = (typeof window==='undefined') ? 'undefined' : window.location.pathname;
+
+  const handleSlideChange = (swiper) => {
+    const data = {};
+    data[pathname] = swiper.activeIndex;
+    sessionStorage.setItem(_SESSION_KEY, JSON.stringify(data));
+  };
+
+  const feastSwiperIndex = typeof sessionStorage !== 'undefined' && JSON.parse(sessionStorage.getItem(_SESSION_KEY) || '{}');
+  const initialSlide = _.get(feastSwiperIndex, pathname, 0);
+
   return feasts.length === 0 ? (
     <></>
   ) : (
     <Swiper
-      onSlideChange={() => { /*...*/ }}
+      onSlideChange={handleSlideChange}
       onSwiper={(swiper) => { /*...*/ }}
       slidesPerView={1}
       spaceBetween={20}
       breakpoints={breakpoints}
       pagination={{ clickable: true }}
       modules={[ Pagination ]}
+      initialSlide={initialSlide}
     >
       {feasts.map(feast => {
 

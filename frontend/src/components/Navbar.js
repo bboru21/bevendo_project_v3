@@ -123,6 +123,22 @@ const Navbar = () => {
               </Link>
             </li>
             <li className='nav-item'>
+              <Link href='/favorites'>
+                <a
+                    className={
+                        router.pathname === '/favorites' ?
+                        'nav-link active' : 'nav-link'
+                    }
+                    aria-current={
+                        router.pathname === '/favorites' ?
+                        'page' : 'false'
+                    }
+                >
+                    Favorites
+                </a>
+              </Link>
+            </li>
+            <li className='nav-item'>
               <Link href='/profile'>
                 <a
                     className={

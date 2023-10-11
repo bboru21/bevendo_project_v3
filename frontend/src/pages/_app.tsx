@@ -1,4 +1,5 @@
 import { useEffect } from 'react';
+import { AppProps } from 'next/app';
 import Head from 'next/head';
 import { Provider } from 'react-redux';
 import { useStore } from '../store';
@@ -18,12 +19,11 @@ import "../styles/styles.scss";
 
 import { usePreserveScroll } from '../hooks/usePreserveScroll';
 
-const App = ({ Component, pageProps }) => {
+const App = ({ Component, pageProps }: AppProps) => {
   const store = useStore(pageProps.initialReduxState);
   useEffect(() => {
     require("bootstrap/dist/js/bootstrap.bundle.min.js");
   }, []);
-
 
   usePreserveScroll();
 

@@ -33,7 +33,9 @@
     "underscore": "^1.13.6"
   },
   "devDependencies": {
+    "@types/node": "^20.8.4",
     "eslint": "8.19.0",
-    "eslint-config-next": "12.2.1"
+    "eslint-config-next": "12.2.1",
+    "typescript": "^5.2.2"
   }
 }

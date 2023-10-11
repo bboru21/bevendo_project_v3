@@ -1,4 +1,6 @@
 import { useSelector } from 'react-redux';
+import { GetServerSideProps } from 'next';
+
 import Layout from '../hocs/Layout';
 import FeastSwiper from '../components/swipers/FeastSwiper';
 import FavoriteSwiper from '../components/swipers/FavoriteSwiper';
@@ -14,7 +16,7 @@ const Dashboard = ({ error, feasts, deals, latestPullDate }) => {
 
     loginRedirect();
 
-    const user = useSelector(state => state.auth.user);
+    const user = useSelector((state: State) => state.auth.user);
 
     return (
         <Layout
@@ -99,7 +101,7 @@ const Dashboard = ({ error, feasts, deals, latestPullDate }) => {
 };
 
 
-export async function getServerSideProps({ req }) {
+export async function getServerSideProps<GetServerSideProps>({ req }) {
 
     try {
         const res = await performAPIGet('/pages/dashboard', req);

@@ -4,6 +4,7 @@ import { request_refresh } from '../actions/auth';
 import Head from 'next/head';
 import Navbar from '../components/Navbar';
 import Breadcrumbs from '../components/Breadcrumbs';
+import GoogleAnalyticsTag from '../components/GoogleAnalyticsTag';
 
 const Layout = ({ title, content, breadcrumbs: breadcrumbsProp=[], showBreadcrumbs=true, children }) => {
 
@@ -22,6 +23,7 @@ const Layout = ({ title, content, breadcrumbs: breadcrumbsProp=[], showBreadcrum
 
     return (
         <>
+            <GoogleAnalyticsTag />
             <Head>
                 <title>{`Bevendo | ${title}`}</title>
                 <meta name='description' content={content} />

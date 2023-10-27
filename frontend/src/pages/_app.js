@@ -3,6 +3,7 @@ import Head from 'next/head';
 import { Provider } from 'react-redux';
 import { useStore } from '../store';
 import NextNProgress from 'nextjs-progressbar';
+import GoogleAnalyticsTag from '../components/GoogleAnalyticsTag';
 
 // Font Awesome setup
 // https://fontawesome.com/docs/web/use-with/react/use-with#next-js
@@ -30,8 +31,9 @@ const App = ({ Component, pageProps }) => {
   return (
       <Provider store={store}>
         <NextNProgress />
+        <GoogleAnalyticsTag />
         <Head>
-          <title>Bevendo: A Companion App to Drinking with the Saints</title>
+          <title>Bevendo: A Companion App to Drinking with the Saints!</title>
           <meta name='viewport' content='width=device-width, initial-scale=1' />
         </Head>
         <Component {...pageProps} />

@@ -211,7 +211,7 @@ WSGI_APPLICATION = 'bevendo.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
+        'ENGINE':   'mysql.connector.django',
         'NAME': 'bevendo',
         'HOST': '127.0.0.1',
         'PORT': '3306',

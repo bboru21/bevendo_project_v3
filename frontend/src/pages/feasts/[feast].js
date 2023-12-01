@@ -37,7 +37,7 @@ const Feast = ({ error, feast }) => {
                         <>
                             <Heading
                                 text={feast.name}
-                                subtext={displayDate(feast.date)}
+                                subtext={feast.date ? displayDate(feast.date) : null}
                             />
 
                             <p className="fs-5 fw-bold">External Links:</p>

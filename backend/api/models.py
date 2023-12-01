@@ -270,6 +270,7 @@ class Feast(models.Model):
         app_label = 'api'
         db_table = 'api_feast'
 
+    # TODO refactor this into start_date and end_date for compatibility with seasons
     @property
     def date(self):
         if self._date:

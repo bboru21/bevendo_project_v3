@@ -52,7 +52,7 @@ const FeastSwiper = ({ feasts }) => {
               <h3 className="fs-4 text-center">
                 <Link href={feast.urlname}>{feast.name}</Link>
               </h3>
-              <p className="mb-1 text-secondary text-center">{displayDate(feast.date)}</p>
+              {feast.date && <p className="mb-1 text-secondary text-center">{displayDate(feast.date)}</p>}
               {feast.cocktails && (
                   <div className="swiper-slide-cocktails p-2 bg-light">
                     <ul>

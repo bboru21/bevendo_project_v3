@@ -87,22 +87,11 @@ const LoginPage = () => {
 
                         <p><Link href='/send-password-reset-email'>Forgot password?</Link></p>
                     </div>
-                    {
-                        loading ? (
-                            <div className='d-flex justify-content-center align-items-center mt-5'>
-                                <Loader
-                                    type='Oval'
-                                    color='#00bfff'
-                                    width={50}
-                                    height={50}
-                                />
-                            </div>
-                        ) : (
-                            <button className='btn btn-primary' type='submit'>
-                                Login
-                            </button>
-                        )
-                    }
+                    { !loading && (
+                        <button className='btn btn-primary' type='submit'>
+                            Login
+                        </button>
+                    )}
                 </form>
 
                 {/* temporarily disable until we are ready for new members to register */}

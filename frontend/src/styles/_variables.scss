@@ -4,3 +4,48 @@
 @import "node_modules/bootstrap/scss/mixins";
 
 /* custom variables here */
+
+/*
+  begin z-index
+
+  Here we define important z-index values to avoid conflicts. Most minor
+  instances within their own context trees (e.g. background, container,
+  content) can be defined within their own module files. Those should also
+  use a value below 1000.
+*/
+
+// Increment/decrement values, can be used within *.module.scss files for code clarity. For example:
+// $zCardContainer: $zBase;
+// $zCardBackground: $zBelow + $zCardContainer;
+// $zCardContainerContent: $zAbove + $zCardContainer;
+$zBase: 0;
+$zBelow: -1;
+$zAbove: 1;
+
+// Important custom definitions shared between *.module.scss files.
+
+
+// Major values defined here to avoid conflicts.
+// Most are taken from Bootstrap: https://getbootstrap.com/docs/5.0/layout/z-index/
+
+// dropdown (1000-1019)
+$zDropdown: 1000;
+// sticky (1020-1029)
+$zSticky: 1020;
+// fixed (1030-1039)
+$zFixed: 1030;
+// modal backdrop (1040-1049)
+$zModalBackdrop: 1040;
+// offcanvas (1050-1059)
+$zOffcanvas: 1050;
+// modal (1060-1069)
+$zModal: 1060;
+
+// popover (1070-1079)
+$zPopover: 1070;
+// tooltip (1080-1089)
+$zTooltip: 1080;
+// spinner - 9999
+$zSpinner: 9999;
+
+/* end z-index */

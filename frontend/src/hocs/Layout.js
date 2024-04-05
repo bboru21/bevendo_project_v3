@@ -1,14 +1,16 @@
 import { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { request_refresh } from '../actions/auth';
 import Head from 'next/head';
 import Navbar from '../components/Navbar';
 import Breadcrumbs from '../components/Breadcrumbs';
 import GoogleAnalyticsTag from '../components/GoogleAnalyticsTag';
+import Loader from '../components/Loader';
 
 const Layout = ({ title, content, breadcrumbs: breadcrumbsProp=[], showBreadcrumbs=true, children }) => {
 
     const dispatch = useDispatch();
+    const loading = useSelector(state => state.auth.loading);
 
     useEffect(() => {
         if (dispatch && dispatch !== null && typeof dispatch !== 'undefined') {
@@ -37,7 +39,12 @@ const Layout = ({ title, content, breadcrumbs: breadcrumbsProp=[], showBreadcrum
                 )}
                 <Navbar />
                 {showBreadcrumbs && <Breadcrumbs breadcrumbs={breadcrumbs} />}
-                <div className='container mt-5'>{children}</div>
+                <div className='container mt-5 position-relative'>
+                    <>
+                        {loading && <Loader overlay />}
+                        {children}
+                    </>
+                </div>
                 <footer className="bg-light p-3">
                     <a href="mailto:bryan.e.hadro@gmail.com">Contact</a>
                 </footer>

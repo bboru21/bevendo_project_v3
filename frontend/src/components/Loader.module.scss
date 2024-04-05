@@ -1,0 +1,26 @@
+@import '../styles/variables';
+
+$loaderWidth: 75px;
+$loaderHeight: $loaderWidth;
+
+.container {
+  z-index: $zBelow + $zSpinner;
+
+  &.overlay {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    .oval {
+      position: absolute;
+      top: calc(50% - $loaderHeight);
+      right: calc(50% - $loaderWidth);
+    }
+  }
+
+  .oval {
+    z-index: $zSpinner;
+  }
+
+}

@@ -25,7 +25,7 @@ const Layout = ({ title, content, breadcrumbs: breadcrumbsProp=[], showBreadcrum
 
     return (
         <>
-            <GoogleAnalyticsTag />
+            {process.env.NODE_ENV === 'production' && <GoogleAnalyticsTag />}
             <Head>
                 <title>{`Bevendo | ${title}`}</title>
                 <meta name='description' content={content} />

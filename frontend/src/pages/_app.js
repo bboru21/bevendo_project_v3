@@ -31,7 +31,7 @@ const App = ({ Component, pageProps }) => {
   return (
       <Provider store={store}>
         <NextNProgress />
-        <GoogleAnalyticsTag />
+        {process.env.NODE_ENV === 'production' && <GoogleAnalyticsTag />}
         <Head>
           <title>Bevendo: A Companion App to Drinking with the Saints!</title>
           <meta name='viewport' content='width=device-width, initial-scale=1' />

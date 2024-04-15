@@ -43,6 +43,7 @@ const LineChart = ({ data: dataProp, title=null, }) => {
       borderWidth: 2,
       borderColor: COLORS[i],
       backgroundColor: COLORS[i],
+      pointRadius: 0,
     })),
   };
 

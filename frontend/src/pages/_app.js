@@ -30,7 +30,16 @@ const App = ({ Component, pageProps }) => {
 
   return (
       <Provider store={store}>
-        <NextNProgress />
+        <NextNProgress
+          transformCSS={ (css) => {
+            css += `
+              #nprogress .spinner {
+                display: none; /* disabled within _app.js */
+              }
+            `;
+            return <style>{css}</style>
+          }}
+        />
         {process.env.NODE_ENV === 'production' && <GoogleAnalyticsTag />}
         <Head>
           <title>Bevendo: A Companion App to Drinking with the Saints!</title>

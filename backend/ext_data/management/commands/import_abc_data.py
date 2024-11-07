@@ -115,7 +115,17 @@ class Command(BaseCommand):
         else:
             start_urls = urls
 
-        process = CrawlerProcess(get_project_settings())
+        '''
+            Currently scraper settings.py aren't found by get_project_settings.
+            This is likely because of the current directory structure, and that
+            no SCRAPY_SETTINGS_MODULE env var is present.
+            Will have to look into a more full proof solution for the future.
+            This will fix the current 403 response issues.
+        '''
+        settings = get_project_settings()
+        settings['USER_AGENT'] = 'scraper (+http://bevendo.online)'
+
+        process = CrawlerProcess(settings)
         process.crawl(
             BaseSpider,
             start_urls=urls,

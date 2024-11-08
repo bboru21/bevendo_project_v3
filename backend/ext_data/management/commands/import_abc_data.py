@@ -1,5 +1,6 @@
 import json
 import logging
+import os
 from pathlib import Path
 from scrapy.crawler import CrawlerProcess
 from scrapy.utils.project import get_project_settings
@@ -122,8 +123,8 @@ class Command(BaseCommand):
             Will have to look into a more full proof solution for the future.
             This will fix the current 403 response issues.
         '''
+        os.environ["SCRAPY_SETTINGS_MODULE"]="ext_data.management.scraper.scraper.settings"
         settings = get_project_settings()
-        settings['USER_AGENT'] = 'scraper (+http://bevendo.online)'
 
         process = CrawlerProcess(settings)
         process.crawl(

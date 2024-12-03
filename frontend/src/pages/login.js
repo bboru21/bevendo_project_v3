@@ -85,7 +85,7 @@ const LoginPage = () => {
                             required
                         />
 
-                        <p><Link href='/send-password-reset-email'>Forgot password?</Link></p>
+                        <p><Link href='/send-password-reset-email'>Forgot password?</Link> | <a href="mailto:bryan.e.hadro@gmail.com?subject=Bevendo%20Access%20Request">Request Access</a></p>
                     </div>
                     { !loading && (
                         <button className='btn btn-primary' type='submit'>

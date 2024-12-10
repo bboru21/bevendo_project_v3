@@ -46,8 +46,8 @@ const FeastSwiper = ({ feasts }) => {
     >
       {feasts.map(feast => {
 
-        const cocktails = _.get(feast, 'cocktails', []);
-        const moreLink = cocktails.length > 3 ? <Link href={feast.urlname}>See More</Link> : null;
+        const cocktails = _.get(feast, 'cocktails', []).slice(0,3);
+        // TODO add a more link if more than 3 cocktails
 
         return (
           <SwiperSlide key={`feast-${feast.pk}`}>
@@ -59,14 +59,11 @@ const FeastSwiper = ({ feasts }) => {
               {feast.cocktails && (
                   <div className="swiper-slide-cocktails p-2 bg-light">
                     <ul>
-                        {cocktails.slice(0,3).map(cocktail => (
+                        {cocktails.map(cocktail => (
                             <li key={`cocktail-${cocktail.pk}`}>
                                 <Link href={cocktail.urlname}>{cocktail.name}</Link>
                             </li>
                         ))}
-                        {moreLink && (
-                          <li key={`cocktail-more-link`}>{moreLink}</li>
-                        )}
                     </ul>
                   </div>
               )}

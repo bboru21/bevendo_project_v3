@@ -6,6 +6,11 @@ from django.db import models
 from django.contrib.humanize.templatetags.humanize import ordinal
 from django.utils.text import slugify
 from django.contrib.auth.models import User
+from django.contrib.contenttypes.fields import (
+    GenericForeignKey,
+    GenericRelation,
+)
+from django.contrib.contenttypes.models import ContentType
 
 from ext_data.calapi_inadiutorium_models import SEASON_CHOICES
 
@@ -78,6 +83,7 @@ class Ingredient(models.Model):
     name = models.CharField(max_length=250, unique=True)
     slug = models.SlugField(null=True, blank=True, unique=True)
     is_controlled = models.BooleanField(default=True)
+    images = GenericRelation('Image')
 
     @property
     def urlname(self):
@@ -213,6 +219,7 @@ class Cocktail(models.Model):
     slug = models.SlugField(null=True, blank=True, unique=True)
     ingredients = models.ManyToManyField(CocktailIngredient)
     instructions = models.TextField(null=True, blank=None, default=None)
+    images = GenericRelation('Image')
 
     @property
     def urlname(self):
@@ -249,6 +256,7 @@ class Feast(models.Model):
         null=True,
         blank=True,
     )
+    images = GenericRelation('Image')
 
     @property
     def urlname(self):
@@ -306,3 +314,24 @@ class Favorite(models.Model):
         app_label = 'api'
         db_table = 'api_favorite'
         unique_together = (('user', 'cocktail'))
+
+
+class Image(models.Model):
+    image = models.ImageField(upload_to="images/")
+    alt_text = models.CharField(max_length=255, blank=True)
+    caption = models.CharField(max_length=255, blank=True)
+
+    # Generic foreign key fields
+    content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
+    object_id = models.PositiveIntegerField()
+    content_object = GenericForeignKey('content_type', 'object_id')
+
+    uploaded_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Image for {self.content_object}"
+    
+    class Meta:
+        ordering = ['-uploaded_at']
+        app_label = 'api'
+        db_table = 'api_image'

@@ -38,4 +38,4 @@ urlpatterns = [
     path('v1/price-chart-data/<int:pk>/', PriceChartDataView.as_view()),
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     re_path('email-preview/(?P<format>(html|txt))?/?$', email_preview, name='email_preview'),
-]
+] 

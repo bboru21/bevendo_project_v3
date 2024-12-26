@@ -4,6 +4,7 @@ django-cors-headers==3.13.0
 djangorestframework==3.13.1
 djangorestframework-simplejwt==5.2.0
 mysql-connector-python==8.0.33
+pillow==11.0.0
 pyopenssl==22.0.0
 requests==2.26.0
 Scrapy==2.6.1

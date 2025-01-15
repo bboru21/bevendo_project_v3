@@ -20,8 +20,6 @@ const FavoriteSwiper = () => {
   const user = useSelector(state => state.auth.user);
   const cocktails = _.get(user, 'favorites', []).map(obj => obj['cocktail']);
 
-  console.log("*** cocktails ***", cocktails);
-
   /* store slide index in sessionStorage for better browsing experience */
   const pathname = (typeof window==='undefined') ? 'undefined' : window.location.pathname;
 

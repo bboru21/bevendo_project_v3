@@ -54,6 +54,7 @@ assets
 # media images
 /bevendo/media/images/*
 !**/bevendo/media/images/README.md
+/bevendo/media/CACHE/*
 
 # coverage
 .coverage

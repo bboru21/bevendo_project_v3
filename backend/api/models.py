@@ -11,6 +11,8 @@ from django.contrib.contenttypes.fields import (
     GenericRelation,
 )
 from django.contrib.contenttypes.models import ContentType
+from imagekit.models import ImageSpecField
+from imagekit.processors import ResizeToFill, ResizeToFit
 
 from ext_data.calapi_inadiutorium_models import SEASON_CHOICES
 
@@ -327,6 +329,13 @@ class Image(models.Model):
     content_object = GenericForeignKey('content_type', 'object_id')
 
     uploaded_at = models.DateTimeField(auto_now_add=True)
+
+    medium = ImageSpecField(
+        source='image',
+        processors=[ResizeToFill(400, 400)],
+        format='JPEG',
+        options={'quality': 85}
+    )
 
     def __str__(self):
         return f"Image for {self.content_object}"

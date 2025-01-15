@@ -4,6 +4,7 @@ from .models import (
     Favorite,
     Feast,
     Ingredient,
+    Image,
     ControlledBeverage,
 )
 from rest_framework import serializers
@@ -31,6 +32,17 @@ class DynamicFieldsModelSerializer(serializers.ModelSerializer):
             existing = set(self.fields)
             for field_name in existing - allowed:
                 self.fields.pop(field_name)
+
+
+class ImageSerializer(serializers.ModelSerializer):
+    medium_url = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Image
+        fields = ['id', 'image', 'medium_url', 'alt_text', 'caption']
+    
+    def get_medium_url(self, obj):
+        return obj.medium.url if obj.medium else None
 
 
 class ControlledBeverageSerializer(serializers.ModelSerializer):
@@ -85,6 +97,7 @@ class CocktailSerializer(DynamicFieldsModelSerializer):
     ingredients = CocktailIngredientSerializer(many=True, read_only=True)
     # feasts = FeastSerializer(many=True, read_only=True) # TODO results in a NameError due to hoisting issue
     feasts = serializers.SerializerMethodField()
+    images = ImageSerializer(many=True, read_only=True)
 
     def get_feasts(self, obj):
         return FeastSerializer(
@@ -96,13 +109,14 @@ class CocktailSerializer(DynamicFieldsModelSerializer):
 
     class Meta:
         model = Cocktail
-        fields = ['pk', 'name', 'ingredients', 'instructions', 'slug', 'urlname', 'feasts']
+        fields = ['pk', 'name', 'ingredients', 'instructions', 'slug', 'urlname', 'feasts', 'images']
 
 class CocktailStubSerializer(CocktailSerializer):
+    image = ImageSerializer(many=False, read_only=True)
 
     class Meta:
         model = Cocktail
-        fields = ['pk', 'name', 'urlname']
+        fields = ['pk', 'name', 'urlname', 'image']
 
 
 class FeastSerializer(DynamicFieldsModelSerializer):
@@ -116,7 +130,7 @@ class FeastSerializer(DynamicFieldsModelSerializer):
 
 class FavoriteSerializer(serializers.ModelSerializer):
 
-    cocktail = CocktailSerializer(many=False, read_only=True, fields=('pk', 'name', 'urlname',))
+    cocktail = CocktailSerializer(many=False, read_only=True, fields=('pk', 'name', 'urlname', 'images'))
 
     class Meta:
         model = Favorite

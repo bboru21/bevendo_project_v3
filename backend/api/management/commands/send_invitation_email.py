@@ -39,8 +39,13 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
 
         users = User.objects.filter(groups__name=options['group']).filter(is_active=True)
+
         if options['users']:
             users = users.filter(username__in=options['users'])
+
+        if users.count == 0:
+            logger.debug(f"No users found within group {options['group']} with usernames {options['users']}")
+            return
 
         for user in users:
 

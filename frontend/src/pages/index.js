@@ -45,7 +45,7 @@ const Dashboard = ({ error, feasts, deals, latestPullDate }) => {
                                 <Accordion.Header>Features</Accordion.Header>
                                 <Accordion.Body>
                                     <p>
-                                        Bevendo is a web app based on the popular "Drinking with the Saints" book by Michael P. Foley.
+                                        Bevendo is a web app based on the popular &ldquo;Drinking with the Saints&rdquo; book by Michael P. Foley.
                                         The book is great, but is limited by -- well, being a book!
                                         Here on Bevendo, you can...
                                     </p>

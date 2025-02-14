@@ -9,6 +9,14 @@ import { USDollar } from '../utils/currency';
 import ProConIcon from '../components/ProConIcon';
 import Heading from '../components/Heading';
 import { performAPIGet } from '../utils/api';
+import Accordion from 'react-bootstrap/Accordion';
+
+// TODO consolidate this
+import classNames from 'classnames';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faThumbsUp as faThumbsUpRegular } from '@fortawesome/free-regular-svg-icons';
+import favoriteButtonCss from '../components/FavoriteButton.module.scss';
+import PriceChartButton from '../components/ingredients/PriceChartButton';
 
 const Dashboard = ({ error, feasts, deals, latestPullDate }) => {
 
@@ -27,10 +35,43 @@ const Dashboard = ({ error, feasts, deals, latestPullDate }) => {
                     <p className='fs-4 mt-3'>
                         Welcome to Bevendo{user === null ? '' : `, ${user.first_name}`}!
                     </p>
-                    {error && (
+                    {error ? (
                         <p className='fs-4 mt-3'>
                             {error}
                         </p>
+                    ) : (
+                        <Accordion>
+                                <Accordion.Item eventKey="0">
+                                <Accordion.Header>Features</Accordion.Header>
+                                <Accordion.Body>
+                                    <p>
+                                        Bevendo is a web app based on the popular "Drinking with the Saints" book by Michael P. Foley.
+                                        The book is great, but is limited by -- well, being a book!
+                                        Here on Bevendo, you can...
+                                    </p>
+                                    <ul>
+                                        <li className="mb-2">Browse or search for nearly any Feast, Cocktail or Ingredient from the book.</li>
+                                        <li>
+                                            Add your favorites to the dashboard by clicking the thumbs up button on the cocktail page:
+                                            <button className={classNames("ms-2", favoriteButtonCss.button)}
+                                            onClick={() => {}}
+                                            title="Favorite Button"
+                                            >
+                                            <FontAwesomeIcon icon={faThumbsUpRegular} size="2x" />
+                                            </button>
+                                        </li>
+                                        <li>
+                                            View ABC pricing data over time on an ingredient page by clicking the chart button:
+                                            <PriceChartButton
+                                                className="ms-0 mt-2 ms-md-2 mt-md-0 d-block d-md-inline-block"
+                                                type="button"
+                                                onClick={() => {}}
+                                            />
+                                        </li>
+                                    </ul>
+                                </Accordion.Body>
+                                </Accordion.Item>
+                            </Accordion>
                     )}
                 </div>
 

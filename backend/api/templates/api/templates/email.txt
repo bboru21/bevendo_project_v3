@@ -1,7 +1,7 @@
 Bevendo!
 
 Your weekly dose of Drinking with the Saints from {{start_date}} to {{end_date}}.
- Note: Bevendo is now also available online at http://bevendo.online!
+ Note: Bevendo is now also available online at http://bevendo.app!
 
 {% for feast in feasts %}
 {{feast.name}} - {{feast.date}}

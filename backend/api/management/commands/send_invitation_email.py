@@ -62,7 +62,7 @@ class Command(BaseCommand):
             })
 
             success = send_mail(
-                subject=f'Invite for bevendo.online',
+                subject=f'Invite for bevendo.app',
                 message=message,
                 html_message=html_message,
                 from_email=settings.SENDER_EMAIL,

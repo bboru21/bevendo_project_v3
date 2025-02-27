@@ -14,8 +14,13 @@ const Container = ({ href, className: classNameProp, children }) => {
     }
     return <div className={classNames(css.container, classNameProp)}>{children}</div>;
 };
-const Card = ({ href, title, image, className: classNameProp}) => (
-    <Container href={href} className={classNameProp}>
+const Card = ({ href, title, image, zoom=false, className: classNameProp}) => (
+    <Container 
+        href={href} 
+        className={classNames(classNameProp, {
+            [css.zoom]: zoom,
+        })}
+    >
         <div className={css.innerContainer}>
             <div className={css.content}>
                 <h3>{title}</h3>

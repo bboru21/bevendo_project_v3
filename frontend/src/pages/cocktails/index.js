@@ -1,9 +1,8 @@
 import Layout from '../../hocs/Layout';
 import loginRedirect from '../../hooks/loginRedirect';
 import Heading from '../../components/Heading';
-import Link from 'next/link';
 import { performAPIGet } from '../../utils/api';
-
+import Card from '../../components/Card';
 
 const Cocktails = ({ cocktails, error }) => {
 
@@ -34,9 +33,10 @@ const Cocktails = ({ cocktails, error }) => {
             <ul>
                 {cocktails.map( cocktail => (
                   <li key={cocktail.pk}>
-                      <Link href={cocktail.urlname} legacyBehavior>
+                      {/* <Link href={cocktail.urlname} legacyBehavior>
                           <a>{cocktail.name}</a>
-                      </Link>
+                      </Link> */}
+                      <Card href={cocktail.urlname} title={cocktail.name} />
                   </li>
                 ))}
             </ul>

@@ -1,10 +1,8 @@
-import { useSelector } from 'react-redux';
 import _ from 'underscore';
 
 // Import Swiper React components
 import { Pagination } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import Link from 'next/link';
 import { breakpoints } from './constants';
 import Card from '../Card';
 
@@ -16,10 +14,7 @@ import 'swiper/css/pagination';
 const _SESSION_KEY = "favoriteSwiperIndex";
 
 
-const FavoriteSwiper = () => {
-
-  const user = useSelector(state => state.auth.user);
-  const cocktails = _.get(user, 'favorites', []).map(obj => obj['cocktail']);
+const FavoriteSwiper = ({ cocktails }) => {
 
   /* store slide index in sessionStorage for better browsing experience */
   const pathname = (typeof window==='undefined') ? 'undefined' : window.location.pathname;
@@ -37,9 +32,7 @@ const FavoriteSwiper = () => {
     <></>
   ) : (
     <>
-      <h2 className='display-7 fw-bold mb-3'>
-        Favorites
-      </h2>
+      
       <Swiper
         onSlideChange={handleSlideChange}
         onSwiper={(swiper) => { /*...*/ }}

@@ -6,6 +6,7 @@ import { Pagination } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import Link from 'next/link';
 import { breakpoints } from './constants';
+import Card from '../Card';
 
 // Import Swiper styles
 import 'swiper/css';
@@ -50,12 +51,15 @@ const FavoriteSwiper = () => {
         initialSlide={initialSlide}
       >
         {cocktails.map(cocktail => {
+
+          // const image = _.get(cocktail, 'images[0].medium_url'); // TODO determine why this doesn't work
+          const images = _.get(cocktail, 'images', []);
+          const image = images.length > 0 ? images[0].medium_url : null;
+
           return (
             <SwiperSlide key={`favorite-${cocktail.pk}`}>
               <div className="swiper-slide-content p-3">
-                <h3 className="fs-4 text-center">
-                  <Link href={cocktail.urlname}>{cocktail.name}</Link>
-                </h3>
+                <Card href={cocktail.urlname} title={cocktail.name} image={image} />
               </div>
             </SwiperSlide>
           );

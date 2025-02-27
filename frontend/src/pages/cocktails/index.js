@@ -5,7 +5,7 @@ import { performAPIGet } from '../../utils/api';
 import Card from '../../components/Card';
 import _ from 'underscore';
 import {Container, Row, Col} from 'react-bootstrap';
-
+import css from './index.module.scss';
 const Cocktails = ({ cocktails, error }) => {
 
   loginRedirect();
@@ -46,6 +46,8 @@ const Cocktails = ({ cocktails, error }) => {
                           href={cocktail.urlname} 
                           title={cocktail.name} 
                           image={image}
+                          zoom
+                          className={css.card}
                         />
                     </Col>
                   );

@@ -1,5 +1,8 @@
-$zForeground: 1;
-$zBackground: 0;
+@import "src/styles/_variables.scss";
+
+$zBackground: $zBase;
+$zForeground: $zAbove + $zBase;
+$zButton: $zAbove + $zForeground;
 
 .container {
     display: block;
@@ -47,6 +50,13 @@ $zBackground: 0;
             height: 100%;
             z-index: $zBackground;
             
+        }
+
+        .button {
+            position: absolute;
+            top: 0;
+            right: 0;
+            z-index: $zButton;
         }
     }
 }

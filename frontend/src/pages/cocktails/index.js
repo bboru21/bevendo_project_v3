@@ -6,6 +6,8 @@ import Card from '../../components/Card';
 import _ from 'underscore';
 import {Container, Row, Col} from 'react-bootstrap';
 import css from './index.module.scss';
+import FavoriteButton from '../../components/FavoriteButton';
+
 const Cocktails = ({ cocktails, error }) => {
 
   loginRedirect();
@@ -48,6 +50,7 @@ const Cocktails = ({ cocktails, error }) => {
                           image={image}
                           zoom
                           className={css.card}
+                          button={<FavoriteButton className="ms-2" cocktailId={cocktail.pk} />}
                         />
                     </Col>
                   );

@@ -19,7 +19,8 @@ const FavoriteButton = ({
   const favoriteCocktailIds = favorites.map(obj => obj['cocktail']['pk']);
   const isFavorited = favoriteCocktailIds.indexOf(cocktailId) > -1;
 
-  const handleClick = () => {
+  const handleClick = (event) => {
+    event.preventDefault();
     if (isFavorited) {
       dispatch(remove_favorite(cocktailId));
     } else {

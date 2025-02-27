@@ -10,19 +10,21 @@ import ProConIcon from '../components/ProConIcon';
 import Heading from '../components/Heading';
 import { performAPIGet } from '../utils/api';
 import Accordion from 'react-bootstrap/Accordion';
-
+import Link from 'next/link';
 // TODO consolidate this
 import classNames from 'classnames';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faThumbsUp as faThumbsUpRegular } from '@fortawesome/free-regular-svg-icons';
 import favoriteButtonCss from '../components/FavoriteButton.module.scss';
 import PriceChartButton from '../components/ingredients/PriceChartButton';
+import _ from 'underscore';
 
 const Dashboard = ({ error, feasts, deals, latestPullDate }) => {
 
     loginRedirect();
 
     const user = useSelector(state => state.auth.user);
+    const favoriteCocktails = _.get(user, 'favorites', []).map(obj => obj['cocktail']);
 
     return (
         <Layout
@@ -87,7 +89,19 @@ const Dashboard = ({ error, feasts, deals, latestPullDate }) => {
                             </div>
                         )}
 
-                        <FavoriteSwiper />
+                        <div className='container-fluid py-3'>
+                            <h2 className='display-7 fw-bold mb-3'>
+                                Favorites
+                            </h2>
+                            {favoriteCocktails.length === 0 ? (
+                                <p>
+                                    You don&rsquo;t have any favorite cocktails yet. Why don&rsquo;t you visit the <Link href="/cocktails" >cocktails page</Link> and find one?
+                                </p>
+                                
+                            ) : (
+                                <FavoriteSwiper cocktails={favoriteCocktails} />
+                            )}
+                        </div>
 
                         {deals && deals.length > 0 && (
                             <div className='container-fluid py-3'>

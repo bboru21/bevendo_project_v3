@@ -6,6 +6,9 @@ const fs = require('fs');
 const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
+  images: {
+    domains: ['api.bevendo.online'],
+  },
 };
 
 const sassConfig = {

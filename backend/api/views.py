@@ -192,7 +192,7 @@ class CocktailsPageView(AuthorizedPageView):
 
         try:
             qs = Cocktail.objects.all()
-            cocktails = CocktailSerializer(qs, many=True, fields=('pk', 'name', 'urlname')).data
+            cocktails = CocktailSerializer(qs, many=True, fields=('pk', 'name', 'urlname', 'images')).data
             cocktails = sorted(cocktails, key=lambda c: get_sortable_cocktail(c['name']))
 
             res.data.update({

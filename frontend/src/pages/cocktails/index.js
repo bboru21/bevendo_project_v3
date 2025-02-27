@@ -3,6 +3,8 @@ import loginRedirect from '../../hooks/loginRedirect';
 import Heading from '../../components/Heading';
 import { performAPIGet } from '../../utils/api';
 import Card from '../../components/Card';
+import _ from 'underscore';
+import {Container, Row, Col} from 'react-bootstrap';
 
 const Cocktails = ({ cocktails, error }) => {
 
@@ -30,16 +32,26 @@ const Cocktails = ({ cocktails, error }) => {
 
         {!error && (
           <>
-            <ul>
-                {cocktails.map( cocktail => (
-                  <li key={cocktail.pk}>
-                      {/* <Link href={cocktail.urlname} legacyBehavior>
-                          <a>{cocktail.name}</a>
-                      </Link> */}
-                      <Card href={cocktail.urlname} title={cocktail.name} />
-                  </li>
-                ))}
-            </ul>
+            <Container>
+                <Row>
+                {cocktails.map( cocktail => {
+                  // const image = _.get(cocktail, 'images[0].medium_url'); // TODO determine why this doesn't work
+                  const images = _.get(cocktail, 'images', []);
+                  const image = images.length > 0 ? images[0].medium_url : null;
+ 
+                  return (
+                    <Col key={cocktail.pk} xs={12} md={6} lg={4} xl={3} className="mb-3">
+                        
+                        <Card 
+                          href={cocktail.urlname} 
+                          title={cocktail.name} 
+                          image={image}
+                        />
+                    </Col>
+                  );
+                })}
+                </Row>
+            </Container>
           </>
         )}
       </div>

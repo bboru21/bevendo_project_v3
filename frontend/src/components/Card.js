@@ -2,7 +2,6 @@ import Link from 'next/link';
 import classNames from 'classnames';
 import css from './Card.module.scss';
 import Image from 'next/image';
-import { IMAGES_URL } from '../config/index';
 
 const Container = ({ href, className: classNameProp, children }) => {
     if (href) {
@@ -16,6 +15,7 @@ const Container = ({ href, className: classNameProp, children }) => {
     }
     return <div className={classNames(css.container, classNameProp)}>{children}</div>;
 };
+
 const Card = ({ href, title, image, zoom=false, className: classNameProp, button}) => (
     <Container 
         href={href} 
@@ -28,12 +28,12 @@ const Card = ({ href, title, image, zoom=false, className: classNameProp, button
                 <h3>{title}</h3>   
             </div>
 
-            {image && <Image src={`${IMAGES_URL}${image}`} alt={title} priority={false} layout="fill" className={css.image} />}
+            {image && <Image src={`${process.env.NEXT_PUBLIC_IMAGES_URL}/${image}`} alt={title} priority={false} layout="fill" className={css.image} />}
 
             {button && <div className={classNames(css.button, 'm-2')}>{button}</div>}
 
         </div>
     </Container>     
-)
+);
 
 export default Card;

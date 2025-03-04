@@ -233,6 +233,10 @@ export const logout = () => async dispatch => {
             dispatch({
                 type: LOGOUT_SUCCESS,
             });
+            
+            // force refresh to redirect to login page
+            window.location.reload();
+
         } else {
             dispatch({
                 type: LOGOUT_FAIL,

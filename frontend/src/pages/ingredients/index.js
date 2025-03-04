@@ -1,13 +1,10 @@
 import Layout from '../../hocs/Layout';
-import loginRedirect from '../../hooks/loginRedirect';
 import Heading from '../../components/Heading';
 import Link from 'next/link';
 import { performAPIGet } from '../../utils/api';
 
 
 const Ingredients = ({ ingredients, error }) => {
-
-  loginRedirect();
 
   const breadcrumbs = [
     { href: '/ingredients', text: 'Ingredients'},

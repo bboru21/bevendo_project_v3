@@ -8,11 +8,15 @@ import Heading from '../components/Heading';
 
 const RegisterPage = () => {
 
+    
+
     const dispatch = useDispatch();
     const router = useRouter();
     const register_success = useSelector(state => state.auth.register_success);
     const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
     const loading = useSelector(state => state.auth.loading);
+
+    
 
     const [formData, setFormData] = useState({
         first_name: '',
@@ -47,6 +51,11 @@ const RegisterPage = () => {
     }
     if (register_success) {
         router.push('/login');
+    }
+    
+    // not ready to put page in production yet
+    if (typeof window !== 'undefined' && process.env.NODE_ENV === 'production') {
+        router.push('/404');
     }
     return (
         <Layout

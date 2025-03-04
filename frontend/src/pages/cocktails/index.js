@@ -1,5 +1,4 @@
 import Layout from '../../hocs/Layout';
-import loginRedirect from '../../hooks/loginRedirect';
 import Heading from '../../components/Heading';
 import { performAPIGet } from '../../utils/api';
 import Card from '../../components/Card';
@@ -9,8 +8,6 @@ import css from './index.module.scss';
 import FavoriteButton from '../../components/FavoriteButton';
 
 const Cocktails = ({ cocktails, error }) => {
-
-  loginRedirect();
 
   const breadcrumbs = [
     { href: '/cocktails', text: 'Cocktails'},

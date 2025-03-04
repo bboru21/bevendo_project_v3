@@ -1,7 +1,6 @@
 import { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import Layout from '../hocs/Layout';
-import loginRedirect from '../hooks/loginRedirect';
 import Heading from '../components/Heading';
 import {
     change_password,
@@ -12,8 +11,6 @@ import {
 import FormControlFeedback from '../components/FormControlFeedback';
 
 const Profile = () => {
-
-    loginRedirect();
 
     const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
     const user = useSelector(state => state.auth.user);

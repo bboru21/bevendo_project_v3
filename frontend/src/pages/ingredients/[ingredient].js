@@ -1,15 +1,12 @@
 import Layout from '../../hocs/Layout';
 import cookie from 'cookie';
 import { API_URL } from '../../config/index';
-import loginRedirect from '../../hooks/loginRedirect';
 import Heading from '../../components/Heading';
 import ControlledBeverageItem from '../../components/ingredients/ControlledBeverageItem';
 import { performAPIGet } from '../../utils/api';
 
 
 const Ingredient = ({ error, ingredient }) => {
-
-    loginRedirect();
 
     // TODO refactor so parents do not have to be repeated
     const breadcrumbs = error ? [] : [

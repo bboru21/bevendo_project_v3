@@ -7,14 +7,11 @@ import { faThumbsUp } from '@fortawesome/free-solid-svg-icons';
 import { faThumbsUp as faThumbsUpRegular } from '@fortawesome/free-regular-svg-icons';
 
 import Layout from '../../hocs/Layout';
-import loginRedirect from '../../hooks/loginRedirect';
 import Heading from '../../components/Heading';
 import css from './favorites.module.scss';
 
 
 const Favorites = () => {
-
-  loginRedirect();
 
   const user = useSelector(state => state.auth.user);
   const cocktails = _.get(user, 'favorites', []).map(obj => obj['cocktail']);

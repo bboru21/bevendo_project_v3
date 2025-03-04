@@ -15,12 +15,10 @@ export default async function middleware(request) {
         try {
             // attempt refresh first
             const refreshRes = await fetch(`${origin}/api/account/refresh`, { headers });
-            console.log("*** refreshRes.status ***", refreshRes.status);
 
             if (refreshRes.status === 200) {
                 // if refresh is successful, verify the new session
                 const verifyRes = await fetch(`${origin}/api/account/verify`, { headers });
-                console.log("*** verifyRes.status ***", verifyRes.status);
 
                 if (verifyRes.status !== 200) {
                     return NextResponse.redirect(loginUrl);

@@ -9,7 +9,7 @@ export default async function middleware(request) {
     const origin = request.nextUrl.origin;
     const headers = { 'Cookie': request.headers.get('cookie') || '' }
     const redirect = encodeURIComponent(nextUrl.pathname + nextUrl.search);
-    const loginUrl = new URL(`/login?redirect=${redirect}`, request.url);
+    const loginUrl = new URL(`/login?redirect=${redirect}`, origin);
 
     if (!isPublic) {
         try {

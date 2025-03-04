@@ -6,7 +6,11 @@ export default async function middleware(request) {
     const publicPaths = ['/login', '/register', '/send-password-reset-email', '/reset-password', '/404'];
     const isPublic = publicPaths.includes(nextUrl.pathname);
     
-    const origin = request.nextUrl.origin;
+    const host = request.headers.get('host');
+    const protocol = request.headers.get('x-forwarded-proto') || 'http';
+    const origin = `${protocol}://${host}`;
+    console.log('Middleware Origin:', origin); // Debug log
+
     const headers = { 'Cookie': request.headers.get('cookie') || '' }
     const redirect = encodeURIComponent(nextUrl.pathname + nextUrl.search);
     const loginUrl = new URL(`/login?redirect=${redirect}`, origin);

@@ -14,11 +14,11 @@ export default async function middleware(request) {
     if (!isPublic) {
         try {
             // attempt refresh first
-            const refreshRes = await fetch(`${origin}/api/account/refresh`, { headers });
+            const refreshRes = await fetch(`${baseUrl}/api/account/refresh`, { headers });
 
             if (refreshRes.status === 200) {
                 // if refresh is successful, verify the new session
-                const verifyRes = await fetch(`${origin}/api/account/verify`, { headers });
+                const verifyRes = await fetch(`${baseUrl}/api/account/verify`, { headers });
 
                 if (verifyRes.status !== 200) {
                     return NextResponse.redirect(loginUrl);

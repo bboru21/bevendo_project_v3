@@ -5,8 +5,7 @@ export default async function middleware(request) {
     const isPublic = publicPaths.includes(nextUrl.pathname);
     const baseUrl = process.env.NEXT_PUBLIC_API_URL || nextUrl.origin;
     
-    // temporary to test auth with baseUrl
-    console.log("*** middleware ***", baseUrl);
+    
 
     if (!isPublic) {
 
@@ -15,25 +14,28 @@ export default async function middleware(request) {
         const redirect = encodeURIComponent(nextUrl.pathname + nextUrl.search);
         const redirectUrl = new URL(`/login?redirect=${redirect}`, baseUrl);
 
-        try {
+        // temporary to test auth with baseUrl
+        console.log("*** middleware ***", baseUrl, redirectUrl.href);
 
-            // Try refresh first
-            const refreshRes = await fetch(`${baseUrl}/api/account/refresh`, { headers });
-            if (refreshRes.status === 200) {
-                // If refresh successful, verify the new session
-                const verifyRes = await fetch(`${baseUrl}/api/account/verify`, { headers });
-                if (verifyRes.status !== 200) {
-                    // return NextResponse.redirect(redirectUrl);
-                    console.log("*** middleware ***", "verify failed, redirecting to", redirectUrl);
-                }
-            } else {
-                // return NextResponse.redirect(redirectUrl);
-                console.log("*** middleware ***", "refresh failed, redirecting to", redirectUrl);
-            }
-        } catch(error) {
-            // return NextResponse.redirect(redirectUrl);
-            console.log("*** middleware ***", "error, redirecting to", redirectUrl);
-        }
+        // try {
+        //     // Try refresh first
+        //     const refreshRes = await fetch(`${baseUrl}/api/account/refresh`, { headers });
+        //     if (refreshRes.status === 200) {
+        //         // If refresh successful, verify the new session
+        //         const verifyRes = await fetch(`${baseUrl}/api/account/verify`, { headers });
+        //         if (verifyRes.status !== 200) {
+        //              console.log("*** middleware ***", "verify failed, redirecting to", redirectUrl.href);
+        //              return NextResponse.redirect(redirectUrl);
+        //             
+        //         }
+        //     } else {
+        //          console.log("*** middleware ***", "refresh failed, redirecting to", redirectUrl.href);        
+        //          return NextResponse.redirect(redirectUrl); 
+        //     }
+        // } catch(error) {
+        //     console.log("*** middleware ***", "error, redirecting to", redirectUrl.href);
+        //     return NextResponse.redirect(redirectUrl);
+        // }
     }
 }
 

@@ -3,14 +3,11 @@ import { CATHOLIC_CULTURE_URL } from '../../config/index';
 import ExternalLink from '../../components/ExternalLink';
 import LinkList from '../../components/LinkList';
 import { displayDate } from '../../utils/dates';
-import loginRedirect from '../../hooks/loginRedirect';
 import Heading from '../../components/Heading';
 import { performAPIGet } from '../../utils/api';
 
 
 const Feast = ({ error, feast }) => {
-
-    loginRedirect();
 
     const breadcrumbs = error ? [] : [
         { href: '/feasts', text: 'Feasts'},

@@ -233,6 +233,7 @@ export const logout = () => async dispatch => {
             dispatch({
                 type: LOGOUT_SUCCESS,
             });
+            window.location.reload();
         } else {
             dispatch({
                 type: LOGOUT_FAIL,

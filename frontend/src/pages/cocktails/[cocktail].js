@@ -1,14 +1,11 @@
 import Layout from '../../hocs/Layout';
 import LinkList from '../../components/LinkList';
-import loginRedirect from '../../hooks/loginRedirect';
 import FavoriteButton from '../../components/FavoriteButton';
 import Link from 'next/link';
 import Heading from '../../components/Heading';
 import { performAPIGet } from '../../utils/api';
 
 const Cocktail = ({ error, cocktail }) => {
-
-    loginRedirect();
 
     // TODO refactor so parents do not have to be repeated
     const breadcrumbs = error ? [] : [

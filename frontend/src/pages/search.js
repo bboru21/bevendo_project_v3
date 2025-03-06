@@ -1,5 +1,4 @@
 import Layout from '../hocs/Layout';
-import loginRedirect from '../hooks/loginRedirect';
 import Heading from '../components/Heading';
 import Link from 'next/link';
 import { formatSearchLabel } from '../utils/search';
@@ -8,8 +7,6 @@ import _ from 'underscore';
 import { performAPIGet } from '../utils/api';
 
 const Search = ({ error, q, results: resultsProp }) => {
-
-    loginRedirect();
 
     const results = {};
     resultsProp.forEach( result => {

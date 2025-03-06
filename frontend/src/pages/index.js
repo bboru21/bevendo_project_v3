@@ -2,7 +2,6 @@ import { useSelector } from 'react-redux';
 import Layout from '../hocs/Layout';
 import FeastSwiper from '../components/swipers/FeastSwiper';
 import FavoriteSwiper from '../components/swipers/FavoriteSwiper';
-import loginRedirect from '../hooks/loginRedirect';
 import ExternalLink from '../components/ExternalLink';
 import { displayDate } from '../utils/dates';
 import { USDollar } from '../utils/currency';
@@ -20,8 +19,6 @@ import PriceChartButton from '../components/ingredients/PriceChartButton';
 import _ from 'underscore';
 
 const Dashboard = ({ error, feasts, deals, latestPullDate }) => {
-
-    loginRedirect();
 
     const user = useSelector(state => state.auth.user);
     const favoriteCocktails = _.get(user, 'favorites', []).map(obj => obj['cocktail']);

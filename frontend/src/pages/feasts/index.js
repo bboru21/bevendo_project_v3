@@ -1,5 +1,4 @@
 import Layout from '../../hocs/Layout';
-import loginRedirect from '../../hooks/loginRedirect';
 import Heading from '../../components/Heading';
 import Link from 'next/link';
 import { performAPIGet } from '../../utils/api';
@@ -7,8 +6,6 @@ import { displayDate } from '../../utils/dates';
 
 
 const Feasts = ({ feasts, error }) => {
-
-  loginRedirect();
 
   const breadcrumbs = [
     { href: '/feasts', text: 'Feasts'},

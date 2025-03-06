@@ -6,6 +6,16 @@ export default async function middleware(request) {
     const publicPaths = ['/login', '/register', '/send-password-reset-email', '/reset-password'];
     const isPublic = publicPaths.includes(nextUrl.pathname);
     const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || nextUrl.origin;
+
+    // Add security checks
+    const blockedPaths = ['.circleci', '.aws', '.env', '.git', 'config', '.config', '.ssh'];
+    const isBlocked = blockedPaths.some(path => nextUrl.pathname.toLowerCase().includes(path));
+    
+    if (isBlocked) {
+        // Log attempt and return 403 Forbidden
+        console.log(`Blocked suspicious request to: ${nextUrl.pathname}`);
+        return new NextResponse(null, { status: 403 });
+    }
     
     if (!isPublic) {
 

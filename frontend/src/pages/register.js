@@ -48,6 +48,12 @@ const RegisterPage = () => {
     if (register_success) {
         router.push('/login');
     }
+    
+    // not ready to put page in production yet
+    if (typeof window !== 'undefined' && process.env.NODE_ENV === 'production') {
+        router.push('/404');
+    }
+
     return (
         <Layout
             title='Register'

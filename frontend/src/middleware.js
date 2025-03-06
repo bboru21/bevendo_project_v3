@@ -14,9 +14,6 @@ export default async function middleware(request) {
         const redirect = encodeURIComponent(nextUrl.pathname + nextUrl.search);
         const redirectUrl = new URL(`/login?redirect=${redirect}`, baseUrl);
 
-        // temporary to test auth with baseUrl
-        console.log("*** middleware ***", request.url,  baseUrl, redirectUrl.href);
-
         try {
             // Try refresh first
             const refreshRes = await fetch(`${baseUrl}/api/account/refresh`, { headers });
@@ -24,16 +21,13 @@ export default async function middleware(request) {
                 // If refresh successful, verify the new session
                 const verifyRes = await fetch(`${baseUrl}/api/account/verify`, { headers });
                 if (verifyRes.status !== 200) {
-                     console.log("*** middleware ***", "verify failed, redirecting to", redirectUrl.href);
-                     return NextResponse.redirect(redirectUrl);
+                    return NextResponse.redirect(redirectUrl);
                     
                 }
             } else {
-                 console.log("*** middleware ***", "refresh failed, redirecting to", redirectUrl.href);        
-                 return NextResponse.redirect(redirectUrl); 
+                return NextResponse.redirect(redirectUrl); 
             }
         } catch(error) {
-            console.log("*** middleware ***", "error, redirecting to", redirectUrl.href);
             return NextResponse.redirect(redirectUrl);
         }
     }

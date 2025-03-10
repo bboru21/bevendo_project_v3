@@ -2,7 +2,7 @@ Ciao {{first_name}},
 
 At long last, Bevendo is now a website, and you can check it out here:
 
-http://bevendo.app
+https://bevendo.app
 
 And as a member of this distribution list, you can login with the following credentials:
 

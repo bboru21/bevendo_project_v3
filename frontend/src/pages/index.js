@@ -18,6 +18,7 @@ import { faCircleInfo } from '@fortawesome/free-solid-svg-icons';
 import { faThumbsUp as faThumbsUpRegular } from '@fortawesome/free-regular-svg-icons';
 import favoriteButtonCss from '../components/FavoriteButton.module.scss';
 import PriceChartButton from '../components/ingredients/PriceChartButton';
+import SearchBar from '../components/SearchBar';
 import _ from 'underscore';
 
 const Dashboard = ({ error, feasts, deals, latestPullDate }) => {
@@ -34,13 +35,13 @@ const Dashboard = ({ error, feasts, deals, latestPullDate }) => {
         >
            <div className='p-3 p-md-5 bg-light rounded-3 mb-3'>
                 <div className='container-fluid py-3'>
-                    <Heading text="Dashboard" />
-                    <p className='fs-4 mt-3'>
-                        Welcome to Bevendo{user === null ? '' : `, ${user.first_name}`}! 
+                    
+                        <Heading text="Dashboard" className="me-2" />
+                        <span className="fs-4">Welcome to Bevendo{user === null ? '' : `, ${user.first_name}`}!</span>
                         <button className="button-unstyled" onClick={() => { setShowInfoModal(true); }}>
                             <FontAwesomeIcon icon={faCircleInfo} size="xs" className="ms-2" />
                         </button>
-                    </p>
+                    
                     {error && (
                         <p className='fs-4 mt-3'>
                             {error}
@@ -50,6 +51,7 @@ const Dashboard = ({ error, feasts, deals, latestPullDate }) => {
 
                 {!error && (
                     <>
+                        <SearchBar placeholder="Search for Feasts, Cocktails or Ingredients" style={{'maxWidth': '900px', 'marginLeft': 'auto', 'marginRight': 'auto' }} />
                         {/* TODO move heading into component, use mapStateToProps */}
                         {feasts && (
                             <div className='container-fluid py-3'>

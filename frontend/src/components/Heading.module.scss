@@ -1,8 +1,18 @@
-.small {
+@import "src/styles/_variables.scss"; 
+.heading {
+  
   display: block;
 
-  @media (min-width: 576px) {
-    display: inline;
-    margin-left: 1rem;
+  .small {
+    display: block;
+  
+    @media (min-width: 576px) {
+      display: inline;
+      margin-left: 1rem;
+    }
+  }
+
+  @media (min-width: $media-breakpoint-up-md) {
+    display: inline-block;    
   }
 }

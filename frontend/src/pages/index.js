@@ -18,7 +18,6 @@ import { faCircleInfo } from '@fortawesome/free-solid-svg-icons';
 import { faThumbsUp as faThumbsUpRegular } from '@fortawesome/free-regular-svg-icons';
 import favoriteButtonCss from '../components/FavoriteButton.module.scss';
 import PriceChartButton from '../components/ingredients/PriceChartButton';
-import SearchBar from '../components/SearchBar';
 import _ from 'underscore';
 
 const Dashboard = ({ error, feasts, deals, latestPullDate }) => {
@@ -51,7 +50,8 @@ const Dashboard = ({ error, feasts, deals, latestPullDate }) => {
 
                 {!error && (
                     <>
-                        <SearchBar placeholder="Search for Feasts, Cocktails or Ingredients" style={{'maxWidth': '900px', 'marginLeft': 'auto', 'marginRight': 'auto' }} />
+                        {/* TODO resolve mobile issues */}
+                        {/* <SearchBar placeholder="Search for Feasts, Cocktails or Ingredients" style={{'maxWidth': '900px', 'marginLeft': 'auto', 'marginRight': 'auto' }} /> */}
                         {/* TODO move heading into component, use mapStateToProps */}
                         {feasts && (
                             <div className='container-fluid py-3'>

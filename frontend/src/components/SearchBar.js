@@ -118,20 +118,21 @@ const SearchBar = ({ placeholder="Search", ...restProps}) => {
     clearInputValue();
   };
 
-  const handleBlur = (event) => {
-    const node = event.relatedTarget;
-    if (!containerRef.current?.contains(node)) {
-      setSearchQuery('');
-      setShowSearchResults(false);
-      clearInputValue();
-    }
-  };
+  // TODO resolve mobile issues
+  // const handleBlur = (event) => {
+  //   const node = event.relatedTarget;
+  //   if (!containerRef.current?.contains(node)) {
+  //     setSearchQuery('');
+  //     setShowSearchResults(false);
+  //     clearInputValue();
+  //   }
+  // };
 
   return (
     <div
       onFocus={handleFocus}
       onKeyDown={handleKeyDown}
-      onBlur={handleBlur}
+      // onBlur={handleBlur}
       ref={containerRef}
       className="search-bar"
       {...restProps}

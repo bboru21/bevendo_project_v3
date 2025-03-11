@@ -6,7 +6,7 @@ import { formatSearchLabel } from '../utils/search';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCross, faMartiniGlassCitrus, faWineBottle } from "@fortawesome/free-solid-svg-icons";
 
-const SearchBar = () => {
+const SearchBar = ({ placeholder="Search", ...restProps}) => {
 
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResults, setSearchResults] = useState([]);
@@ -118,19 +118,30 @@ const SearchBar = () => {
     clearInputValue();
   };
 
+  const handleBlur = (event) => {
+    const node = event.relatedTarget;
+    if (!containerRef.current?.contains(node)) {
+      setSearchQuery('');
+      setShowSearchResults(false);
+      clearInputValue();
+    }
+  };
+
   return (
     <div
       onFocus={handleFocus}
       onKeyDown={handleKeyDown}
+      onBlur={handleBlur}
       ref={containerRef}
       className="search-bar"
+      {...restProps}
     >
       <form className='d-flex' role='search'>
         <input
           className='form-control me-2'
           type='search'
-          placeholder='Search'
-          aria-label='Search'
+          placeholder={placeholder}
+          aria-label={placeholder}
           onChange={handleChange}
         />
         {/* <button className='btn btn-outline-success' type='submit'>Search</button> */}

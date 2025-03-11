@@ -49,3 +49,11 @@ $zTooltip: 1080;
 $zSpinner: 9999;
 
 /* end z-index */
+
+/* begin media queries */
+// min-width values, taken from https://mdbootstrap.com/docs/react/layout/display/
+$media-breakpoint-up-sm: 576px;
+$media-breakpoint-up-md: 768px;
+$media-breakpoint-up-lg: 992px;
+$media-breakpoint-up-xl: 1200px;
+/* end media queries */

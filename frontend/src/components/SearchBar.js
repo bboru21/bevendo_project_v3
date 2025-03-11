@@ -4,7 +4,7 @@ import { useRouter } from 'next/router';
 import { formatSearchLabel } from '../utils/search';
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCross, faMartiniGlassCitrus } from "@fortawesome/free-solid-svg-icons";
+import { faCross, faMartiniGlassCitrus, faWineBottle } from "@fortawesome/free-solid-svg-icons";
 
 const SearchBar = () => {
 
@@ -139,9 +139,16 @@ const SearchBar = () => {
         <ul className="search-result-list">
           {searchResults.map( result => {
 
-            let icon = faCross;
-            if (result.type === "cocktail") {
-              icon = faMartiniGlassCitrus;
+            let icon;
+            switch(result.type) {
+              case "cocktail":
+                icon = faMartiniGlassCitrus;
+                break;
+              case "ingredient":
+                icon = faWineBottle;
+                break;
+              default:
+                icon = faCross;
             }
 
             return (

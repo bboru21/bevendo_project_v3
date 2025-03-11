@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import Layout from '../hocs/Layout';
 import FeastSwiper from '../components/swipers/FeastSwiper';
@@ -8,17 +9,20 @@ import { USDollar } from '../utils/currency';
 import ProConIcon from '../components/ProConIcon';
 import Heading from '../components/Heading';
 import { performAPIGet } from '../utils/api';
-import Accordion from 'react-bootstrap/Accordion';
+import Modal from 'react-bootstrap/Modal';
 import Link from 'next/link';
 // TODO consolidate this
 import classNames from 'classnames';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCircleInfo } from '@fortawesome/free-solid-svg-icons';
 import { faThumbsUp as faThumbsUpRegular } from '@fortawesome/free-regular-svg-icons';
 import favoriteButtonCss from '../components/FavoriteButton.module.scss';
 import PriceChartButton from '../components/ingredients/PriceChartButton';
 import _ from 'underscore';
 
 const Dashboard = ({ error, feasts, deals, latestPullDate }) => {
+
+    const [showInfoModal, setShowInfoModal] = useState(false);
 
     const user = useSelector(state => state.auth.user);
     const favoriteCocktails = _.get(user, 'favorites', []).map(obj => obj['cocktail']);
@@ -32,45 +36,15 @@ const Dashboard = ({ error, feasts, deals, latestPullDate }) => {
                 <div className='container-fluid py-3'>
                     <Heading text="Dashboard" />
                     <p className='fs-4 mt-3'>
-                        Welcome to Bevendo{user === null ? '' : `, ${user.first_name}`}!
+                        Welcome to Bevendo{user === null ? '' : `, ${user.first_name}`}! 
+                        <button className="button-unstyled" onClick={() => { setShowInfoModal(true); }}>
+                            <FontAwesomeIcon icon={faCircleInfo} size="xs" className="ms-2" />
+                        </button>
                     </p>
-                    {error ? (
+                    {error && (
                         <p className='fs-4 mt-3'>
                             {error}
                         </p>
-                    ) : (
-                        <Accordion>
-                                <Accordion.Item eventKey="0">
-                                <Accordion.Header>Features</Accordion.Header>
-                                <Accordion.Body>
-                                    <p>
-                                        Bevendo is a web app based on the popular &ldquo;Drinking with the Saints&rdquo; book by Michael P. Foley.
-                                        The book is great, but is limited by -- well, being a book!
-                                        Here on Bevendo, you can...
-                                    </p>
-                                    <ul>
-                                        <li className="mb-2">Browse or search for nearly any Feast, Cocktail or Ingredient from the book.</li>
-                                        <li>
-                                            Add your favorites to the dashboard by clicking the thumbs up button on the cocktail page:
-                                            <button className={classNames("ms-2", favoriteButtonCss.button)}
-                                            onClick={() => {}}
-                                            title="Favorite Button"
-                                            >
-                                            <FontAwesomeIcon icon={faThumbsUpRegular} size="2x" />
-                                            </button>
-                                        </li>
-                                        <li>
-                                            View ABC pricing data over time on an ingredient page by clicking the chart button:
-                                            <PriceChartButton
-                                                className="ms-0 mt-2 ms-md-2 mt-md-0 d-block d-md-inline-block"
-                                                type="button"
-                                                onClick={() => {}}
-                                            />
-                                        </li>
-                                    </ul>
-                                </Accordion.Body>
-                                </Accordion.Item>
-                            </Accordion>
                     )}
                 </div>
 
@@ -146,6 +120,38 @@ const Dashboard = ({ error, feasts, deals, latestPullDate }) => {
                     </>
                 )}
            </div>
+           <Modal show={showInfoModal} onHide={() => { setShowInfoModal(false); }}>
+                <Modal.Header closeButton>
+                    <Modal.Title>What is Bevendo?</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <p>
+                        Bevendo is a web app based on the popular &ldquo;Drinking with the Saints&rdquo; book by Michael P. Foley.
+                        The book is great, but is limited by -- well, being a book!
+                        Here on Bevendo, you can...
+                    </p>
+                    <ul>
+                        <li className="mb-2">Browse or search for nearly any Feast, Cocktail or Ingredient from the book.</li>
+                        <li>
+                            Add your favorites to the dashboard by clicking the thumbs up button on the cocktail page:
+                            <button className={classNames("ms-2", favoriteButtonCss.button)}
+                            onClick={() => {}}
+                            title="Favorite Button"
+                            >
+                            <FontAwesomeIcon icon={faThumbsUpRegular} size="2x" />
+                            </button>
+                        </li>
+                        <li>
+                            View ABC pricing data over time on an ingredient page by clicking the chart button:
+                            <PriceChartButton
+                                className="ms-0 mt-2 ms-md-2 mt-md-0 d-block d-md-inline-block"
+                                type="button"
+                                onClick={() => {}}
+                            />
+                        </li>
+                    </ul>
+                </Modal.Body>
+           </Modal>
         </Layout>
     );
 };

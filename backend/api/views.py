@@ -324,7 +324,8 @@ class SearchView(APIView):
                 .order_by(preserved_order)[:self.COCKTAIL_LIMIT]
 
             for cocktail in cocktails:
-                results.append({ 'label': cocktail.name, 'value': cocktail.urlname, 'type': 'cocktail', 'q': q })
+                perc = 0 # keep percent as 0 for now to give presedence to ingredients, feasts
+                results.append({ 'label': cocktail.name, 'value': cocktail.urlname, 'type': 'cocktail', 'q': q, 'perc': perc })
 
             # begin feasts
             q1 = Q(name=q)
@@ -350,7 +351,8 @@ class SearchView(APIView):
                 .order_by(preserved_order)[:self.FEAST_LIMIT]
 
             for feast in feasts:
-                results.append({ 'label': feast.name, 'value': feast.urlname, 'type': 'feast', 'q': q })
+                perc = round(len(q) / len(feast.name), 2)
+                results.append({ 'label': feast.name, 'value': feast.urlname, 'type': 'feast', 'q': q, 'perc': perc })
 
             # begin ingredients
             q1 = Q(name=q)
@@ -378,10 +380,13 @@ class SearchView(APIView):
                 .order_by(preserved_order)[:self.INGREDIENT_LIMIT]
 
             for ingredient in ingredients:
-                results.append({ 'label': ingredient.name, 'value': ingredient.urlname, 'type': 'ingredient', 'q': q })
+                perc = round(len(q) / len(ingredient.name), 2)
+                results.append({ 'label': ingredient.name, 'value': ingredient.urlname, 'type': 'ingredient', 'q': q, 'perc': perc })
 
         if len(results) == 0:
             results = [{ 'label': 'No results found.', 'value': None, 'type': None, 'q': q }]
+
+        results = sorted(results, key=lambda x: x['perc'], reverse=True)
 
         return Response(
             { 'results': results },

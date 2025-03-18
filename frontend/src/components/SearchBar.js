@@ -132,16 +132,6 @@ const SearchBar = ({ placeholder="Search", ...restProps}) => {
     clearInputValue();
   };
 
-  // TODO resolve mobile issues
-  // const handleBlur = (event) => {
-  //   const node = event.relatedTarget;
-  //   if (!containerRef.current?.contains(node)) {
-  //     setSearchQuery('');
-  //     setShowSearchResults(false);
-  //     clearInputValue();
-  //   }
-  // };
-
   const handleBackgroundClick = () => {
     setSearchQuery('');
     setShowSearchResults(false);

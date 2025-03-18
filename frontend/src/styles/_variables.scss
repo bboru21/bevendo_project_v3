@@ -28,6 +28,11 @@ $zAbove: 1;
 // Major values defined here to avoid conflicts.
 // Most are taken from Bootstrap: https://getbootstrap.com/docs/5.0/layout/z-index/
 
+// search
+$zSearchBarBackground: 10;
+$zSearchBarInput: $zAbove + $zSearchBarBackground;
+$zSearchBarResults: $zAbove + $zSearchBarInput;
+
 // dropdown (1000-1019)
 $zDropdown: 1000;
 // sticky (1020-1029)

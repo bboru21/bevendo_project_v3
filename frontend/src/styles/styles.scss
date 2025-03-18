@@ -37,40 +37,6 @@ footer {
 /* END general utility styles*/
 
 
-/* begin search styles */
-.search-bar {
-  position: relative;
-}
-.search-result-list {
-  position: absolute;
-  list-style: none;
-  padding-left: 0;
-  background-color: white;
-  margin-bottom: 0;
-  box-shadow: var(--shadow);
-  width: 100%;
-  max-height: 50vh;
-  overflow-y: scroll;
-  z-index: var(--zindex-search);
-}
-.search-result-item {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.search-result-item a {
-  display: block;
-  text-decoration: none;
-  height: 100%;
-  width: 100%;
-}
-.search-result-item a:focus {
-  background-color: rgba(var(--bs-light-rgb),var(--bs-bg-opacity))!important;
-}
-/* end search styles */
-
-
 /* begin swiper native style overrides */
 .swiper {
   z-index: var(--zindex-swiper); /* already defined in swiper styles, defining here for clarity */

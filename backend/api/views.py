@@ -1,6 +1,7 @@
 import datetime
 import logging
 import json
+import re
 
 from django.db.models import Case, F, IntegerField, Q, Value, When
 from django.shortcuts import render
@@ -283,8 +284,6 @@ class SearchView(APIView):
 
     def get(self, request, format=None):
 
-
-
         results = []
 
         q = request.GET.get('q')
@@ -328,6 +327,7 @@ class SearchView(APIView):
                 results.append({ 'label': cocktail.name, 'value': cocktail.urlname, 'type': 'cocktail', 'q': q, 'perc': perc })
 
             # begin feasts
+            # TODO make this work with St and Saint
             q1 = Q(name=q)
             q2 = Q(name__icontains=q)
 
@@ -384,7 +384,7 @@ class SearchView(APIView):
                 results.append({ 'label': ingredient.name, 'value': ingredient.urlname, 'type': 'ingredient', 'q': q, 'perc': perc })
 
         if len(results) == 0:
-            results = [{ 'label': 'No results found.', 'value': None, 'type': None, 'q': q }]
+            results = [{ 'label': 'No results found.', 'value': None, 'type': None, 'q': q, 'perc': 0 }]
 
         results = sorted(results, key=lambda x: x['perc'], reverse=True)
 

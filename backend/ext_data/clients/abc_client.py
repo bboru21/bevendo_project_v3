@@ -26,9 +26,11 @@ class ABCClient:
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.session = requests.session()
+
+        user_agent = random.choice(settings.EXT_DATA_CLIENT_USER_AGENTS)
         
         self.session.headers.update({
-            'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36',
+            'User-Agent': user_agent,
             'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8',
             'Accept-Language': 'en-US,en;q=0.9',
             'Accept-Encoding': 'gzip, deflate, br',
@@ -82,9 +84,6 @@ class ABCClient:
 
                 print(f"Cookies received: {self.session.cookies.get_dict()}")
                 self.session.cookies.set('cookie_consent', 'accepted', domain='.abc.virginia.gov')
-
-                # Add a delay after visiting homepage
-                time.sleep(random.uniform(1,3))
             
             # set a proper referrer for this specific request
             headers = {
@@ -95,6 +94,9 @@ class ABCClient:
             # Add cache-busting parameter
             cache_buster = f"{'&' if '?' in url else '?'}_={random.randint(1000000, 9999999)}"
             request_url = f"{url}{cache_buster}"
+
+            # Add a delay between requests
+            time.sleep(random.uniform(1,3))
 
             print(f"Making request to {request_url}")
             response = self.session.get(request_url, headers=headers)
@@ -123,12 +125,15 @@ def get_product_data(url, from_cache=False):
 
     data = None
     status_code = None
+    is_active = True
 
     resp = client._make_request(url, from_cache=from_cache)
     
     if resp:
         status_code = resp.status_code
         if resp.status_code != 200:
+            if resp.status_code == 404:
+                is_active = False
             print(f"url {url} returned response: {resp.status_code}: {resp.reason}, {resp.text}")
         else:
             
@@ -140,7 +145,7 @@ def get_product_data(url, from_cache=False):
                 print(f"error parsing data from {resp.url}: {error}")
 
     return {
+        "is_active": is_active,
         "product_data": data,
-        "status_code": status_code,
         "url": url, 
     }

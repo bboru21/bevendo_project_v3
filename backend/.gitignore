@@ -58,3 +58,6 @@ assets
 
 # coverage
 .coverage
+
+# client cache
+/ext_data/clients/_cache/abc_client/

@@ -77,6 +77,7 @@ def get_email_date_range(start_date=None):
 
 def get_email_feasts_products(start_date, end_date, latest_pull_date):
 
+    # TODO use prefetch related
     feasts = get_feasts_by_date_range(start_date, end_date)
 
     _feasts = []
@@ -114,8 +115,6 @@ def get_email_feasts_products(start_date, end_date, latest_pull_date):
 
                     products = ControlledBeverage.objects \
                                 .filter(ingredients__in=[ingredient.pk])
-
-
 
                     _ingredient = {
                         'name': ingredient.name,
@@ -187,28 +186,47 @@ def get_email_deals(latest_pull_date):
     limit = None
     deals = []
 
-    prices = ABCPrice.objects.filter(pull_date=latest_pull_date)
+    prices = ABCPrice.objects.filter(pull_date=latest_pull_date).values_list(
+        'product__name',
+        'size',
+        'current_price',
+        'is_on_sale',
+        'price_below_average',
+        'price_below_average_per_size',
+        'price_score',
+        'is_best_price',
+        'product_size',
+        'product__url',
+    )
+
     for price in prices:
-        if price.price_score > 70:
 
-            if not limit or price.current_price <= limit:
+        product_name = price[0]
+        size = price[1]
+        current_price = price[2]
+        is_on_sale = price[3]
+        price_below_average = price[4]
+        price_below_average_per_size = price[5]
+        price_score = price[6]
+        is_best_price = price[7]
+        product_size = price[8]
+        url = price[9]
 
-                best_price = price.best_price
+        if price_score > 70:
 
-
-
+            if not limit or current_price <= limit:
 
                 deals.append({
-                    'name': price.product.name,
-                    'size': price.size,
-                    'current_price': price.current_price,
-                    'is_on_sale': price.is_on_sale,
-                    'price_below_average': price.price_below_average,
-                    'price_below_average_per_size': price.price_below_average_per_size,
-                    'score': price.price_score,
-                    'is_best_price': price.is_best_price,
-                    'product_size': price.product_size,
-                    'url': price.product.url,
+                    'name': product_name,
+                    'size': size,
+                    'current_price': current_price,
+                    'is_on_sale': is_on_sale,
+                    'price_below_average': price_below_average,
+                    'price_below_average_per_size': price_below_average_per_size,
+                    'score': price_score,
+                    'is_best_price': is_best_price,
+                    'product_size': product_size,
+                    'url': url,
                 })
 
     deals = sorted(deals, key = lambda i: i['price_below_average'], reverse=True)

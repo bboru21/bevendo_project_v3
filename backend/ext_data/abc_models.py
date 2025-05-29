@@ -1,6 +1,7 @@
 import logging
 import re
 
+from django.core.cache import cache
 from django.db import models
 from django.db.models import Max
 
@@ -301,5 +302,16 @@ class ABCPrice(models.Model):
 
 # TODO look to integrate this with ABCPrice model one
 def get_latest_price_pull_date():
-    result = ABCPrice.objects.aggregate(Max('pull_date'))
-    return result['pull_date__max']
+    cache_key = 'latest_price_pull_date'
+    cached_date = cache.get(cache_key)
+
+    if cached_date is not None:
+        return cached_date
+    
+    latest_date = ABCPrice.objects.order_by("-pull_date").values_list('pull_date', flat=True).first()
+
+    # cache for 1 day
+    if latest_date:
+        cache.set(cache_key, latest_date, 60*60*24)
+    
+    return latest_date

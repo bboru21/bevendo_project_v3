@@ -1,31 +1,19 @@
 import logging
 import re
+from datetime import (
+    datetime,
+    date,
+)
+from django.template.loader import render_to_string
+from django.core.mail import EmailMultiAlternatives
 
 from django.contrib.auth.models import User
 from django.core import management
 from django.core.management.base import BaseCommand, CommandError
 from django.utils.dateformat import DateFormat
 from django.conf import settings
-from django.db.models import Max
-from api.models import (
-    Feast,
-    ControlledBeverage,
-)
-from ext_data.models import (
-    ABCPrice,
-    format_abc_product_best_column_name,
-    get_latest_price_pull_date,
-)
-# from util.util import Email
-from datetime import (
-    timedelta,
-    datetime,
-    date,
-)
 
-from django.template.loader import render_to_string
-from django.core.mail import EmailMultiAlternatives
-
+from ext_data.models import  get_latest_price_pull_date
 from api.utils import (
     get_email_date_range,
     get_email_feasts_products,

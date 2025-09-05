@@ -128,21 +128,23 @@ def get_product_data(url, from_cache=False):
     is_active = True
 
     resp = client._make_request(url, from_cache=from_cache)
+
+    if resp is None:
+        logger.error(f"failed to get response for url {url}")
     
-    if resp:
-        status_code = resp.status_code
-        if resp.status_code != 200:
-            if resp.status_code == 404:
-                is_active = False
-            print(f"url {url} returned response: {resp.status_code}: {resp.reason}, {resp.text}")
-        else:
-            
-            try:
-                soup = BeautifulSoup(resp.text, 'html.parser')
-                product_data_div = soup.find(id="productData")
-                data = json.loads(product_data_div["data-skus"])
-            except Exception as error:
-                print(f"error parsing data from {resp.url}: {error}")
+    status_code = resp.status_code
+    if resp.status_code != 200:
+        if resp.status_code == 404:
+            is_active = False
+        logger.info(f"url {url} returned response: {resp.status_code} - {resp.reason}")
+    else:
+        
+        try:
+            soup = BeautifulSoup(resp.text, 'html.parser')
+            product_data_div = soup.find(id="productData")
+            data = json.loads(product_data_div["data-skus"])
+        except Exception as error:
+            logger.error(f"error parsing data from {resp.url}: {error}")
 
     return {
         "is_active": is_active,

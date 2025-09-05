@@ -88,6 +88,8 @@ class Command(BaseCommand):
 
         urls = list(ABCProduct.objects.filter(active=True).values_list('url', flat=True))[0:options['limit']]
 
+        logger.info(f'importing ABC data from {len(urls)}, from_cache: {from_cache}, pull_date: {pull_date}')
+
         for url in urls:
             data = get_product_data(url, from_cache=from_cache)
             self.process_product_data(data, from_cache=from_cache, pull_date=pull_date)

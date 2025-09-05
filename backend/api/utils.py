@@ -186,31 +186,21 @@ def get_email_deals(latest_pull_date):
     limit = None
     deals = []
 
-    prices = ABCPrice.objects.filter(pull_date=latest_pull_date).values_list(
-        'product__name',
-        'size',
-        'current_price',
-        'is_on_sale',
-        'price_below_average',
-        'price_below_average_per_size',
-        'price_score',
-        'is_best_price',
-        'product_size',
-        'product__url',
-    )
+    # Remove properties from values_list - they need to be calculated from model instances
+    prices = ABCPrice.objects.filter(pull_date=latest_pull_date).select_related('product')
 
     for price in prices:
 
-        product_name = price[0]
-        size = price[1]
-        current_price = price[2]
-        is_on_sale = price[3]
-        price_below_average = price[4]
-        price_below_average_per_size = price[5]
-        price_score = price[6]
-        is_best_price = price[7]
-        product_size = price[8]
-        url = price[9]
+        product_name = price.product.name
+        size = price.size
+        current_price = price.current_price
+        is_on_sale = price.is_on_sale
+        price_below_average = price.price_below_average  # Now this works as a property
+        price_below_average_per_size = price.price_below_average_per_size  # Property
+        price_score = getattr(price, 'price_score', 0)  # Handle if property doesn't exist
+        is_best_price = price.is_best_price  # Property
+        product_size = price.product_size
+        url = price.product.url
 
         if price_score > 70:
 

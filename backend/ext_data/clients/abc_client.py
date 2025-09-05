@@ -8,6 +8,13 @@ from django.conf import settings
 from django.http import HttpResponse
 from bs4 import BeautifulSoup
 
+# Try importing cloudscraper, fall back to requests if not available
+try:
+    import cloudscraper
+    HAS_CLOUDSCRAPER = True
+except ImportError:
+    HAS_CLOUDSCRAPER = False
+    print("⚠️  cloudscraper not installed. Install with: pip install cloudscraper")
 
 logger = logging.getLogger(__name__)
 
@@ -25,7 +32,14 @@ def cached_response(url, content, status_code=200):
 class ABCClient:
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.session = requests.session()
+        
+        # Use cloudscraper if available, otherwise fall back to requests
+        if HAS_CLOUDSCRAPER:
+            # print("🛡️  Using cloudscraper to bypass Cloudflare protection")
+            self.session = cloudscraper.create_scraper()
+        else:
+            # print("⚠️  Using regular requests session (may be blocked by Cloudflare)")
+            self.session = requests.session()
 
         user_agent = random.choice(settings.EXT_DATA_CLIENT_USER_AGENTS)
         
@@ -36,6 +50,14 @@ class ABCClient:
             'Accept-Encoding': 'gzip, deflate, br',
             'Connection': 'keep-alive',
             'Upgrade-Insecure-Requests': '1',
+            # 'sec-ch-ua': '"Chromium";v="122", "Google Chrome";v="122", "Not(A:Brand";v="24"',
+            # 'sec-ch-ua-mobile': '?0',
+            # 'sec-ch-ua-platform': '"macOS"',
+            # 'Sec-Fetch-Dest': 'document',
+            # 'Sec-Fetch-Mode': 'navigate',
+            # 'Sec-Fetch-Site': 'none',
+            # 'Sec-Fetch-User': '?1',
+            # 'Cache-Control': 'max-age=0',
         })
 
         # Initialize a flag to track if we've already visited the homepage
@@ -74,21 +96,35 @@ class ABCClient:
                     )
                 
             if not self.homepage_visited:
-                print("visiting homepage to establish session...")
+                # print("visiting homepage to establish session...")
+                
+                # Add debugging to see what headers are sent
+                # print("Session headers being used:")
+                # for header, value in self.session.headers.items():
+                #     print(f"  {header}: {value}")
+                
                 response = self.session.get(self.homepage)
+                # print(f"Homepage response: {response.status_code} {response.reason}")
+                
                 self.homepage_visited = True
 
-                # Some sites set trap cookies to identify bots - check response for redirects
-                if len(response.history) > 0:
-                    print(f"Request was redirected: {response.history}")
+                # # Some sites set trap cookies to identify bots - check response for redirects
+                # if len(response.history) > 0:
+                #     print(f"Request was redirected: {response.history}")
 
-                print(f"Cookies received: {self.session.cookies.get_dict()}")
+                # print(f"Cookies received: {self.session.cookies.get_dict()}")
+                
+                # Set additional cookies that some sites expect
                 self.session.cookies.set('cookie_consent', 'accepted', domain='.abc.virginia.gov')
+                
+                # Add a longer delay after homepage visit
+                time.sleep(random.uniform(2, 5))
             
-            # set a proper referrer for this specific request
+            # Use proper headers for the product page request
             headers = {
+                **self.session.headers,
                 'Referer': 'https://www.abc.virginia.gov/products',
-                # Add any request-specific headers here
+                'Sec-Fetch-Site': 'same-origin',  # Important: we're now navigating within the site
             }
 
             # Add cache-busting parameter
@@ -98,8 +134,38 @@ class ABCClient:
             # Add a delay between requests
             time.sleep(random.uniform(1,3))
 
-            print(f"Making request to {request_url}")
+            # print(f"Making request to {request_url}")
+            # print(f"Using referer: {headers.get('Referer')}")
             response = self.session.get(request_url, headers=headers)
+            
+           #  print(f"Response: {response.status_code} {response.reason}")
+            if response.status_code != 200:
+                # print(f"Response headers: {dict(response.headers)}")
+                # print(f"Response content preview: {response.text[:500]}...")
+                
+                # # Check if we're being blocked by Cloudflare or similar
+                # if 'cloudflare' in response.text.lower() or 'just a moment' in response.text.lower():
+                #     print("⚠️  Detected Cloudflare protection")
+                #     if not HAS_CLOUDSCRAPER:
+                #         print("💡 Suggestion: Install cloudscraper with: pip install cloudscraper")
+                # elif 'access denied' in response.text.lower() or 'forbidden' in response.text.lower():
+                #     print("⚠️  Access denied - possible bot detection")
+                    
+                # If we're getting blocked and using cloudscraper, try with different browser
+                if response.status_code == 403 and HAS_CLOUDSCRAPER:
+                    # print("🔄 Cloudflare challenge failed, trying different browser profile...")
+                    time.sleep(random.uniform(3, 6))
+                    
+                    # Try with a different browser profile
+                    self.session = cloudscraper.create_scraper(
+                        browser={'browser': 'chrome', 'platform': 'windows', 'mobile': False}
+                    )
+                    
+                    # Retry the request
+                    retry_response = self.session.get(request_url, headers=headers)
+                    if retry_response.status_code == 200:
+                        # print("✅ Retry successful with different browser profile")
+                        response = retry_response
             
             # cache response
             if response.status_code == 200 and self.cache_response:

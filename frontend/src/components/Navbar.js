@@ -3,6 +3,7 @@ import { useRouter } from 'next/router';
 import { useSelector, useDispatch } from 'react-redux';
 import { logout } from '../actions/auth';
 import SearchBar from './SearchBar';
+import Image from 'next/image';
 
 const Navbar = () => {
 
@@ -170,7 +171,10 @@ const Navbar = () => {
         <nav className='navbar navbar-expand-lg bg-light'>
           <div className='container-fluid'>
             <Link href='/'>
-                <a className='navbar-brand'>Bevendo!</a>
+                <a className='navbar-brand me-0 d-flex align-items-center'>
+                    <Image src='/logos/logo-57x57.png' alt='Bevendo' width={40} height={40} />
+                    <span className='mx-2 fw-bold d-none d-sm-inline'>Bevendo</span>
+                </a>
             </Link>
             <button
                 className='navbar-toggler'

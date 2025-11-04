@@ -14,8 +14,8 @@ $loaderHeight: $loaderWidth;
     left: 0;
     .oval {
       position: absolute;
-      top: calc(50% - $loaderHeight);
-      right: calc(50% - $loaderWidth);
+      top: calc(50% - $loaderHeight) !important;
+      right: calc(50% - $loaderWidth) !important;
     }
   }
 

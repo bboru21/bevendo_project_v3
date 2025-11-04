@@ -3,7 +3,6 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useRouter } from 'next/router';
 import { login, reset_register_success } from '../actions/auth';
 import Layout from '../hocs/Layout';
-import { Oval as Loader } from 'react-loader-spinner';
 import Heading from '../components/Heading';
 import Link from 'next/link';
 
